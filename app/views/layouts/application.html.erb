@@ -25,8 +25,20 @@
   </head>
 
   <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <%= link_to "skyefreeman.com", root_path, class: "site-header__name" %>
+      </div>
+    </header>
+
     <div class="container">
       <%= yield %>
     </div>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        &copy; <%= Time.current.year %> Skye Freeman
+      </div>
+    </footer>
   </body>
 </html>

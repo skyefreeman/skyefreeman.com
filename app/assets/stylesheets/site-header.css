@@ -1,0 +1,18 @@
+.site-header {
+  background-color: #d6eef8;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.site-header__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.site-header__name {
+  font-size: 1rem;
+  font-weight: normal;
+  text-decoration: none;
+  color: #1a1a1a;
+}
