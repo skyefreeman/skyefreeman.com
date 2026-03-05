@@ -1,13 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  author: MyString
-  state: MyString
-  deleted_at: 2026-03-04 22:59:12
+  title: First Post
+  author: Skye Freeman
+  state: published
 
 two:
-  title: MyString
-  author: MyString
-  state: MyString
-  deleted_at: 2026-03-04 22:59:12
+  title: Second Post
+  author: Skye Freeman
+  state: draft
