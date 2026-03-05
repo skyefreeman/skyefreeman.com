@@ -1,0 +1,46 @@
+<%= form_with model: post do |f| %>
+  <% if post.errors.any? %>
+    <div>
+      <p><%= pluralize(post.errors.count, "error") %> prevented this post from being saved:</p>
+      <ul>
+        <% post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :author %>
+    <%= f.text_field :author %>
+  </div>
+
+  <div>
+    <%= f.label :state %>
+    <%= f.text_field :state %>
+  </div>
+
+  <div>
+    <%= f.label :body %>
+    <%= f.rich_text_area :body %>
+  </div>
+
+  <div>
+    <%= f.label :header_attachment %>
+    <%= f.file_field :header_attachment %>
+  </div>
+
+  <div>
+    <%= f.label :body_attachments %>
+    <%= f.file_field :body_attachments, multiple: true %>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>
