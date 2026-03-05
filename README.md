@@ -1,24 +1,33 @@
-# README
+# skyefreeman.com
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Personal website built with Ruby on Rails.
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+- Ruby 3.4.5
+- PostgreSQL
 
-* System dependencies
+## Setup
 
-* Configuration
+```bash
+bundle install
+rails db:create db:migrate
+```
 
-* Database creation
+## Running the app
 
-* Database initialization
+```bash
+bin/dev
+```
 
-* How to run the test suite
+## Running tests
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+rails test
+```
 
-* Deployment instructions
+## Loading fixture data
 
-* ...
+```bash
+rails db:fixtures:load
+```
