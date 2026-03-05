@@ -6,6 +6,12 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index returns posts in descending order by created_at" do
+    get posts_path
+    body = response.body
+    assert body.index(posts(:two).title) < body.index(posts(:one).title)
+  end
+
   test "show returns a single post" do
     get post_path(posts(:one))
     assert_response :success
