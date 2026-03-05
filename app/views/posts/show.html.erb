@@ -1,1 +1,32 @@
-<h1>Post</h1>
+<h1><%= @post.title %></h1>
+
+<p><strong>Author:</strong> <%= @post.author %></p>
+<p><strong>State:</strong> <%= @post.state %></p>
+<p><strong>Created:</strong> <%= @post.created_at.strftime("%B %d, %Y") %></p>
+<p><strong>Updated:</strong> <%= @post.updated_at.strftime("%B %d, %Y") %></p>
+<% if @post.deleted_at %>
+  <p><strong>Deleted:</strong> <%= @post.deleted_at.strftime("%B %d, %Y") %></p>
+<% end %>
+
+<div>
+  <strong>Body:</strong>
+  <%= @post.body %>
+</div>
+
+<% if @post.header_attachment.attached? %>
+  <div>
+    <strong>Header:</strong>
+    <%= image_tag @post.header_attachment %>
+  </div>
+<% end %>
+
+<% if @post.body_attachments.attached? %>
+  <div>
+    <strong>Attachments:</strong>
+    <% @post.body_attachments.each do |attachment| %>
+      <%= link_to attachment.filename, rails_blob_path(attachment, disposition: "attachment") %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Posts", posts_path %>
