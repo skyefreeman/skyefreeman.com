@@ -1,0 +1,46 @@
+.post__title {
+  font-size: 2rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+}
+
+.post__meta {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.post__body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.post__attachments {
+  margin-top: 2rem;
+}
+
+.post__attachments-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.post__attachment-link {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.post__header-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+}
+
+.post__back {
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-top: 2rem;
+}

@@ -1,0 +1,8 @@
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header__title {
+  font-size: 1.6rem;
+  font-weight: normal;
+}
