@@ -4,7 +4,6 @@
   <div>
     <%= link_to post.title, post_path(post) %>
     <span><%= post.author %></span>
-    <span><%= post.state %></span>
     <span><%= post.created_at.strftime("%B %d, %Y") %></span>
   </div>
 <% end %>

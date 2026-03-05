@@ -1,7 +1,6 @@
 <h1><%= @post.title %></h1>
 
 <p><strong>Author:</strong> <%= @post.author %></p>
-<p><strong>State:</strong> <%= @post.state %></p>
 <p><strong>Created:</strong> <%= @post.created_at.strftime("%B %d, %Y") %></p>
 <p><strong>Updated:</strong> <%= @post.updated_at.strftime("%B %d, %Y") %></p>
 <% if @post.deleted_at %>

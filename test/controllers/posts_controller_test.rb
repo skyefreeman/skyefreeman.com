@@ -23,7 +23,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create saves a new post and redirects" do
-    post posts_path, params: { post: { title: "New Post", author: "Skye", state: "draft", body: "Hello" } }
+    post posts_path, params: { post: { title: "New Post", author: "Skye", body: "Hello" } }
     assert_redirected_to post_path(Post.last)
   end
 
