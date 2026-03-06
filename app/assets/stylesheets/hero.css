@@ -2,25 +2,35 @@
   margin-bottom: 2.5rem;
 }
 
+.hero__identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+}
+
 .hero__avatar {
   width: 64px;
   height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 1rem;
-  display: block;
+  flex-shrink: 0;
 }
 
 .hero__name {
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
 }
 
 .hero__tagline {
   font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0.25rem;
+  font-weight: normal;
 }
 
 .hero__bio {
