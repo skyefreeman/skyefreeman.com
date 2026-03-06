@@ -2,10 +2,9 @@
   background-color: #ffffff;
   border-bottom: 1px solid #e0e0e0;
   padding: 1.25rem 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
 }
 
 .site-header__inner {
@@ -14,7 +13,7 @@
 }
 
 .site-header__name {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   text-decoration: none;
   color: #1a1a1a;
@@ -23,7 +22,7 @@
 }
 
 .site-header__tagline {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: normal;
   color: #1a1a1a;
   margin: 0;

@@ -1,25 +1,25 @@
-<h1 class="post__title"><%= @post.title %></h1>
+<div class="post">
+  <h1 class="post__title"><%= @post.title %></h1>
 
-<p class="post__meta">
-  <%= @post.created_at.strftime("%B %d, %Y") %>
-  <% if @post.deleted_at %>
-    &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
-  <% end %>
-</p>
-
-<% if @post.header_attachment.attached? %>
-  <%= image_tag @post.header_attachment, class: "post__header-image" %>
-<% end %>
-
-<div class="post__body"><%= @post.body %></div>
-
-<% if @post.body_attachments.attached? %>
-  <div class="post__attachments">
-    <p class="post__attachments-title">Attachments</p>
-    <% @post.body_attachments.each do |attachment| %>
-      <%= link_to attachment.filename, rails_blob_path(attachment, disposition: "attachment"), class: "post__attachment-link" %>
+  <p class="post__meta">
+    <%= @post.created_at.strftime("%B %d, %Y") %>
+    <% if @post.deleted_at %>
+      &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>
-  </div>
-<% end %>
+  </p>
 
-<%= link_to "← Back", posts_path, class: "post__back" %>
+  <% if @post.header_attachment.attached? %>
+    <%= image_tag @post.header_attachment, class: "post__header-image" %>
+  <% end %>
+
+  <div class="post__body"><%= @post.body %></div>
+
+  <% if @post.body_attachments.attached? %>
+    <div class="post__attachments">
+      <p class="post__attachments-title">Attachments</p>
+      <% @post.body_attachments.each do |attachment| %>
+        <%= link_to attachment.filename, rails_blob_path(attachment, disposition: "attachment"), class: "post__attachment-link" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
