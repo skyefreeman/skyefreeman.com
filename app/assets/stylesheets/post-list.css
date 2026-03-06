@@ -3,9 +3,10 @@
 }
 
 .post-list__item {
-  padding: 2rem;
+  padding: 1.25rem 1rem;
   border: 1px solid #e0e0e0;
   margin-bottom: 8px;
+  background-color: #ffffff;
 }
 
 .post-list__title {

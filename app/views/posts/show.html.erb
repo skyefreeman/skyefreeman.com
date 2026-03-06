@@ -1,7 +1,7 @@
 <h1 class="post__title"><%= @post.title %></h1>
 
 <p class="post__meta">
-  <%= @post.author %> &middot; <%= @post.created_at.strftime("%B %d, %Y") %>
+  <%= @post.created_at.strftime("%B %d, %Y") %>
   <% if @post.deleted_at %>
     &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
   <% end %>

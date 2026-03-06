@@ -4,7 +4,7 @@
       <h2 class="post-list__title">
         <%= link_to post.title, post_path(post) %>
       </h2>
-      <p class="post-list__meta"><%= post.author %> &middot; <%= post.created_at.strftime("%B %d, %Y") %></p>
+      <p class="post-list__meta"><%= post.created_at.strftime("%B %d, %Y") %></p>
       <div class="post-list__body"><%= post.body %></div>
     </li>
   <% end %>

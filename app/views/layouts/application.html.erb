@@ -28,7 +28,7 @@
     <header class="site-header">
       <div class="site-header__inner">
         <%= link_to "Skye Freeman", root_path, class: "site-header__name" %>
-        <p class="site-header__tagline">Programmer. Hobbyist musician. Pancakes 🥞.</p>
+        <p class="site-header__tagline">Programmer. Musician. Pancakes 🥞.</p>
       </div>
     </header>
 
@@ -38,7 +38,14 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        &copy; <%= Time.current.year %> Skye Freeman
+        <span class="site-footer__copyright">&copy; <strong>Skye Freeman</strong> <%= Time.current.year %></span>
+        <ul class="site-footer__nav">
+          <li><a href="https://bsky.app/profile/skyefreeman.bsky.social">Bluesky</a></li>
+          <li class="site-footer__nav-separator">&middot;</li>
+          <li><a href="https://mastodon.social/@skyefreeman">Mastodon</a></li>
+          <li class="site-footer__nav-separator">&middot;</li>
+          <li><a href="https://github.com/skyefreeman">GitHub</a></li>
+        </ul>
       </div>
     </footer>
   </body>
