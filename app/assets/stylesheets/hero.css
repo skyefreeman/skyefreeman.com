@@ -1,0 +1,38 @@
+.hero {
+  margin-bottom: 2.5rem;
+}
+
+.hero__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.hero__name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.hero__tagline {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.hero__bio {
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: #333;
+}
+
+.hero__bio a {
+  color: #4a90d9;
+}
+
+.hero__bio a:hover {
+  color: #2a6ab0;
+}

@@ -3,12 +3,9 @@
 }
 
 .post-list__item {
-  padding: 2rem 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.post-list__item:first-child {
-  border-top: 1px solid #e0e0e0;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 8px;
 }
 
 .post-list__title {
