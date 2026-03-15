@@ -5,6 +5,10 @@ class PostsController < ApplicationController
     @posts = Post.order(created_at: :desc)
   end
 
+  def blog
+    @posts = Post.order(created_at: :desc)
+  end
+
   def show
   end
 

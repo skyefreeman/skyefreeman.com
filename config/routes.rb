@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :posts
-  get "blog", to: "posts#index"
+  get "blog", to: "posts#blog"
   get "about", to: "pages#about"
   get "projects", to: "pages#projects"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
