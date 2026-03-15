@@ -6,3 +6,16 @@
   font-size: 1.6rem;
   font-weight: normal;
 }
+
+.page-content {
+  padding: 1.25rem 1rem;
+  min-height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-content__title {
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
