@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :posts
+  resources :posts, except: [:index]
   get "blog", to: "posts#blog"
   get "about", to: "pages#about"
   get "projects", to: "pages#projects"

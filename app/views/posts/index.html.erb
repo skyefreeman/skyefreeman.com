@@ -1,8 +1,0 @@
-<ul class="post-list">
-  <% @posts.each do |post| %>
-    <li class="post-list__item">
-      <span class="post-list__date"><%= post.created_at.strftime("%b %d, %Y") %></span>
-      <%= link_to post.title, post_path(post), class: "post-list__title" %>
-    </li>
-  <% end %>
-</ul>
