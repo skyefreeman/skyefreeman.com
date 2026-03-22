@@ -1,7 +1,7 @@
-<div class="page-header">
-  <h1 class="page-header__title">Edit Post</h1>
+<div class="page-content">
+  <h1 class="page-content__title">Edit Post</h1>
+
+  <%= render "form", post: @post %>
+
+  <%= link_to "← Back", post_path(@post), class: "post__back" %>
 </div>
-
-<%= render "form", post: @post %>
-
-<%= link_to "← Back", post_path(@post), class: "post__back" %>
