@@ -6,6 +6,12 @@ class PostTest < ActiveSupport::TestCase
     assert post.valid?
   end
 
+  test "is invalid without a title" do
+    post = Post.new(title: "")
+    assert_not post.valid?
+    assert_includes post.errors[:title], "can't be blank"
+  end
+
   test "has rich text body" do
     post = posts(:one)
     assert_respond_to post, :body
