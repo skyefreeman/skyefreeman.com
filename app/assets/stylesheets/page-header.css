@@ -20,3 +20,25 @@
   margin-bottom: 1rem;
   padding: 0 1rem;
 }
+
+.page-content__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-content__header .page-content__title {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.page-content__action {
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+}

@@ -1,5 +1,10 @@
 <div class="page-content">
-  <h1 class="page-content__title">Blog</h1>
+  <div class="page-content__header">
+    <h1 class="page-content__title">Blog</h1>
+    <% if authenticated? %>
+      <%= link_to "New Post", new_post_path, class: "page-content__action" %>
+    <% end %>
+  </div>
   <ul class="post-list">
     <% @posts.each do |post| %>
       <li class="post-list__item">
