@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
   resources :posts, except: [:index]
   get "blog", to: "posts#blog"
   get "about", to: "pages#about"

@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :require_authentication, only: %i[new create edit update destroy]
   before_action :set_post, only: %i[show edit update destroy]
 
   def blog
@@ -34,7 +35,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to posts_path
+    redirect_to blog_path
   end
 
   private
