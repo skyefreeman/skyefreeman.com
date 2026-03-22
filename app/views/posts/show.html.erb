@@ -1,5 +1,10 @@
 <div class="post">
-  <h1 class="post__title"><%= @post.title %></h1>
+  <div class="post__header">
+    <h1 class="post__title"><%= @post.title %></h1>
+    <% if authenticated? %>
+      <%= link_to "Edit Post", edit_post_path(@post), class: "page-content__action" %>
+    <% end %>
+  </div>
 
   <p class="post__meta">
     <%= @post.created_at.strftime("%B %d, %Y") %>

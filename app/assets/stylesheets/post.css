@@ -5,10 +5,16 @@
   box-sizing: border-box;
 }
 
+.post__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
 .post__title {
   font-size: 1.6rem;
   font-weight: normal;
-  margin-bottom: 0.5rem;
 }
 
 .post__meta {

@@ -7,7 +7,7 @@ trix-editor {
   border-radius: 3px;
   margin: 0;
   padding: 0.4em 0.6em;
-  min-height: 5em;
+  min-height: 20em;
   outline: none; }
 
 trix-toolbar * {
@@ -416,7 +416,15 @@ trix-editor .attachment__metadata {
       max-width: 50%; }
 
 /*
- * We need to override trix.css’s image gallery styles to accommodate the
+ * Add spacing between the toolbar and the editor area so the
+ * horizontal scrollbar on the button row doesn't overlap the text.
+*/
+trix-editor {
+  margin-top: 16px;
+}
+
+/*
+ * We need to override trix.css's image gallery styles to accommodate the
  * <action-text-attachment> element we wrap around attachments. Otherwise,
  * images in galleries will be squished by the max-width: 33%; rule.
 */
