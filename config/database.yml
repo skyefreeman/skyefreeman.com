@@ -90,7 +90,7 @@ production:
     database: skyefreeman_com_production
     username: skyefreeman_com
     password: <%= ENV["SKYEFREEMAN_COM_DATABASE_PASSWORD"] %>
-    host: <%= ENV.fetch("DB_HOST", "172.17.0.1") %>
+    host: <%= ENV.fetch("DB_HOST", "172.18.0.1") %>
   cache:
     <<: *primary_production
     database: skyefreeman_com_production_cache
