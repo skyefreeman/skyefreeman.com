@@ -6,12 +6,13 @@ servers:
   web:
     - 45.79.145.155
 
-# kamal-proxy runs on 8080/8443 so nginx can own 80/443
+# kamal-proxy runs on 8080 so nginx can own 80/443
 proxy:
   host: skyefreeman.com
   app_port: 3000
   ssl: false
-  host_port: 8080
+  run:
+    http_port: 8080
 
 registry:
   server: ghcr.io
