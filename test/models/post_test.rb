@@ -31,4 +31,19 @@ class PostTest < ActiveSupport::TestCase
     post = Post.new(title: "Hello", author: "Skye")
     assert_nil post.deleted_at
   end
+
+  test "date_url_slug returns path with date and slug" do
+    post = Post.new(title: "Hello", url_slug: "my-post", published_at: Time.new(2026, 3, 24, 12, 0, 0))
+    assert_equal "2026/03/24/my-post", post.date_url_slug
+  end
+
+  test "date_url_slug returns nil when published_at is missing" do
+    post = Post.new(title: "Hello", url_slug: "my-post")
+    assert_nil post.date_url_slug
+  end
+
+  test "date_url_slug returns nil when url_slug is missing" do
+    post = Post.new(title: "Hello", published_at: Time.new(2026, 3, 24))
+    assert_nil post.date_url_slug
+  end
 end
