@@ -1,0 +1,59 @@
+<p>With the <a
+href="/blog/subscription-starter-kit-swiftui-boilerplate">planning and
+ideation done</a>, I’ve set to work on an iOS starter kit that will
+provide all of the infrastructure needed for a cloud enabled,
+subscription ready native app with reusable foundational features.</p>
+<p>To have a concrete usecase in mind while building this generalized
+kit, I’ve decided to build a cloud enabled todo list app. Afterwards
+I’ll work backwards and remove app specific logic and UI, getting the
+kit ready for <em>your</em> projects.</p>
+<p>Starting with building the basic screen structure and navigation
+controls, this app will have two primary flows, “home” and “settings”.
+Settings is modally presented via the <a
+href="https://developer.apple.com/sf-symbols/">SFSymbols</a> “gear”
+icon:</p>
+<div>
+<video class="mx-auto max-w-md rounded-lg"
+       controls>
+<source
+        src="/images/subscription-initial-navigation.mp4" 
+        type="video/mp4">
+Your browser does not support video playback. </video>
+</div>
+<p>Simple enough.</p>
+<p>Next, I threw together some generalized SwiftUI components to mimic
+the layout of a <a
+href="https://developer.apple.com/documentation/swiftui/navigationlink">NavigationLink</a>,
+ensuring selection logic is untethered to a navigation stack. Here I’ve
+stubbed out these initial section row inside a <a
+href="https://developer.apple.com/documentation/swiftui/list">SwiftUI
+List</a>:</p>
+<figure class>
+<img class="mx-auto max-w-md rounded-lg"
+src="/images/subscription-initial-settings-layout.jpg"
+alt="SwiftUI Subscription settings screen layout.">
+<figcaption class="text-sm text-center text-gray-500 dark:text-gray-400">
+Settings list controls for company info and support url’s.
+</figcaption>
+</figure>
+<p>Extending some interactivity to the Settings page, all of the
+existing cells either trigger a modally presented view, or push a view
+onto the navigation stack:</p>
+<div>
+<video class="mx-auto max-w-md rounded-lg"
+       width="720" height="720" controls>
+<source
+        src="/images/subscription-initial-settings-navigation.mp4" 
+        type="video/mp4">
+Your browser does not support video playback. </video>
+</div>
+<p>Great, first steps out of the way.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>Each iteration of <a href="https://swiftstarterkits.com">Swift
+Starter Kits</a> has brought focus to the toolkit. Starting with the
+authentication and Firebase integration last year, I’ve slowly improved
+and expanded the foundation, making it more robust and generalized. The
+negative side-effect of this approach was lack of focus, but this
+product release is going to address this exact problem.</p>
+<p>I’ll be focusing next on getting app functionality in place, followed
+by a bunch more settings, debug, and infrastructure additions.</p>

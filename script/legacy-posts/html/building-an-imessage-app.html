@@ -1,0 +1,119 @@
+<p>I took a small detour the past couple of days from <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> to build an
+iMessage app. Here’s a short "how-to" in creating a standalone iMessage
+app:</p>
+<h2 id="how-to-build-an-imessage-sticker-pack">How to build an iMessage
+sticker pack</h2>
+<p>Technically speaking, an iMessage sticker app is straightforward. The
+Xcode ‘Sticker Pack App’ template gets you most of the way there:</p>
+<div>
+<figure>
+<img src="/images/imessage-project-template.jpg"
+alt="Sticker Pack App Xcode Template Example" />
+<figcaption aria-hidden="true">Sticker Pack App Xcode Template
+Example</figcaption>
+</figure>
+<p>Sticker Pack App Xcode Template</p>
+</div>
+<p>Decide on universal sticker sizes in the Xcode attributes inspector,
+ensuring that the target images are consumable at the target size:</p>
+<div>
+<figure>
+<img src="/images/imessage-sticker-sizing.jpg"
+alt="Sticker Sizing Example" />
+<figcaption aria-hidden="true">Sticker Sizing Example</figcaption>
+</figure>
+<p>Sticker Sizing</p>
+</div>
+<p>Image dimensions don’t need to match the target size exactly, and
+will only affect the sticker dimensions that display on an end user’s
+iMessage chat pane. The configurable choices are denoted by keyboard
+column size:</p>
+<ul>
+<li>2 Column: 618 x 618 pixels</li>
+<li>3 Column: 408 x 408 pixels</li>
+<li>4 Column: 300 x 300 pixels</li>
+</ul>
+<p>Assuming sticker images already exist, drag and drop them into the
+Stickers &gt; Sticker Pack asset pane, no code required.</p>
+<div>
+<figure>
+<img src="/images/imessage-xcode-dragdrop.gif"
+alt="Sticker drag and drop example" />
+<figcaption aria-hidden="true">Sticker drag and drop
+example</figcaption>
+</figure>
+<p>Drag and drop!</p>
+</div>
+<p>Build and run. You’re good to go!</p>
+<h2
+id="submitting-a-standalone-imessage-app-for-app-store-review">Submitting
+a standalone iMessage app for App Store Review</h2>
+<p>There’s very little that is different from submitting a standalone
+iMessage app into the App Store from a fully fledged iOS app. You’ll
+need content for all the usual suspects:</p>
+<ul>
+<li>App icons</li>
+<li>App name, subtitle, and description</li>
+<li>Keywords</li>
+<li>Screenshots</li>
+<li>App Previews (Optional)</li>
+<li>Category. Set the primary category to "Stickers", if this is a
+standalone sticker pack.</li>
+</ul>
+<h3 id="adding-imessage-device-screenshots">Adding iMessage Device
+Screenshots</h3>
+<p>On the App Store Connect website, when adding App Store marketing
+materials you will need to submit screenshots for both the iOS Previews
+and Screenshots <em>and</em> iMessage App sections. I found this odd
+given only an iMessage app binary is required, but app submission is
+prevented without content for each. I ultimately used the same
+screenshot content for both sections, even though only the iMessage app
+section’s screenshots will be utilized.</p>
+<p>Additionally, iMessage apps work out of the box on both iPhone’s and
+iPad’s, meaning that marketing screenshots are required for both
+platforms before submission. Here’s the minimum required screenshot
+sizes for iMessage Apps (as of 10/5/2022):</p>
+:::
+<div>
+<p>6.5 inch iPhone:</p>
+<ul>
+<li>1284 × 2778 pixels (Portrait)</li>
+<li>2778 x 1284 pixels (Landscape)</li>
+<li>Possible device types: iPhone 14 Plus, iPhone 13 Pro Max, iPhone 12
+Pro Max, iPhone 11 Pro Max.</li>
+</ul>
+</div>
+<div>
+<p>5.5 inch iPhone:</p>
+<ul>
+<li>1242 × 2208 pixels (Portrait)</li>
+<li>2208 x 1242 pixels (Landscape)</li>
+<li>Possible device types: iPhone 8 Plus, iPhone 7 Plus, iPhone 6s
+Plus.</li>
+</ul>
+</div>
+<div>
+<p>12.9 inch iPad (2nd gen device frames):</p>
+<ul>
+<li>2048 x 2732 pixels (Portrait)</li>
+<li>2732 x 2048 pixels (Landscape)</li>
+<li>Possible device types: iPad Pro (2nd gen).</li>
+</ul>
+</div>
+<div>
+<p>12.9 inch iPad (3rd gen and above device frames):</p>
+<ul>
+<li>2048 x 2732 pixels (Portrait)</li>
+<li>2732 x 2048 pixels (Landscape)</li>
+<li>Possible device types: iPad Pro (3rd gen), iPad Pro (4th gen).</li>
+</ul>
+</div>
+<p>:::</p>
+<p>Screenshots for other devices are naturally allowed, however the
+above devices sizes are the base minimum required. Each will be used as
+the basis when viewing in the App Store while on a different device,
+with a matching aspect ratio. A full list of devices and screenshots
+specifications can be found <a
+href="https://help.apple.com/app-store-connect/#/devd274dd925">here</a>
+on Apple’s App Store Connect help website.</p>

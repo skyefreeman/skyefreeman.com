@@ -1,0 +1,62 @@
+<p>The first version of <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> shipped without
+a dedicated product page. Upon landing on the website, you’d see some
+basic information about the business, followed by a section which gave a
+walkthrough of our single product. At the bottom of the section, a
+"learn more" button exists, which links directly to the Stripe store
+page. This was enough for version 1.0.0, I think, but ultimately limits
+product upsell opportunities and copy experimentation. So we built out a
+dynamic product page which leaves some room to grow alongside our
+products.</p>
+<div class="space-y-4">
+<p>Here’s what the home page looked like before:</p>
+<figure>
+<img src="/images/swiftstarterkits-home-before.jpg"
+alt="The old Swift Starter Kits home page." />
+<figcaption aria-hidden="true">The old Swift Starter Kits home
+page.</figcaption>
+</figure>
+</div>
+<div class="space-y-4">
+<p>Here’s what the home page looks like now:</p>
+<figure>
+<img src="/images/swiftstarterkits-home-after.jpg"
+alt="The new Swift Starter Kits home page." />
+<figcaption aria-hidden="true">The new Swift Starter Kits home
+page.</figcaption>
+</figure>
+</div>
+<div class="space-y-4">
+<p>Here’s a look at the brand new <a
+href="https://swiftstarterkits.com/products/ios-login-provider-template">SwiftStarterKits
+Login Basics product page:</a></p>
+<figure>
+<img src="/images/swiftstarterkits-product-page-walkthrough.gif"
+alt="The Swift Starter Kits product page." />
+<figcaption aria-hidden="true">The Swift Starter Kits product
+page.</figcaption>
+</figure>
+</div>
+<p>Some problems that I hope this solves:</p>
+<ol type="1">
+<li>A more cohesive landing page experience, that can introduce the <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> business as a
+whole while giving overviews of individual products (Rather than
+everything, all at once).</li>
+<li>Focused web pages for each product, which provide room to describe
+templates in detail, embed a gallery of all included screens, include a
+list of features and infrastructure that comes with a purchase.
+Additionally, allowing for room to grow and experiment with other
+aspects of optimizing an upsell funnel.</li>
+</ol>
+<p>The product page is implemented as a dynamic HTML template, which
+renders on the server via dynamic product data structures. This modeling
+allows for a nice "view model" esque collection of the static data
+pertaining to each product (Like title, description, price, Stripe store
+page URL, S3 download url, etc).</p>
+<p>While not strictly necessary at this stage, I wanted to do some
+upfront engineering work to ensure all the disparate bits of information
+relating to a template has a single source of truth (not all of which
+live on the server). The next template we release will merely need a
+dedicated product object alongside the in-memory list of products, and a
+new home page gallery item + product page will render automagically.</p>

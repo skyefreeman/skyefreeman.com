@@ -1,0 +1,66 @@
+<p>Yesterday <a
+href="/blog/love-hate-relationship-with-modern-computing">I briefly
+mention</a> that the first draft of <a
+href="https://flyerfalcon.com/features">FlyerFalcon’s feature page</a>
+was done.</p>
+<h2 id="created-image-assets">Created Image Assets</h2>
+<p>Picking up from there. Today, I spent several hours with my design
+cap on creating image assets to place alongside feature containers. They
+turned out better than I thought they would. Here’s the final
+product:</p>
+<figure class="mx-auto">
+<img class="max-w-full h-auto rounded-lg"
+       src="/images/flyer-falcon-feature-screengrab.jpeg"
+   alt="FlyerFalcon's feature page, in all of it's glory.">
+<figcaption class="text-sm text-center text-gray-500 dark:text-gray-400">
+FlyerFalcon’s feature page, in all of it’s glory.
+</figcaption>
+</figure>
+<p>To be honest, the first section (flyer templates) stands out like a
+sore thumb. At some point I’ll swap it out for something better, but
+I’ll hold off until I have some better looking templates, as “premade
+flyer templates” are FlyerFalcon’s biggest selling point. I’d like to do
+it justice.</p>
+<h2 id="fixed-meta-titles">Fixed Meta Titles</h2>
+<p>Additionally, I noticed that FlyerFalcon currenly has 300+ duplicate
+title meta tags, most of which are programmatic SEO pages, but a few
+were top level pages that are essential for keyword ranking. I spent
+some extra time making these easier to manage with my HTML templating
+engine: <a
+href="https://hexdocs.pm/phoenix_live_view/assigns-eex.html">HEEx: HTML
+Embedded Elixir</a>.</p>
+<p>There was a tiny bit of complexity, given some pages render via HTTP,
+and others render through a Phoenix LiveView websocket. But generally it
+was a simple update, ensuring that a <span class="bg-gray-100">:page
+title</span> variable was set before render. HEEx makes this very
+straightforward, and relatively seamless accross both HTTP and a
+LiveView websocket.</p>
+<h2 id="phoenix-is-all-its-cracked-up-to-be">Phoenix <strong>is</strong>
+all it’s cracked up to be</h2>
+<p>I’ve generally avoided talking about <a
+href="https://www.phoenixframework.org">Phoenix</a> (the Elixir web
+framework) since I started using it 6 months ago. Partly because I
+wanted time to explore it and see how it feels building a real world
+project. In short, it’s pragmatic, productive, and
+<em>powerful</em>.</p>
+<p>I’ve had several starts and stops with various web frameworks over
+the years. Having spent a little bit of time with Rails, Django and
+Caveman2 (via the Common Lisp ecosystem), Phoenix is my favorite by
+far.</p>
+<p>It toes that fragile line between “too much magic” and “too
+barebones”. It gets you started quickly with a fully fledged generator
+system (I actually wish there were more granular generator options, the
+existing ones generate <em>a lot of boilerplate</em>), then provides all
+the bells and whistles for deployment, authentication, routing, dynamic
+HTML rendering, static asset bundling, out of the box.</p>
+<p>But I haven’t mentioned the best part: It’s fully loaded for _real
+time__ applications, and makes it laughably easy to build web apps with
+real-time features.</p>
+<p>Jumping between serving a web page built with Phoenix LiveView and a
+traditional HTTP request is inconsequential, and the developer
+ergonomics of the framework are thoroughly designed to keep your
+<em>mind on the server</em>.</p>
+<p>The ramifications of this I’m still coming to terms with, and can
+resoundingly say that it makes me far more productive. Heck, I haven’t
+even discussed how nice of a language Elixir is yet, and the lengths it
+goes to make parallel computing simple. But that’s for another day.</p>

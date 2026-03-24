@@ -1,0 +1,87 @@
+<p>I’ve been thinking a lot about the next step to take for
+SwiftStarterKits product work. Tons of ideas, but limited time for
+execution. I want to make sure continuous investment in the product line
+is time well spent.</p>
+<p>Up until now, I’ve written a fair amount of general purpose interface
+and infrastructure code, but nothing hyper focused on a specific type of
+app or problem set. In thinking about this more, I’ve slowly pivoted to
+focusing on building “native app infrastructure for subscription
+business models”, which is a concrete solution to a concrete problem,
+although it’s still a “meta” app idea (selling software to help write a
+specific type of software faster).</p>
+<p>Looking around at the mobile app landscape, there’s a massive
+ecosystem of applications that are focused on solving a single problem
+extremely well. These apps take heavy inspiration from Apple’s design
+guidelines (for good reason), and provide their promised value in
+exchange for an affordable monthly/yearly/lifetime fee. For an indie,
+this simplified view of consumer facing software is a great place to
+start carving out your niche.</p>
+<p>If I were to build a set of tools for starting an indie app shop, I
+would need to provide solutions to several problems:</p>
+<ul>
+<li>Create a default experience that fully embraces the platform. It
+makes no sense to build natively unless you strive to provide a great
+platform native experience.</li>
+<li>Reduce time to market of new native app ideas. Building natively for
+macOS and iOS is a niche skillset that is expensive to hire for, and
+time consuming to build for.</li>
+<li>Provide implementations for essential components. Most
+infrastructure is redundant between apps.</li>
+</ul>
+<p>Maybe you can see where I’m headed with this.</p>
+<h2
+id="building-a-toolchain-for-problem-focused-ios-subscription-apps">Building
+a toolchain for problem focused iOS subscription apps</h2>
+<p>In <a href="/blog/initial-swiftstarterkits-revenuecat-integration">my
+last post</a>, I threw together a proof of concept in-app purchase
+subscription flow using some existing SwiftStarterKits UI and
+RevenueCat.</p>
+<p>Simple enough, but that’s just part one. Expanding from this new
+point of view, I’m going to be building out a minimal albeit practical
+foundation for quickly going from “idea to shipped”. Complete with
+subscription revenue capabilities, analytics, cloud storage, push
+notifications, onboarding, changelog, localization, accessibility.</p>
+<p>Rather then shipping an MVP and working backwards to integrate with
+the platform, I want to flip it around and provide a deep OS integration
+from the start. Plus some bells and whistles for building a revenue
+generating software asset.</p>
+<h2 id="faster-project-creation-with-code-generation">Faster project
+creation with code generation</h2>
+<p>Also, code generation!</p>
+<p>I have several code generation tools that I’ve utilized in the past
+for personal and professional use. I’ve meant to integrate them into
+SwiftStarterKits, but I needed the proper selling point to really
+accentuate it’s value.</p>
+<p>When I refer to code generation here, I don’t mean macros or compile
+time meta programming facilities (at least for now). Instead, I want to
+make generating a fresh project part of the SwiftStarterKits onboarding
+experience.</p>
+<p>A messy problem right now is that I’m selling just a single giant
+codebase. There are several starting points, and even a demo integration
+of all the screens and flows. But the initial experience as a customer
+is to dig around, get it running, play with it, then decide what to
+throw away or change.</p>
+<p>For most new apps, you’ll probably spend a lot of time deleting or
+changing the core navigation to ignore certain flows, or turn off
+compilation for things you don’t need. This experience kind of sucks,
+and I want to improve it. Provide a massive library of UI’s, components,
+and data controllers, but default to a minimal starting point. Then pick
+and choose what you need with help from our docs.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>From the view point of “building focused utility apps with a
+subscription business model”, I can take everything that has been built
+for SwiftStarterKits up until now, and:</p>
+<ul>
+<li>Provide a minimal + practical app foundation with in-app purchase
+support + all the redundant essentials.</li>
+<li>Ship a command line tool with the repo for generating new
+projects.</li>
+</ul>
+<p>This “new project” generation script could take a custom app name or
+the app type (in this case “SubscriptionKit”), then scaffold a new
+project without any of the fluff of the existing SwiftStarterKits repo.
+Customers will still have the full monorepo of SwiftStarterKits code,
+but it can simultaneously be used as a reference and the basis for this
+code generation tool.</p>
+<p>I’m super excited about this, and can’t wait to use it for my own
+apps.</p>

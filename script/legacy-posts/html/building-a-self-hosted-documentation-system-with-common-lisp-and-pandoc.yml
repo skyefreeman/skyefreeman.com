@@ -1,0 +1,7 @@
+---
+layout: post
+title: Building a Documentation System with Common Lisp and Pandoc
+date: April 25, 2023
+author: Skye Freeman
+description: Lets look at the current landscape of existing documentation engines,
+  then ignore all of it and write our own using Common Lisp.

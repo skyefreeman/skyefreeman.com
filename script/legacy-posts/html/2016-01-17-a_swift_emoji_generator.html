@@ -1,0 +1,219 @@
+<p>A core feature of any programming languages is the ability to model
+and manipulate text. When defining a variable that represents text, we
+traditionally call it a string. In Swift, strings are a series of
+encoding-independent unicode characters. This means that any character
+can be accessed directly by their unicode representation and vice-versa.
+For example, the hexadecimal unicode representation for the capital
+letter ‘A’ is ‘0x41’, which can be accessed in a Swift string like
+so:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">unicodeLetterA</span> <span class="op">=</span> <span class="st">&quot;</span><span class="er">\u</span><span class="st">{41}&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">regularLetterA</span> <span class="op">=</span> <span class="st">&quot;A&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>unicodeLetterA <span class="op">==</span> regularLetterA </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">// true</span></span></code></pre></div>
+<p>This same functionality extends to all unicode characters, including
+emoji’s. You can even define variables in Swift using emoji characters!
+Not necessarily useful, but fun none the less. Now how does one find
+unicode emoji representations without looking them up manually? Doing a
+few searches online, you can find that there are a couple of distinct
+ranges of unicode hex values that pertain to emoji characters. This is
+what I came up with:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>0x1F601 -- 0x1F64F</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>0x2702  -- 0x27B0</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>0x1F680 -- 0x1F6C0</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>0x1F600 -- 0x1F636</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>0x1F681 -- 0x1F6C5</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>0x1F30D -- 0x1F567</span></code></pre></div>
+<p>Armed with these values, I set out to build a code generator that
+spits out a Swift struct of all emoji characters retrievable by their
+corresponding name value. My goal was to be able to retrieve an emoji
+string like this:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Emoji<span class="op">.</span>wearyCatFace</span></code></pre></div>
+<p>Before I could do this however, I first needed to build a way to
+parse all the emoji characters. Starting at the top, I packed the hex
+value’s into an array of range collections:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges0</span> <span class="op">=</span> <span class="bn">0x1F601</span><span class="op">..</span><span class="fl">.0</span>x1F64F</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges1</span> <span class="op">=</span> <span class="bn">0x2702</span><span class="op">..</span><span class="fl">.0</span>x27B0</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges2</span> <span class="op">=</span> <span class="bn">0x1F680</span><span class="op">..</span><span class="fl">.0</span>x1F6C0</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges3</span> <span class="op">=</span> <span class="bn">0x1F600</span><span class="op">..</span><span class="fl">.0</span>x1F636</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges4</span> <span class="op">=</span> <span class="bn">0x1F681</span><span class="op">..</span><span class="fl">.0</span>x1F6C5</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiRanges5</span> <span class="op">=</span> <span class="bn">0x1F30D</span><span class="op">..</span><span class="fl">.0</span>x1F567</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiArray</span> <span class="op">=</span> <span class="op">[</span>emojiRanges0<span class="op">,</span>emojiRanges1<span class="op">,</span>emojiRanges2<span class="op">,</span>emojiRanges3<span class="op">,</span>emojiRanges4<span class="op">,</span>emojiRanges5<span class="op">]</span></span></code></pre></div>
+<p>Before I get outraged emails asking why not make my code more swifty
+and place the ranges directly into an array like so:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">emojiArray</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x1F601</span><span class="op">..</span><span class="fl">.0</span>x1F64F<span class="op">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x2702</span><span class="op">..</span><span class="fl">.0</span>x27B0<span class="op">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x1F680</span><span class="op">..</span><span class="fl">.0</span>x1F6C0<span class="op">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x1F600</span><span class="op">..</span><span class="fl">.0</span>x1F636<span class="op">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x1F681</span><span class="op">..</span><span class="fl">.0</span>x1F6C5<span class="op">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="bn">0x1F30D</span><span class="op">..</span><span class="fl">.0</span>x1F567</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
+<p>Xcode would hang indefinitely while compiling, but for some reason
+separating them into variables first would work fine. If anybody knows
+why shoot me an email. Moving on, we have our ranges packed into an
+array and ready to go. Looping over each hex number, we retrieve the
+emoji character by converting it into its <a
+href="http://www.unicode.org/glossary/#unicode_scalar_value">Unicode
+Scalar Value</a>. Swift makes this easy:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="cf">in</span> range <span class="op">{</span>              </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">emojiChar</span> <span class="op">=</span> String<span class="op">(</span>UnicodeScalar<span class="op">(</span>i<span class="op">))</span>             </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Great! We have our emoji characters. Next we wanted to label each
+emoji with its corresponding Unicode name. Doing some digging through
+Apple’s docs, I found that the <a
+href="https://developer.apple.com/library/mac/documentation/CoreFoundation/Reference/CFMutableStringRef/">CFMutableString
+type</a> has a method called <a
+href="https://developer.apple.com/library/prerelease/ios/documentation/CoreFoundation/Reference/CFMutableStringRef/index.html#//apple_ref/c/func/CFStringTransform">CFStringTransform</a>.
+Here’s the transformation in action:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">func</span> <span class="fu">unicodeNameForString</span><span class="op">(</span><span class="va">string</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span> -&gt; <span class="fu">String</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">cfString</span> <span class="op">=</span> NSMutableString<span class="op">(</span>string<span class="op">:</span> String<span class="op">(</span>string<span class="op">))</span> <span class="kw">as</span> CFMutableString</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">range</span> <span class="op">=</span> CFRangeMake<span class="op">(</span><span class="dv">0</span><span class="op">,</span> CFStringGetLength<span class="op">(</span>cfString<span class="op">))</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    CFStringTransform<span class="op">(</span>cfString<span class="op">,</span> <span class="op">&amp;</span>range<span class="op">,</span> kCFStringTransformToUnicodeName<span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> cfString <span class="kw">as</span> String</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here’s how this function works. Using the passed in String value, we
+convert this into a CFMutableString type using its Cocoa Foundation
+counterpart NSMutableString. Next we retrieve the CFRange of the
+original string (0 - number of characters). Using our converted
+CFMutableString and CFRange pointer we apply them to CFStringTransform
+along with our transformation type <a
+href="https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFMutableStringRef/#//apple_ref/doc/constant_group/Transform_Identifiers_for_CFStringTransform">kCFStringTransformToUnicodeName</a>
+and a boolean value of whether we want to use the inverse transform
+operation. Lastly we return our CFString after converting it back into a
+String type.</p>
+<p>Phew, after putting all of this together we have our Dictionary of
+Emoji values:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">dictArray</span><span class="op">:</span> <span class="op">[</span>String<span class="op">:</span>String<span class="op">]</span> <span class="op">=</span> <span class="op">[:]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> range <span class="cf">in</span> rangeArray <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="cf">in</span> range <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="va">emojiChar</span> <span class="op">=</span> String<span class="op">(</span>UnicodeScalar<span class="op">(</span>i<span class="op">))</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">emojiName</span> <span class="op">=</span>  unicodeNameForString<span class="op">(</span>emojiChar<span class="op">)).</span>toCamelCase<span class="op">()</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>     <span class="co">// toCamelCase is a String extension that trims and formats the unicode string</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    emojiDict<span class="op">[</span>emojiChar<span class="op">]</span> <span class="op">=</span> emojiName</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Great, the hard part is done. We have a huge dictionary collection of
+emoji characters as keys to each character name. Now let’s turn this
+into something we can actually use by making a code generator! First
+lets encapsulate this into a separate class called
+EmojiCodeGenerator:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EmojiCodeGenerator <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The Cocoa library offers access directly to the file system using the
+NSFileManager class. Let’s create a NSFileManager constant and call it
+fileManager, initializing it with the default manager already in use by
+the filesystem.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EmojiCodeGenerator <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">fileManager</span><span class="op">:</span> NSFileManager</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">init</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        fileManager <span class="op">=</span> NSFileManager<span class="op">.</span>defaultManager<span class="op">()</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Now we need a reference to the directory that we want to generate our
+new file to, lets create a new constant called desktopDirectory of type
+NSURL, and initialize it to the desktop directory.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> EmojiCodeGenerator <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">fileManager</span><span class="op">:</span> NSFileManager</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">desktopDirectory</span><span class="op">:</span> NSURL</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">init</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        fileManager <span class="op">=</span> NSFileManager<span class="op">.</span>defaultManager<span class="op">()</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        desktopDirectory <span class="op">=</span> <span class="cf">try</span><span class="op">!</span> fileManager<span class="op">.</span>URLForDirectory<span class="op">(.</span>DesktopDirectory<span class="op">,</span> inDomain<span class="op">:</span> <span class="op">.</span>UserDomainMask<span class="op">,</span> appropriateForURL<span class="op">:</span> <span class="kw">nil</span><span class="op">,</span> create<span class="op">:</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Okay, now were all prepped to generate some emoji’s. Let’s create a
+new function for the EmojiCodeGenerator class called generate, which
+takes a fileName String along with a Dictionary (of emoji’s!).</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">generate</span><span class="op">(</span><span class="va">fileName</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">emojiDict</span><span class="op">:</span> <span class="dt">Dictionary</span>&lt;<span class="va">String</span><span class="op">,</span><span class="va">String</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Now we build a URL with the new file along with the complete
+directory path, then pass it to our NSFileManager, creating our new
+file.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">generate</span><span class="op">(</span><span class="va">fileName</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">emojiDict</span><span class="op">:</span> <span class="dt">Dictionary</span>&lt;<span class="va">String</span><span class="op">,</span><span class="va">String</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>     <span class="kw">let</span> <span class="va">fileDestination</span> <span class="op">=</span> desktopDirectory<span class="op">.</span>URLByAppendingPathComponent<span class="op">(</span>fileName <span class="op">+</span> <span class="st">&quot;.swift&quot;</span><span class="op">).</span>relativePath</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>     fileManager<span class="op">.</span>createFileAtPath<span class="op">(</span>fileDestination<span class="op">!,</span> contents<span class="op">:</span> <span class="kw">nil</span><span class="op">,</span> attributes<span class="op">:</span> <span class="kw">nil</span><span class="op">)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Next comes the fruit of all our labors, we need to construct the text
+of our newly generated code file. First we create a variable called
+codeString and set it to the initial contents of our file (denotes a new
+line).</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">generate</span><span class="op">(</span><span class="va">fileName</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">emojiDict</span><span class="op">:</span> <span class="dt">Dictionary</span>&lt;<span class="va">String</span><span class="op">,</span><span class="va">String</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="op">...</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">var</span> <span class="va">codeString</span> <span class="op">=</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">import Foundation</span><span class="sc">\n\n</span><span class="st">public struct Emoji {&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Once written this will look like:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">Foundation</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">struct</span> Emoji <span class="op">{</span></span></code></pre></div>
+<p>Now let’s append each of our emoji key value pairs to codeString:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">generate</span><span class="op">(</span><span class="va">fileName</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">emojiDict</span><span class="op">:</span> <span class="dt">Dictionary</span>&lt;<span class="va">String</span><span class="op">,</span><span class="va">String</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>     <span class="op">...</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">var</span> <span class="va">codeString</span> <span class="op">=</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">import Foundation</span><span class="sc">\n\n</span><span class="st">public struct Emoji {&quot;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="cf">for</span> key <span class="cf">in</span> emojiDict<span class="op">.</span>keys <span class="op">{</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         codeString <span class="op">+=</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> static public let </span><span class="er">\(</span><span class="st">dict[key]!) = </span><span class="sc">\&quot;</span><span class="er">\(</span><span class="st">key)</span><span class="sc">\&quot;</span><span class="st">&quot;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>     codeString <span class="op">+=</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">}&quot;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This loops through every single dictionary key passed into our
+function, appending a new line followed by a static constant definition
+named to our Unicode ‘name’ values, and set to equal the corresponding
+emoji character. Lastly the codeString variable is capped off with a
+closing curly brace.</p>
+<p>The last step is to write our final string to the file we created
+previously, giving us the final result:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">generate</span><span class="op">(</span><span class="va">fileName</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">emojiDict</span><span class="op">:</span> <span class="dt">Dictionary</span>&lt;<span class="va">String</span><span class="op">,</span><span class="va">String</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>     <span class="co">// Create a new file</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">let</span> <span class="va">fileDestination</span> <span class="op">=</span> desktopDirectory<span class="op">.</span>URLByAppendingPathComponent<span class="op">(</span>fileName <span class="op">+</span> <span class="st">&quot;.swift&quot;</span><span class="op">).</span>relativePath</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>     fileManager<span class="op">.</span>createFileAtPath<span class="op">(</span>fileDestination<span class="op">!,</span> contents<span class="op">:</span> <span class="kw">nil</span><span class="op">,</span> attributes<span class="op">:</span> <span class="kw">nil</span><span class="op">)</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="co">// build the code string</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="kw">var</span> <span class="va">codeString</span> <span class="op">=</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">import Foundation</span><span class="sc">\n\n</span><span class="st">public struct Emoji {&quot;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>     <span class="cf">for</span> key <span class="cf">in</span> emojiDict<span class="op">.</span>keys <span class="op">{</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         codeString <span class="op">+=</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> static public let </span><span class="er">\(</span><span class="st">dict[key]!) = </span><span class="sc">\&quot;</span><span class="er">\(</span><span class="st">key)</span><span class="sc">\&quot;</span><span class="st">&quot;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>     codeString <span class="op">+=</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">}&quot;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>     <span class="co">// write to file</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>     print<span class="op">(</span>codeString<span class="op">)</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>     <span class="cf">try</span><span class="op">!</span> codeString<span class="op">.</span>writeToFile<span class="op">(</span>fileDestination<span class="op">!,</span> atomically<span class="op">:</span> <span class="kw">true</span><span class="op">,</span> encoding<span class="op">:</span> NSUTF8StringEncoding<span class="op">)</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Hooray we just built nearly 1000 emoji constants! The final contents
+of which <a href="https://github.com/skyefreeman/EmojiConstants">can be
+viewed here</a>.</p>
+<p>After covering quite a lot let’s recap real quick. We learned a
+little about how Swift models text and Unicode, how to dig into text
+using the Foundation libraries, and most importantly how to create a
+code generator! Code generator’s are a terrific tool in the developer’s
+arsenal for automating rote tasks. Could you imagine putting together a
+comprehensive list of Emoji’s manually one at a time?! Bleh.</p>
+<p>The full project is available on <a
+href="https://github.com/skyefreeman/EmojiBuilder">github</a> for your
+perusal. The file that was generated is also now available on <a
+href="https://github.com/skyefreeman/EmojiConstants">github</a> and as a
+cocoapod.</p>

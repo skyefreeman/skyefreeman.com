@@ -1,0 +1,191 @@
+<p>One of the mental barriers I had in making the switch over from
+iTerm2 + Bash to Emacs’ Eshell was translating my
+<code>.bash_profile</code> (or <code>.bashrc</code> on some systems)
+into Emacs Lisp. Over the years my shell configuration has grown
+modestly, providing a slew of shortcuts, functions and styling
+customizations.</p>
+<p>Eshell is not a shell emulator, instead it is a complete shell
+written from the ground up in Emacs Lisp. This difference provides the
+huge advantage of up opening your shell to every bit of Lisp available
+to Emacs, combined with the time tested power of a Unix shell. Shell
+programs can therefore be run interchangably with your Lisp programs.
+What’s more, since it is all just Emacs Lisp - everything is
+customizable to the core.</p>
+<p>The only upfront cost in configuration for Eshell is that any
+existing shell customizations you might have won’t translate, since
+configuring Eshell works a little bit differently.</p>
+<p>The majority of content in my <code>.bash_profile</code> are aliases,
+providing terse versions of sometimes hard to remember commands, or
+shortcuts to specific directories in my file system. The rest are shell
+functions (of which all have a built in Emacs counterpart), and visual
+tweaks to the command prompt. The bulk of the work comes in the form of
+alias conversions, so let’s focus on that.</p>
+<p>Adding new aliases to Eshell isn’t too much of a farcry to your
+<code>.bash_profile</code>. Eshell maintains its own <code>Eshell</code>
+directory at the root of your Emacs configuration, this is where
+<code>aliases</code> and <code>history</code> files are stored for
+continued use by Eshell. Adding new aliases can happen in two ways, we
+can append <code>alias</code> declarations directly to the
+<code>eshell/aliases</code> file, or add them in an active eshell
+process by way of the <code>alias</code> function. On the whole, the
+syntax of an Eshell <code>alias</code>:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> ll <span class="st">&#39;ls -la&#39;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> la <span class="st">&#39;ls -a&#39;</span></span></code></pre></div>
+<p>is almost identical to that of it’s bash counter part:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> la=<span class="st">&#39;ls -a&#39;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> ll=<span class="st">&#39;ls -la&#39;</span></span></code></pre></div>
+<p>To avoid copy/pasting our aliases, doctoring them, then copying them
+over one at a time into an Eshell process, let’s instead write a little
+Emacs Lisp to automate the whole process.</p>
+<p>Breaking our task up conceptually, here’s what we need to do:</p>
+<ol type="1">
+<li>Create a function that is passed a filepath, read the file, split
+each line into its own string, and return a list of said strings.</li>
+<li>Create a function that is passed a list of strings, filter out
+non-alias strings, then return only a list of aliases commands.</li>
+<li>Create an interactive function that ties together step 1 and 2.
+First we’ll open up Eshell, then iterate over the list of
+<code>alias</code> strings from step 2. Next, strip and format each
+string to match the structure of an Eshell alias command, then insert
+the new string directly into Eshell.</li>
+</ol>
+<p>Starting with 1, let’s call our “file splitting” function
+<code>read-lines</code>:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> read-lines </span>(FILEPATH)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Return a list of lines of a file at FILEPATH.&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  (with-temp-buffer</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (insert-file-contents FILEPATH)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    (split-string (buffer-string) <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span> <span class="kw">t</span>)))</span></code></pre></div>
+<p>Running through <code>read-lines</code> one line at a time:
+<code>with-temp-buffer</code> creates a temporary emacs buffer and moves
+cursor focus to it. <code>insert-file-contents</code>, as its name
+suggests, inserts all the text from the passed file into our temporary
+buffer. Lastly, we retrieve the text in our temporary buffer as a single
+string using <code>buffer-string</code>, and split it into a list of
+strings deliminated by newline markers (“”).</p>
+<p>Beyond the context of our little experiment, <code>read-lines</code>
+is a useful little function that I recommend adding to your Emacs
+toolbox. Transforming entire text files into lists is infinitely useful,
+and can be handy for any file processing task that we can imagine.</p>
+<p>Moving on to task 2, let’s write the
+<code>extract-bash-aliases</code> function.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> extract-bash-aliases </span>(LIST)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Takes a LIST of strings, and transforms it into a list of shell aliases.&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  (filter (<span class="kw">lambda</span> (<span class="kw">string</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">and</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         (string-match-p (regexp-quote <span class="st">&quot;alias&quot;</span>) <span class="kw">string</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         (<span class="kw">not</span> (string-match-p (regexp-quote <span class="st">&quot;#&quot;</span>) <span class="kw">string</span>))))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      LIST))</span></code></pre></div>
+<p>Filter works as it does in other languages, you provide an anonymous
+function that returns a boolean, and a list. Each element in the list is
+checked against our function, returning a new list with elements that
+pass our predicate. The anonymous function, denoted by
+<code>lambda</code>, processes each string in the list, checking whether
+the string contains the substring “alias”, while also ensuring the line
+is not a comment (which start with “#” in a shell script).</p>
+<p>Pausing for a second, I need to confess that the <code>filter</code>
+function used above is not built into Emacs Lisp, but is instead a
+helper function within my Emacs configuration. It recreates the
+functional mainstay using some core Emacs Lisp functions. Let’s take a
+small detour and briefly discuss it:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> filter </span>(CONDITION LIST)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  (delq</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">nil</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">mapcar</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">lambda</span> (x)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">and</span> (<span class="kw">funcall</span> CONDITION x) x))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    LIST)))</span></code></pre></div>
+<p>This might look a little bit scary, but have no fear.
+<code>Filter</code> takes two arguments, a function that returns a
+boolean, and a list. Taking it from the top of <code>filter</code>:
+<code>delq</code> is a handy function that takes two variables, a
+matching predicate and a list. Conceptually, <code>delq</code> removes
+elements in a list that match the given value - which in this case is
+<code>nil</code>. The list provided to <code>delq</code> is created by
+the <code>mapcar</code> function, which transforms the contents of our
+original <code>LIST</code>. <code>mapcar</code> visits each element, and
+returns the element unchanged if our <code>CONDITION</code> evaluates to
+true, or nil if false. The result of this is in fact another list, which
+is mixed with elements that pass our condition, and nil values.
+<code>delq</code> then deletes all of the <code>nil</code> values (since
+that is what we told it get rid of), and the <code>filter</code>
+function finally returns the result.</p>
+<p>Phew, that was some wild stuff. Moving on. The bread and butter that
+ties it all together - the <code>bash-to-eshell-aliases</code>
+function.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> bash-to-eshell-aliases </span>(BASHFILE)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Takes a BASHFILE, trims it to a list of alias commands, and inserts them as eshell aliases.&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  (interactive <span class="st">&quot;f&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  (eshell)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">dolist</span> (element (extract-bash-aliases (read-lines BASHFILE)))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">let</span> ((trimmed (replace-regexp-in-string <span class="st">&quot;=&quot;</span> <span class="st">&quot; &quot;</span> element)))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      (goto-char (point-max))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      (insert trimmed)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      (eshell-send-input))))</span></code></pre></div>
+<p>Our <code>bash-to-eshell-aliases</code> function takes a file that is
+assumed to be a bash configuration (bonus points if you add an assertion
+to verify it in fact, is). We first tell Emacs that this is an
+<code>interactive</code> function, passing the argument “f”. “f”
+enforces the fact that, if we were to invoke this command interactively,
+you would be asked to insert a file path before the rest of the function
+evaluates, which is automatically binded to our function argument
+<code>BASHFILE</code>.</p>
+<p>Next, the command <code>eshell</code> fires up a new Eshell process,
+while also moving cursor focus to the new buffer. The rest of the hard
+work has already been done, let’s just piece it all together.
+<code>dolist</code> visits each element in a list, providing an
+immutable representation of the current element at each iteration. The
+list passed to <code>dolist</code> is the result of
+<code>read-lines</code> passed to <code>extract-bash-aliases</code>,
+producing a trimmed list of solely bash alias variables.</p>
+<p>Each element in our list is now converted to a new variable called
+<code>trimmed</code>, which replaces instances of “=” with a blank
+space. Next, we ensure that our cursor is at the very end of our Eshell
+buffer with <code>goto-char</code> set to <code>point-max</code>.
+Finally, we insert our newly <code>trimmed</code> Eshell alias and mimic
+a prompt return with <code>eshell-send-input</code>, which causes the
+alias to be inserted right into our Eshell configuration. These steps
+are then repeated for every element in our list.</p>
+<p>And there we have it! We’ve automated the conversion of aliases in
+our <code>.bash_profile</code>, to their Eshell counterparts.</p>
+<p>Now for some quick reflection. The strategy I’ve described here makes
+a ton of assumptions, tailored to the structure and layout of my
+personal <code>.bash_profile</code>. Specifically, I’m assuming that a
+string containing the word “alias” is in fact an alias, or that a line
+that contains the symbol “#” is a comment (the word alias could be used
+as a variable of another function, or “#” could not be at the first
+space of a line, but instead after a valid bit of shell code). These are
+edge cases I chose to ignore due to the omission of them within my
+<code>.bash_profile</code>, but could be in yours (just a heads up!).
+Lastly, this conversion code will likely get you 99% of the way to a set
+of useable Eshell aliases.</p>
+<p>For example, if an aliased command expects to be called with an
+argument, Eshell requires the addition of a <code>$1</code>. This is due
+to the fact that the <code>alias</code> provided by Eshell is instead
+calling an Emacs Lisp function, which requires an explicit argument if
+needed. In the shell, an alias is simply shorthand for a longer string,
+which is substituted at runtime. Passing an argument to an Eshell
+defined alias without a <code>$1</code> would be equivelent to passing
+an argument to a Lisp function that isn`t expecting one. Here’s an
+example illustrating my point:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> gc=<span class="st">&#39;git add -A &amp;&amp; git commit -am &#39;</span></span></code></pre></div>
+<p>translated to Eshell would be:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> gc <span class="st">&#39;git add -A &amp;&amp; git commit -am $1&#39;</span></span></code></pre></div>
+<p>Therefore, a little bit of customized “massaging” to your generated
+aliases might be required (sorry!).</p>
+<p>One last note, <a href="https://github.com/skyefreeman/.emacs.d">my
+Emacs</a> and <a
+href="https://github.com/skyefreeman/.emacs.d/blob/master/custom/eshell-config.el">eshell
+configuration</a> is open-source, in addition to <a
+href="https://github.com/skyefreeman/.emacs.d/blob/master/custom/bash-to-eshell-aliases.el">the
+code we’ve just written</a> in it’s entirety. If you have any interest
+in how all of this fits into the rest of my Emacs environment, feel free
+to go check it out.</p>

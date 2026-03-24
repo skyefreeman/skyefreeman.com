@@ -1,0 +1,53 @@
+<p>After my previous brainstorm about <a
+href="/blog/swift-starter-kits-mini-pivot">next steps for
+SwiftStarterKits</a> , I’m now working towards a completely free and
+open source app template, focusing on the boring parts that aren’t
+usually business differentiators (login, signup, password recovery,
+etc).</p>
+<p>I quickly threw together a design this morning in <a
+href="https://www.sketch.com">Sketch</a> , taking inspiration from
+several popular apps:</p>
+<div class="space-y-2">
+<figure>
+<img src="/images/ios-firebase-template-onboarding-design.jpeg"
+alt="Onboarding and login layout" />
+<figcaption aria-hidden="true">Onboarding and login layout</figcaption>
+</figure>
+<p>Onboarding and login</p>
+</div>
+<div class="space-y-2">
+<figure>
+<img src="/images/ios-firebase-template-signup-design.jpeg"
+alt="Account creation and password reset layout" />
+<figcaption aria-hidden="true">Account creation and password reset
+layout</figcaption>
+</figure>
+<p>Account creation and password reset</p>
+</div>
+<div class="space-y-2">
+<figure>
+<img src="/images/ios-firebase-template-home-design.jpeg"
+alt="Home page and settings layout" />
+<figcaption aria-hidden="true">Home page and settings
+layout</figcaption>
+</figure>
+<p>Home page and settings</p>
+</div>
+<p>Pretty straightforward. These are necessary screens for the majority
+of apps which require any form of user authentication.</p>
+<p>One point I’d like to highlight from these designs are the
+"onboarding" cells. Rather than merely providing stubbed data which
+developers will need to remove upon download, these cells can provide a
+guided on-device walkthrough. This can sit alongside the documentation
+that ships with the template, and can facilitate the setup experience as
+you tinker with the code base for the first time.</p>
+<p>This app template is going to implement several parts of the <a
+href="https://github.com/firebase/firebase-ios-sdk">Firebase SDK</a> ,
+making it easy to get started and ship immediately without rolling your
+own backend. If you already have your own backend, or want to roll your
+own, it will be straight forward to rip out the Firebase integration and
+adapt it to a separate data source.</p>
+<p>6 screens, 20-ish UI components (I’ll have an exact number once I
+build this out), and lots of documentation. I’ll be sure to update this
+post with links to the codebase and product page once it’s done. I’m
+estimating 2 weeks.</p>

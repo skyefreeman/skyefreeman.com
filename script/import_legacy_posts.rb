@@ -1,30 +1,15 @@
 #!/usr/bin/env ruby
-# Imports legacy posts from script/legacy-posts/ into the database.
-# - Parses YAML front matter for metadata
-# - Converts markdown body to HTML via pandoc
+# Imports legacy posts from script/legacy-posts/html/ into the database.
+# Run script/preconvert_posts.rb locally first to generate the HTML files.
+# - Reads pre-converted HTML body and paired YAML metadata files
 # - Creates a Post record with ActionText body for each file
 # - Attaches inline <figure> images as body_attachments and rewrites <img src> to blob URLs
 
 require_relative "../config/environment"
 require "yaml"
-require "open3"
 
-LEGACY_POSTS_DIR  = File.expand_path("legacy-posts", __dir__)
+HTML_DIR          = File.expand_path("legacy-posts/html", __dir__)
 LEGACY_IMAGES_DIR = File.expand_path("legacy-posts/images", __dir__)
-
-def markdown_to_html(markdown)
-  html, err, status = Open3.capture3("pandoc", "-f", "markdown", "-t", "html", stdin_data: markdown)
-  raise "pandoc failed: #{err}" unless status.success?
-  html
-end
-
-def parse_front_matter(raw)
-  match = raw.match(/\A---\n(.*?)\n---\n(.*)\z/m)
-  return [{}, raw] unless match
-  meta = YAML.safe_load(match[1], permitted_classes: [Date, Time]) || {}
-  body = match[2]
-  [meta, body]
-end
 
 def parse_date(date_str)
   Date.parse(date_str)
@@ -60,24 +45,32 @@ def attach_and_rewrite_figures(post, html)
   [updated, count]
 end
 
-files = Dir.glob("#{LEGACY_POSTS_DIR}/*.{md,markdown}").sort
-puts "Found #{files.size} post(s) to import\n\n"
+html_files = Dir.glob("#{HTML_DIR}/*.html").sort
+puts "Found #{html_files.size} post(s) to import\n\n"
 
 imported = 0
 skipped  = 0
 
-files.each do |path|
-  raw          = File.read(path)
-  meta, body   = parse_front_matter(raw)
-  title        = meta["title"].to_s.strip
+html_files.each do |html_path|
+  stem      = File.basename(html_path, ".html")
+  meta_path = File.join(HTML_DIR, "#{stem}.yml")
 
-  if title.empty?
-    puts "  SKIP #{File.basename(path)} — no title"
+  unless File.exist?(meta_path)
+    puts "  SKIP #{stem} — no metadata file"
     skipped += 1
     next
   end
 
-  html         = markdown_to_html(body)
+  meta  = YAML.safe_load(File.read(meta_path), permitted_classes: [Date, Time]) || {}
+  title = meta["title"].to_s.strip
+
+  if title.empty?
+    puts "  SKIP #{stem} — no title"
+    skipped += 1
+    next
+  end
+
+  html         = File.read(html_path)
   published_at = parse_date(meta["date"].to_s)
 
   post = Post.create!(
@@ -87,7 +80,6 @@ files.each do |path|
     published_at: published_at
   )
 
-  # Rewrite figure blocks and attach inline images
   html, figure_count = attach_and_rewrite_figures(post, html)
   puts "    attached #{figure_count} inline image(s)" if figure_count > 0
 

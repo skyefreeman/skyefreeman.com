@@ -1,0 +1,153 @@
+<p>All of the websites that I maintain are being served with Common
+Lisp, utilizing the <a
+href="https://github.com/fukamachi/caveman">Caveman2</a> web
+framework.</p>
+<p>I’ve wanted to improve developer ergonomics for several common tasks,
+and consolidate to using the lisp repl for as much automation as
+possible. Namely, I want to speed up the process of:</p>
+<ul>
+<li>Loading a Lisp package.</li>
+<li>Stepping into a Lisp package.</li>
+<li>Starting a local web server.</li>
+<li>Launch any project specific development facilities.</li>
+</ul>
+<p>Using <a href="https://skyefreeman.com">skyefreeman.com</a> as an
+example (where you’re currently reading this), I have a makefile that
+consolidates a number of tasks. One example is running
+<code>make develop</code> starts the <a
+href="https://browsersync.io">browsersync</a> and <a
+href="https://tailwindcss.com">tailwindcss</a> filewatchers:</p>
+<pre class="make"><code># Starts each facility for developing skyefreeman-web.
+develop:
+    browser-sync start --proxy &quot;localhost:8080&quot; --files &quot;**/*&quot; \
+    &amp; npx tailwindcss -i ./static/css/main.css -o ./static/css/generated/tailwind.css --watch \</code></pre>
+<p>Development of this website currently requires a number of setup
+commands before I start work:</p>
+<ol type="1">
+<li>Load the package with Quicklisp.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>CL-USER&gt; (ql:quickload :skyefreeman-web)</span></code></pre></div>
+<ol start="2" type="1">
+<li>Step into the package.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>CL-USER&gt; (<span class="kw">in-package</span> :skyefreeman-web)</span></code></pre></div>
+<ol start="3" type="1">
+<li>Start the webserver</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SKYEFREEMAN-WEB&gt; (start :port <span class="dv">8080</span>)</span></code></pre></div>
+<ol start="4" type="1">
+<li>Start development facilities (from a separate shell)</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> develop</span></code></pre></div>
+<p>I have a package that loads automatically when starting up my lisp
+called <strong>skyetools</strong>, which I use to collect generally
+applicable functions between all my projects. Using <a
+href="https://github.com/roswell/roswell">Roswell</a> to launch and
+manage a lisp implementation, a file at
+<strong>~/.roswell/init.lisp</strong> will get loaded alongside each
+startup. I generally try and treat “starting the lisp repl” the same as
+“starting the computer”.</p>
+<p>Here’s my <code>~/.roswell/init.lisp</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(ql:quickload :skyetools)</span></code></pre></div>
+<p>Everything in the <code>:skyetools</code> package will be available
+from the repl by default (<code>skyetools</code> is used as a
+namespace).</p>
+<p>Step one and two from above can be consolidated into a single
+command, inside <code>skyetools</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defmacro</span><span class="fu"> into-package </span>(<span class="kw">keyword</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Load and move into the package defined by KEYWORD.&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  `(<span class="kw">progn</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     (ql:quickload ,<span class="kw">keyword</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">in-package</span> ,<span class="kw">keyword</span>)))</span></code></pre></div>
+<p>This loads and moves into the package in one fell swoop. We use a
+macro here to ensure the keyword maintains self-evaluation.</p>
+<p>Next, step three and four of “starting the webserver” and “running
+development facilities” can also be consolidated:</p>
+<p>First off, we write a function called <code>make-develop</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *make-develop-process* </span><span class="kw">nil</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> make-develop </span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Run the &#39;make develop&#39; script, which starts the dev server.&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  (uiop:chdir *application-root*)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> ((process (uiop:launch-program <span class="st">&quot;make develop&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">:input</span> <span class="bu">:stream</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">:output</span> <span class="bu">:stream</span>)))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> *make-develop-process* process)))</span></code></pre></div>
+<p>This wraps the <code>make develop</code> command that used to be
+called from an external shell, and launches it as an asynchronous
+program using <code>uiop</code>. The <code>process-info</code> object
+that gets returned is stored in the <code>*make-develop-process*</code>
+parameter, so that we can inspect and manage it independantly.</p>
+<p>Now that <code>make develop</code> is callable from inside
+<code>:skyefreeman-web</code> package, we can wrap it inside another
+function to start the web server and call <code>make-develop</code> in
+one shot:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> start-dev </span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">if</span> (<span class="kw">and</span> (<span class="kw">not</span> (running?))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">equalp</span> *make-develop-process* <span class="kw">nil</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">progn</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       (start :port <span class="dv">8080</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>       (make-develop))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">error</span> <span class="st">&quot;Development server is already running.&quot;</span>)))</span></code></pre></div>
+<p>This checks whether the server is running, and if not, starts
+everything up.</p>
+<p>While this whole exercise results in two small wrappers, this
+improvement greatly reduces the cognitive load of getting started on a
+new feature or bugfix. We could even take it a step further and wrap
+both <code>(into-package :skyefreeman-web)</code> and
+<code>(skyefreeman-web:start-dev)</code>, making this a single command
+for switching work contexts immediately - from anywhere in my
+filesystem.</p>
+<p>For posterity, here’s a number of other functions for stopping the
+dev server, and managing spawned processes that may be handy</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> process-kill </span>(process)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  (uiop:close-streams process)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  (uiop:terminate-process process))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> process-output </span>(process)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Print the output from the given process.&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> ((<span class="kw">stream</span> (uiop:process-info-output process)))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">loop</span> while (<span class="kw">listen</span> <span class="kw">stream</span>) <span class="kw">do</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">princ</span> (<span class="kw">read-line</span> <span class="kw">stream</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">terpri</span>))))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *make-develop-process* </span><span class="kw">nil</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> make-develop </span>()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Run the &#39;make develop&#39; script, which starts the dev server.&quot;</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  (uiop:chdir *application-root*)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> ((process (uiop:launch-program <span class="st">&quot;make develop&quot;</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">:input</span> <span class="bu">:stream</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">:output</span> <span class="bu">:stream</span>)))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">setq</span> *make-develop-process* process)))</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> start-dev </span>()</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">if</span> (<span class="kw">and</span> (<span class="kw">not</span> (running?))</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">equalp</span> *make-develop-process* <span class="kw">nil</span>))</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">progn</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    (start :port <span class="dv">8080</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    (make-develop))</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">error</span> <span class="st">&quot;Development server is already running.&quot;</span>)))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> stop-dev </span>()</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  (stop)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  (process-kill *make-develop-process*)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">setq</span> *make-develop-process* <span class="kw">nil</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">;; This closes browsersync</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  (uiop:run-program <span class="st">&quot;lsof -t -i tcp:3000 | xargs kill&quot;</span>)) </span></code></pre></div>
+<p>I’ve found that spending the time to incorporate external tools into
+lisp has a compounding effect. Anything can become lisp code, whether
+it’s a non-lisp programming language, or any format of data. A shell
+command can easily be bridge and utilized from within a lisp program, as
+if it was a part of the language.</p>
+<p>Scripts, tools, code generation, the web server and everything else.
+It’s all part of the same lisp program, and writing tools for building
+your program faster can all live in the same place.</p>
+<p>Writing a set of functions for generating new files, html templates,
+server deployment, or running tests. These can all just be lisp
+functions that live within the same package/program.</p>
+<p>The experience of writing lisp is a constant upward ascent, where
+every line of code you write has the ability to amplify future output.
+Your lisp program <strong>is</strong> the development environment.</p>

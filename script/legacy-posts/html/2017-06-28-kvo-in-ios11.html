@@ -1,0 +1,61 @@
+<p>It seems like the past few weeks in iOS news has been dominated by
+the addition of the Encodable, Decodable and Codable protocols - finally
+fixing the ugly problem of dealing with JSON in Swift. The deprecation
+of the open source libraries that simplify dealing with JSON is a good
+thing, and I hope the community at large can come to an agreement that
+we’ve found an optimal solution to the problem.</p>
+<p>One of the most exciting additions to the Foundation library in iOS
+11 that somehow flew under my radar was the new Swift syntax for key
+value observation. It’s long been known that the KVO API was one of the
+more obfuscated and confusing in Cocoa, which makes this change so
+exciting. Not only is it type safe, but also terse as hell:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@objcMembers</span> <span class="kw">class</span> Foo<span class="op">:</span> <span class="dt">NSObject</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">dynamic</span> <span class="kw">var</span> <span class="va">string</span><span class="op">:</span> String</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">override</span> <span class="kw">init</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        string <span class="op">=</span> <span class="st">&quot;hotdog&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">.</span><span class="kw">init</span><span class="op">()</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">foo</span> <span class="op">=</span> Foo<span class="op">()</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Here it is, kvo in 2 lines of code!</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">observation</span> <span class="op">=</span> foo<span class="op">.</span>observe<span class="op">(</span>\<span class="op">.</span>string<span class="op">)</span> <span class="op">{</span> <span class="op">(</span>foo<span class="op">,</span> change<span class="op">)</span> <span class="cf">in</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    print<span class="op">(</span><span class="st">&quot;new foo.string: </span><span class="er">\(</span><span class="st">foo.string)&quot;</span><span class="op">)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>foo<span class="op">.</span>string <span class="op">=</span> <span class="st">&quot;not hotdog&quot;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">// new foo.string: not hotdog</span></span></code></pre></div>
+<p>A couple things to note:</p>
+<ul>
+<li>In Swift 4 <code>@objc</code> is no longer automatically inferred on
+subclasses of <code>NSObject</code>. In order to activate Objective-C’s
+introspective capabilities for an entire Swift class heirarchy, we need
+to use the new keyword <code>@objcMembers</code>. This essentially
+re-enables <code>@objc</code> inference on all subclasses and extensions
+of <code>Foo</code>, allowing the use of KVO. For further reading on the
+why of this change, I recommend taking a look at the <a
+href="https://github.com/apple/swift-evolution/blob/master/proposals/0160-objc-inference.md#re-enabling-objc-inference-within-a-class-hierarchy">Swift
+evolution proposal on the subject.</a></li>
+<li>The <code>dynamic</code> keyword is required for the
+<code>observe</code> closure to fire after a value change. Without it,
+<code>observe</code> will fail silently.</li>
+<li>Notice how the key path used for key value observation is a type
+safe variable of the class <code>Foo</code>. The <code>\.string</code>
+syntax is shorthand for <code>Foo.string</code>, which is the result of
+a new generic class introduced with iOS 11 called <code>KeyPath</code>.
+<code>KeyPath</code> inherits from <code>PartialKeyPath</code> and
+<code>AnyKeyPath</code>, and is what allows the transformation of what
+used to be an unsafe stringly typed Objective-C API, into a Swifty type
+safe API.</li>
+<li>The cherry on top here is that we no longer need to remove the
+observer at <code>deinit</code>, I know I’m not the only one that has
+been bitten by that in the past.</li>
+</ul>
+<p>I’m very excited about the additions to the Foundation library in iOS
+11, particularly those that ease the interoperability of writing Swift
+on top of the Objective-C runtime. I recommend taking the time to <a
+href="https://developer.apple.com/videos/play/wwdc2017/212/">watch the
+WWDC video</a> highlighting the addition and usage of Codable, KeyPath
+and the KVO related changes.</p>

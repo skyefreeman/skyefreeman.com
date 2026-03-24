@@ -1,0 +1,8 @@
+---
+layout: post
+title: 'Subscription Starter Kit: A minimal SwiftUI boilerplate with in-app subscription
+  capabilities'
+date: May 5, 2023
+author: Skye Freeman
+description: Now that we have a RevenueCat integration, lets ideate a boilerplate
+  for building iOS native utility apps backed by a subscription business model.

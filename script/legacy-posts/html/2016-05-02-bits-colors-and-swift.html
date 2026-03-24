@@ -1,0 +1,107 @@
+<p>While perusing Apple’s Swift language guide, I came across an
+interesting section regarding bit manipulation. Unbeknownst to me, Swift
+sports the same bitwise and bit shifting operators used by both C and
+Objective-C. Here’s a recap:</p>
+<p><strong>AND</strong></p>
+<p>The Bitwise AND <code>&amp;</code> operator combines the bits of two
+numbers, maintaining the value of 1 for each bit ONLY if they are both
+1.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstAND</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b11110000</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">secondAND</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00001111</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">thirdAND</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00000001</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstANDsecond</span> <span class="op">=</span> firstAND <span class="op">&amp;</span> secondAND <span class="co">// 0b00000000</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">secondANDthird</span> <span class="op">=</span> secondAND <span class="op">&amp;</span> thirdAND <span class="co">// 0b00000001</span></span></code></pre></div>
+<p><strong>OR</strong></p>
+<p>The Bitwise OR <code>|</code> operator combines the bits of two
+numbers, maintaining a value of 1 for each bit that is 1 in EITHER of
+the pertaining numbers.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstOR</span><span class="op">:</span> UInt8 <span class="op">=</span>  <span class="bn">0b01010101</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">secondOR</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b10101010</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">thirdOR</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00000001</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstORsecond</span><span class="op">:</span> UInt8 <span class="op">=</span> firstOR <span class="op">|</span> secondOR <span class="co">// 0b11111111</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">secondORthird</span><span class="op">:</span> UInt8 <span class="op">=</span> secondOR <span class="op">|</span> thirdOR <span class="co">// 0b10101011</span></span></code></pre></div>
+<p><strong>XOR</strong></p>
+<p>The Bitwise XOR <code>^</code> operator (exclusive or) combines the
+bits of two numbers, maintaining a value of 1 for each bit ONLY if the
+value is different between each number.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstXOR</span> <span class="op">=</span> <span class="bn">0b00000011</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">secondXOR</span> <span class="op">=</span> <span class="bn">0b00000001</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">firstXORsecond</span> <span class="op">=</span> firstXOR <span class="op">^</span> secondXOR <span class="co">// 0b00000010</span></span></code></pre></div>
+<p><strong>NOT</strong></p>
+<p>The Bitwise NOT <code>~</code> operator ‘flips’ each bit of the input
+number.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">beforeNOT</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00000000</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">afterNOT</span> <span class="op">=</span> <span class="op">~</span>beforeNOT <span class="co">// 0b11111111</span></span></code></pre></div>
+<p><strong>Left Shift</strong></p>
+<p>The Bitwise Left Shift <code>&lt;&lt;</code> operator does exactly
+what the name infers - shifts all bits to the left. Using the operator
+requires specification to how many spaces the numbers bits should be
+shifted. A left shift essentially doubles the current integer amount. An
+important tidbit (bit humor?) is that Swift does not allow an operator
+to overflow by default, meaning if bits are shifted beyond integer
+bounds a crash will occur.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">leftShift</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00000001</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>leftShift <span class="op">&lt;&lt;</span> <span class="dv">1</span> <span class="co">// 0b00000010</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>leftShift <span class="op">&lt;&lt;</span> <span class="dv">2</span> <span class="co">// 0b00000100</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>leftShift <span class="op">&lt;&lt;</span> <span class="dv">3</span> <span class="co">// 0b00001000</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>leftShift <span class="op">&lt;&lt;</span> <span class="dv">8</span> <span class="co">// error</span></span></code></pre></div>
+<p><strong>Right Shift</strong></p>
+<p>The Bitwise Right Shift <code>&gt;&gt;</code> operator is just like
+its left counterpart, except that the input bits are shifted to the
+right. An important difference is that a right shifted number will be
+capped at zero (i.e. if shifted beyond its bounds, the result will
+default to 0).</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">rightShift</span><span class="op">:</span> UInt8 <span class="op">=</span> <span class="bn">0b00010000</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>rightShift <span class="op">&gt;&gt;</span> <span class="dv">1</span> <span class="co">// 0b00001000</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>rightShift <span class="op">&gt;&gt;</span> <span class="dv">2</span> <span class="co">// 0b00000100</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>rightShift <span class="op">&gt;&gt;</span> <span class="dv">3</span> <span class="co">// 0b00000010</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>rightShift <span class="op">&gt;&gt;</span> <span class="dv">4</span> <span class="co">// 0b00000001</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>rightShift <span class="op">&gt;&gt;</span> <span class="dv">5</span> <span class="co">// 0b00000000</span></span></code></pre></div>
+<p><strong>Hexadecimal Colors</strong></p>
+<p>While working with a designer it is not uncommon to receive a color
+value represented in hexadecimal rather than RGB decimal format. Rather
+than converting these values using one of the numerous <a
+href="https://www.google.com/search?client=safari&amp;rls=en&amp;q=color+rbg+or+hex&amp;ie=UTF-8&amp;oe=UTF-8#q=hex+to+rgb+converter">conversion
+tools available</a>, lets instead utilize what we’ve learned about bit
+manipulation to create our own handy UIColor extension which converts
+these values for us.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extension</span> UIColor <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    convenience <span class="kw">init</span><span class="op">(</span>hex<span class="op">:</span> UInt32<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="va">redComponent</span> <span class="op">=</span> CGFloat<span class="op">((</span>hex <span class="op">&amp;</span> <span class="bn">0xFF0000</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">16</span><span class="op">)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="va">greenComponent</span> <span class="op">=</span> CGFloat<span class="op">((</span>hex <span class="op">&amp;</span> <span class="bn">0x00FF00</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="va">blueComponent</span> <span class="op">=</span> CGFloat<span class="op">((</span>hex <span class="op">&amp;</span> <span class="bn">0x0000FF</span><span class="op">))</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span><span class="kw">init</span><span class="op">(</span>red<span class="op">:</span> redComponent<span class="op">/</span><span class="fl">255.0</span><span class="op">,</span> green<span class="op">:</span> greenComponent<span class="op">/</span><span class="fl">255.0</span><span class="op">,</span> blue<span class="op">:</span> blueComponent<span class="op">/</span><span class="fl">255.0</span><span class="op">,</span> alpha<span class="op">:</span> <span class="fl">1.0</span><span class="op">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here’s a quick rundown of how it works. The <a
+href="https://en.wikipedia.org/wiki/Hexadecimal">hexadecimal number
+system</a> uses 16 distinct symbols to represent the values 0 - 15 (0-9
+and A-F respectively). Each hexadecimal digit consists of 8 bits (a
+byte), which allows the representation of any number from 0 - 255. Using
+this information, we can extract each red, green and blue value by
+isolating its corresponding bits.</p>
+<p>Starting with red, we isolate the component by ANDing our hex number
+with the maximum possible number of bits (FF). Next we shift our value
+for red to the right 16 bits to make sure it resides in the 0-255
+bounds. The same process is used for both green and blue, with the
+exception of the number of bits required in the right shift step (8 and
+0 respectively). Each component is casted to a CGFloat to ensure the
+proper type, then used to initialize a UIColor using each respective RGB
+value. We can then create UIColor’s like this:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">skyBlue</span> <span class="op">=</span> UIColor<span class="op">(</span>hex<span class="op">:</span> <span class="bn">0x86CAFF</span><span class="op">)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">grassGreen</span> <span class="op">=</span> UIColor<span class="op">(</span>hex<span class="op">:</span> <span class="bn">0x87DD65</span><span class="op">)</span></span></code></pre></div>
+<p>Another worthy addition to the toolbox!</p>

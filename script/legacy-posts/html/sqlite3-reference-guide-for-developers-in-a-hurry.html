@@ -1,0 +1,50 @@
+<p>SQLite is a terrific, lightweight, general purpose tool. But, as it
+is with all computer related things, I occasionally find myself needing
+a reminder on how to achieve certain database related tasks.</p>
+<p>Let this be a living reference for working with SQLite3. No
+guarantees are made regarding completeness.</p>
+<h2 id="installing-sqlite3">Installing SQLite3 <a
+href="#installing-sqlite3">#</a></h2>
+<p>With Homebrew:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install sqlite3</span></code></pre></div>
+<p>With MacPorts:</p>
+<pre><code>port install sqlite3</code></pre>
+<p>Or, from a precompiled binary:</p>
+<ul>
+<li>Download from the <a
+href="https://www.sqlite.org/download.html">SQLite Download
+Page</a>.</li>
+</ul>
+<h2 id="how-to-create-a-database">How to create a database <a
+href="#how-to-create-a-sqlite-database">#</a></h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sqlite3</span> awesome-project-database.db</span></code></pre></div>
+<h2 id="how-to-create-a-table">How to create a table <a
+href="#how-to-create-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>create table user (
+    name text not null,
+    email text not null unique
+);</code></pre>
+<h2 id="how-to-get-all-rows-in-a-table">How to get all rows in a table
+<a href="#how-to-get-all-rows-from-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>select * 
+    from user;</code></pre>
+<h2 id="how-to-get-a-row-from-a-table">How to get a row from a table <a
+href="#how-to-get-a-row-from-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>select email
+    from user
+    where name = &#39;Skye&#39;;</code></pre>
+<h2 id="how-to-insert-a-row-into-a-table">How to insert a row into a
+table <a href="#how-to-insert-a-row-into-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>insert into user (name, email)
+    values(&#39;Skye&#39;, &#39;skye@swiftstarterkits.com&#39;);</code></pre>
+<h2 id="how-to-update-a-row-in-a-table">How to update a row in a table
+<a href="#how-to-update-a-row-in-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>update user
+    set email = mega-super-great-email@icloud.com&#39;
+    where name = &#39;Skye&#39;;</code></pre>
+<h2 id="how-to-delete-a-row-in-a-table">How to delete a row in a table
+<a href="#how-to-delete-a-row-in-a-sqlite-table">#</a></h2>
+<pre class="sqlite3"><code>delete from user
+    where name = &#39;Skye&#39;;</code></pre>

@@ -1,0 +1,23 @@
+<p>Between Tears of the Kingdom sessions (which is flippin’ amazing), I
+managed to get some work done on the <a
+href="https://swiftstarterkits.com">Swift Starter Kits</a> landing
+page.</p>
+<p>First, I updated the pricing section layout and colors, making
+styling a bit more uniform. Raised the price of the Team license, and
+added a higher tier with paid support + training.</p>
+<p>Separately, I learned that my LCP (<a
+href="https://developer.chrome.com/en/docs/lighthouse/performance/lighthouse-largest-contentful-paint/">Largest
+Contentful Paint</a>) was really really bad on mobile devices. I didn’t
+know this was a thing, and was potentially hurting search rankings.</p>
+<p>Turns out my LCP was slow for two reasons:</p>
+<ol type="1">
+<li><p>A 3rd party JS library was blocking the main thread for ~2
+seconds at initial load. I removed this for now (unfortunately, this
+tool was for support chat, I’ll need to find another provider).</p></li>
+<li><p>The custom font download from the CDN was blocking initial
+render. I fixed this by ensuring a default font shows initially, then
+updates to the main font once it downloads asynchronously. I thought it
+was doing that already, but oh well.</p></li>
+</ol>
+<p>Back to 100% search indexing health (supposedly), curious how long it
+will take to increase traffic numbers.</p>

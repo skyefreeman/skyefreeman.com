@@ -1,0 +1,245 @@
+<p>I’m currently working through a first draft of a custom self-hosted
+documentation system for <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a>. I wrote about
+the overall goals of this system <a
+href="/blog/writing-a-documentation-system">yesterday</a>, and is
+definitely recommended reading for continuity.</p>
+<h2 id="why-not-use-something-off-the-shelf">Why not use something off
+the shelf?</h2>
+<p>There are plenty of pre-built documentation generators. Some are
+general purpose documentation frameworks (<a
+href="https://docusaurus.io">Docusaurus</a>, <a
+href="https://www.gitbook.com/?ref=producthunt">GitBook</a>), others
+focus on specific stacks or technologies (<a
+href="https://developer.apple.com/documentation/docc">DocC</a>, <a
+href="https://nextra.site">Nextra</a>, <a
+href="https://www.sphinx-doc.org/en/master/">Sphinx</a>). I could
+potentially save a ton of time by using one of these, lets walk through
+the few that I’ve played with.</p>
+<h3 id="docc">DocC</h3>
+<p>The internal SwiftStarterKits API reference is already using DocC.
+That’s a no brainer, given it’s built into Xcode and Swift Package
+Manager. But when it comes to exporting and hosting the system on an
+existing website, I ran into some major quirks that just weren’t worth
+the time expendature to figure out:</p>
+<ul>
+<li><p>The exported <code>doccarchive</code> (what is generated when you
+“export” documentation) is a SPA built with Vue.js. An index.html file
+is generated alongside tons of nested folders and resources, and
+requires a running webserver plus dedicated routing rules to work. The
+embedded base URL’s from the generated Javascript files implicitly
+assume specific routing rules, which <strong>can</strong> be changed,
+but is designed to exist on a dedicated web server. Unfortunately, this
+isn’t what I want.</p></li>
+<li><p>There are divergent sets of documentation between using <a
+href="https://developer.apple.com/documentation/xcode/distributing-documentation-to-external-developers">DocC</a>
+via <code>xcodebuild docbuild</code>, versus using the <a
+href="https://apple.github.io/swift-docc-plugin/documentation/swiftdoccplugin/generating-documentation-for-hosting-online">Swift-DocC</a>
+plugin through SPM: <code>swift package generate-documentation</code>.
+Commands for transforming documentation output for use in a static
+hosting environment exist, but we don’t have full control over routing
+rules (an extra /documentation is appended, meaning the
+<code>starterkit</code> package will have docs located at
+<strong>swiftstarterkits.com/documentation/starterkit/documentation</strong>.
+This capability is only for swift packages at this time (as far as I can
+tell), and isn’t supported via xcodebuild. This would only cover half
+the SwiftStarterKits library, making this a non-starter for
+now.</p></li>
+</ul>
+<h3 id="docusaurus">Docusaurus</h3>
+<p>Having spent days going down the DocC self-hosting rabbit hole, I
+looked around at other choices. <a
+href="%5BDocusaurus%5D(https://docusaurus.io)">Docusaurus</a> is a
+highly praised open source documentation system backed by Meta Open
+Source, which I gave a shot.</p>
+<p>Long story short, similar problems to DocC.</p>
+<p>Docusaurus aims to be a complete website generator in a box, and also
+doesn’t make it easy to host alongside an existing set of webpages
+served from a custom router. Tons of React and Node conventions are
+used, and I’m just not interested in dealing with the mental overhead of
+a separate software stack.</p>
+<h2 id="what-is-documentation-anyways">What is documentation
+anyways?</h2>
+<p>Text. It’s all just text. The software industry builds massive
+commercial systems around what is essentially just plain text. All of
+these off the shelf documentation systems bring with it a huge set of
+complexities and a web of intricate dependencies that I don’t really
+want to invest in.</p>
+<p>Documentation is <strong>just text</strong>. Taking a server side
+rendering approach means we just need to generate HTML, then provide
+custom routing rules on how to find individual and grouped documents.
+This minimal approach eschews most of the complexity of the modern web,
+keeps the website fast, small and content focused.</p>
+<h2 id="building-a-minimal-documentation-system-with-lisp">Building a
+minimal documentation system with Lisp</h2>
+<p>Common Lisp gives us all the tools we need provide the needed
+structure for organizing our text. We’re going to be writing
+documentation in markdown and converting them into HTML. <a
+href="https://pandoc.org">Pandoc</a> solves this problem wonderfully,
+and is very well documented.</p>
+<h3 id="wrapping-pandoc">Wrapping Pandoc</h3>
+<p>First, lets write a small wrapper for the Pandoc command line
+interface, enabling us to call into it from Lisp:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> pandoc </span>(input-path from to)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let</span> ((command-str</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;pandoc ~a -f ~a -t ~a&quot;</span> input-path from to)))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    (uiop:run-program command-str <span class="bu">:output</span> :string)))</span></code></pre></div>
+<p>Here, we use <code>format</code> to create the command string,
+utilizing the <code>-f</code> and <code>-t</code> flags for defining the
+input and output file types (“from” and “to”, respectively).
+<code>input-path</code> allows us to pass in the filepath that we’d like
+to convert. Last, we use <code>uiop:run-program</code> to run the shell
+command synchronously. The rest of the Pandoc CLI isn’t needed right
+now.</p>
+<p>Here’s an example call to the <code>pandoc</code> function which we
+can call from our program or from the repl (which conceptually are the
+same thing!):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> (pandoc</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>      #P<span class="st">&quot;~/dev/starterkit/starterkit-web/views/docs/markdown/introduction.md&quot;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;markdown&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;html&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="st">&quot;&lt;h1 id=</span><span class="sc">\&quot;</span><span class="st">introduction</span><span class="sc">\&quot;</span><span class="st">&gt;Introduction&lt;/h1&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;p&gt;Welcome to the SwiftStarterKits documentation.&lt;/p&gt;&quot;</span></span></code></pre></div>
+<p>Manually typing the filepath, input, and output type is error prone.
+We’ll improve on the ergonomics of this later.</p>
+<h3 id="generating-html">Generating HTML</h3>
+<p>Now that we have our bridge to call Pandoc, we can now provide
+markdown input files, and generate html output files. Lets deal with
+managing the file paths of our system:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *application-root* </span>(asdf:system-source-directory :starterkit-web))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *doc-directory* </span>(<span class="kw">merge-pathnames</span> #P<span class="st">&quot;views/docs/&quot;</span> *application-root*))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *input-directory* </span>(<span class="kw">merge-pathnames</span> #P<span class="st">&quot;markdown/&quot;</span> *doc-directory*))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defparameter</span><span class="fu"> *output-directory* </span>(<span class="kw">merge-pathnames</span> #P<span class="st">&quot;posts/&quot;</span> *doc-directory*))</span></code></pre></div>
+<p>By convention, parameters surrounded by a set of asterisk
+<code>*</code> denotes a mutable variable (these are called
+“earmuffs”).</p>
+<p>To ensure these filepaths are portable between systems, we first
+denote a <code>*application-root*</code> parameter, which will be
+dynamic and point towards wherever this lisp package is located in the
+filesystem (we get this by calling
+<code>asdf:system-source-directory</code>, passing the name of our
+package). In this case, the function will return
+<code>~/dev/starterkit/starterkit-web</code>.</p>
+<p>Next, <code>*doc-directory*</code> is defined, returning
+<code>/starterkit-web/views/docs</code>. This is where all of our
+documentation files will live for both the input markdown (which will be
+our source of truth), and the output html.</p>
+<p>Last, <code>*input-directory*</code> and
+<code>*output-directory*</code> are defined, pointing to
+<code>/starterkit-web/views/docs/markdown</code> and
+<code>/starterkit-web/views/docs/posts/</code> respectively. The path
+name “posts” is used just to conform to the internal naming conventions
+I already use for the blog
+(<code>/starterkit-web/views/blog/posts/</code>).</p>
+<p>Given this bit of enforcement on basic filesystem structure, we can
+deal with the filenames themselves:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> naked-filename </span>(filepath)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Given a FILEPATH, return the FILENAME without its file type or path.&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">first</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   (ppcre:split <span class="ch">#\.</span> (<span class="kw">file-namestring</span> filepath))))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> html-filename </span>(filepath)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Given a FILEPATH, return the FILENAME as an html file type.&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;~a.html&quot;</span> (naked-filename filepath)))</span></code></pre></div>
+<p><code>naked-filename</code> recieves a file path, and returns the
+file’s name without a filetype extension or any path information.
+Calling this function looks like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> (naked-filename #P<span class="st">&quot;/path/to/file/document.md&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="st">&quot;document&quot;</span></span></code></pre></div>
+<p><code>html-filename</code> does something similar to
+<code>naked-filename</code>, but appends “.html” to the end of the
+string.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> (html-filename #P<span class="st">&quot;/path/to/file/document.md&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="st">&quot;document.html&quot;</span></span></code></pre></div>
+<p>Now that we have primitives for filenames and filepaths, lets build a
+function for writing text to the filesystem.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> file-write-contents* </span>(output-path input)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Given a OUTPUT-PATH and an INPUT string, write the INPUT to a file at OUTPUT-PATH.&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">with-open-file</span> (<span class="kw">stream</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>           output-path</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>           <span class="bu">:direction</span> <span class="bu">:output</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           :if-exists <span class="bu">:supersede</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           :if-does-not-exist <span class="bu">:create</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">format</span> <span class="kw">stream</span> input)))</span></code></pre></div>
+<p><code>file-write-contents*</code> is just a wrapper function, which
+has a trailing asterisk to conventionally denote that calling it has
+side effects (writing to the filesystem).</p>
+<p>The function recieves a filepath and an input string, then uses
+<code>with-open-file</code> to create a lexically scoped stream which
+<code>format</code> can write to. Additionally, we pass several function
+keys supported by the <code>with-open-file</code> function for
+specifying file overwrite and creation rules (if it already exists
+overwrite the file, and if it doesn’t exist create the file).</p>
+<p>Now, we can put all of our helper functions together. We’ll write a
+function to recieve a markdown filename, associate it with a complete
+filepath in the <code>docs/markdown/</code> directory, convert it to
+html, then write it to an html file in the <code>docs/posts/</code>
+directory.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cl"><code class="sourceCode commonlisp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">defun</span><span class="fu"> generate-post-from-markdown* </span>(filename)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;From a .md file in the /posts/markdown/ directory, generate a new blog post.&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">let*</span> ((input-path</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">merge-pathnames</span> filename *input-directory*))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         (output-filename</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>           (html-filename input-path))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         (output-filepath</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">merge-pathnames</span> output-filename *output-directory*))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>         (output-string</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>           (pandoc input-path <span class="st">&quot;markdown&quot;</span> <span class="st">&quot;html&quot;</span>))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>         <span class="co">;; `format` treats &#39;~&#39; as a directive.</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>         (cleaned-output-string</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>           (cl-ppcre:regex-replace-all <span class="st">&quot;~&quot;</span> output-string <span class="st">&quot;~~&quot;</span>)))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    (file-write-contents* output-filepath cleaned-output-string)))</span></code></pre></div>
+<p>In <code>generate-post-from-markdown*</code> We first create bindings
+for <code>input-path</code>, <code>output-filename</code>,
+<code>output-filepath</code> and <code>output-string</code> using the
+computed values from calling our convenience functions. The
+<code>cleaned-output-string</code> value is added to fix a slight gotcha
+when passing external text into the format function.</p>
+<p>A tilde character (~) within the string that we pass to format will
+trigger a directive (which the format function will use for
+interpolation, there’s a great article about Lisp format directives <a
+href="https://en.wikipedia.org/wiki/Format_(Common_Lisp)#Directives">on
+Wikipedia</a>). In this case we escape all tilde instances with an extra
+“~”, turning “~” into “~~”.</p>
+<p>Last, we call our <code>file-write-contents*</code> function from
+before, passing all of our computed values, writing the new html file to
+the system.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>And there we have it, the beginnings of a minimal document generator
+which gives us the power to:</p>
+<ul>
+<li>Write documents in markdown.</li>
+<li>Convert these documents from markdown to html.</li>
+<li>Provide filesystem structure to our document system.</li>
+</ul>
+<p>Because we’re using Lisp, all of the functions that were just written
+are interactive, and can be called from the repl of our running program.
+The process of writing a new document means interacting with our system
+in real time.</p>
+<p>As a next step, we can plan to use these primitives and extend the
+system in a variety of ways:</p>
+<ul>
+<li>Interactively generate new markdown files.</li>
+<li>Wrap the generated html within a separate html template to provide
+styling (easy with the <a
+href="https://tailwindcss.com/docs/typography-plugin">tailwindcss
+typography plugin</a>).</li>
+<li>Generate a table of contents using document names, or embedded
+markdown metadata.</li>
+<li>Generate an in-document table of contents by scraping files for
+markdown section headers.</li>
+<li>Generate document filters or tags, again by adding markdown metadata
+and scraping it.</li>
+</ul>
+<p>All of these can be solved by a one off Lisp function, maintaining
+our markdown as the source of truth. We could even go a step further and
+write a local development tool for regenerating html files everytime a
+markdown file changes (you know, rather than continuously calling one of
+our <code>generate</code> functions).</p>

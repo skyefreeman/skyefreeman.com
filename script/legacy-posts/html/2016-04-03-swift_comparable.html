@@ -1,0 +1,87 @@
+<p>My last blog post I wrote briefly about <a
+href="http://skyefreeman.io/programming/2016/03/09/swift_equatable.html">Swift’s
+Equatable protocol</a>, which allows the use of == and != between custom
+defined types. Naturally, I feel its fitting to talk a bit about
+Equatable’s close relative – the <a
+href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Comparable_Protocol/index.html">Comparable
+protocol</a>.</p>
+<p>Adopting the Comparable protocol allows for a custom type to define
+its own rule for the &lt;, &lt;=, &gt;, &gt;= infix operators. Before we
+see this in action, lets first describe an object that models a user’s
+bank account.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> BankAccount <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">identifier</span><span class="op">:</span> Int</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">balance</span><span class="op">:</span> Double</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here we create a struct called BankAccount that requires a identifier
+constant of type Int, and a balance variable of type Double. Next, let’s
+try defining and comparing two separate BankAccount objects.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">smallAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">100.0</span><span class="op">)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">largeAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">1000.0</span><span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">&lt;</span> largeAccount <span class="co">// error</span></span></code></pre></div>
+<p>Here you should receive an error saying: “Binary operator ‘&lt;’
+cannot be applied to two ‘BankAccount’ operands”. This is because our
+BankAccount struct has not defined how two BankAccount instances should
+be compared. Lets fix this by making BankAccount conform to
+Comparable.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> BankAccount<span class="op">:</span> <span class="dt">Comparable</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">identifier</span><span class="op">:</span> Int</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">balance</span><span class="op">:</span> Double</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">&lt;</span>(<span class="dt">lhs</span><span class="op">:</span> <span class="dt">BankAccount</span>, <span class="dt">rhs</span><span class="op">:</span> <span class="dt">BankAccount</span>) -<span class="op">&gt;</span> <span class="fu">Bool</span> <span class="op">{</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> lhs<span class="op">.</span>balance <span class="op">&lt;</span> rhs<span class="op">.</span>balance</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Now we define ‘&lt;’ between two BankAccount instances to return true
+if the left hand side BankAccount’s balance is less than the right hand
+sides balance. Notice how we only need to define the ‘&lt;’ operator. By
+doing this, Swift can infer the definition of &gt;, &gt;= and &lt;=,
+without requiring individual functions describing each.</p>
+<p>There’s still one problem before we have a program that builds. It
+turns out that Comparable inherits directly from the Equatable protocol,
+which means we must provide a definition to the ‘==’ operator as
+well.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> BankAccount<span class="op">:</span> <span class="dt">Comparable</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">identifier</span><span class="op">:</span> Int</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="va">balance</span><span class="op">:</span> Double</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">==(</span>lhs<span class="op">:</span> BankAccount<span class="op">,</span> rhs<span class="op">:</span> BankAccount<span class="op">)</span> <span class="op">-&gt;</span> Bool <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> lhs<span class="op">.</span>balance <span class="op">==</span> rhs<span class="op">.</span>balance</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">&lt;</span>(<span class="dt">lhs</span><span class="op">:</span> <span class="dt">BankAccount</span>, <span class="dt">rhs</span><span class="op">:</span> <span class="dt">BankAccount</span>) -<span class="op">&gt;</span> <span class="fu">Bool</span> <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> lhs<span class="op">.</span>balance <span class="op">&lt;</span> rhs<span class="op">.</span>balance</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Awesome. Now let’s test out some BankAccount comparisons one more
+time.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">smallAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">10000.0</span><span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">largeAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">100000.0</span><span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">&lt;</span> largeAccount  <span class="co">// true</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">&lt;=</span> largeAccount <span class="co">// true</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">&gt;</span> largeAccount  <span class="co">// false</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">&gt;=</span> largeAccount <span class="co">// false</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">!=</span> largeAccount <span class="co">// true</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>smallAccount <span class="op">==</span> largeAccount <span class="co">// false</span></span></code></pre></div>
+<p>Keep in mind though, its up to you, the developer, to make sure that
+adopting the Comparable protocol does in fact make your code base more
+readable/maintainable. Without adopting the comparable protocol, we
+could have instead written:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">smallAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">10000.0</span><span class="op">)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">largeAccount</span> <span class="op">=</span> BankAccount<span class="op">(</span>identifier<span class="op">:</span> <span class="dv">123</span><span class="op">,</span> balance<span class="op">:</span> <span class="fl">100000.0</span><span class="op">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>smallAccount<span class="op">.</span>balance <span class="op">&lt;</span> largeAccount<span class="op">.</span>balance <span class="co">// true</span></span></code></pre></div>
+<p>Which is perfectly valid, and one could argue is more understandable
+than comparing the objects directly. Be sure that adopting either the
+Comparable or Equatable protocol is in fact the right design decision,
+rather than just defaulting to the most ‘terse’ option.</p>

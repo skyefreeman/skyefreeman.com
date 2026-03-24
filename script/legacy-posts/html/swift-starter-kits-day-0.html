@@ -1,0 +1,128 @@
+<p>I’ve been working on a project in my spare time called <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a>. It’s shipped,
+functional, and pre-revenue. What exists so far is the bare minimum that
+I figured constituted a viable business.</p>
+<p>In the spirit of transparency, I’d like to move development of the
+business to an open communication style. Where I document my progress
+building a software company from the ground up and share it publically.
+I’ll talk about metrics, code, marketing strategy, SEO, and generally
+what I’m working on from day to day.</p>
+<p>I started this endeavor about a month ago, so the declaration "from
+the ground up" is a little untrue. Here’s an overview of what I’ve done
+so far:</p>
+<h2 id="choosing-a-business">Choosing a business</h2>
+<ol type="1">
+<li>When choosing a business to get started on, I kicked around tons of
+ideas for far too long (years), including many half baked prototypes and
+thrown out experiments. I came to the conclusion that this pattern of
+false starts was just procrastination disguised as due diligence. I
+ultimately forced myself to choose something with an existing market and
+existing competitors.</li>
+<li>The initial vision for <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> : "Pre-made
+software templates, but for native iOS apps". Wordpress and other web
+based companies have offered pre-made templates for years. The same
+business model applied to mobile apps seems to have far fewer
+competitors, most of which are offering solutions also using web based
+technologies.</li>
+<li>I set to work on a website after snagging the domain (<a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> seemed like a
+fitting domain that described the business well), with the plan that I’d
+get some infrastructure in place without any iOS app templates
+first.</li>
+</ol>
+<h2 id="building-an-mvp">Building an MVP</h2>
+<ol type="1">
+<li>I set up a new server on my existing VPS instance hosted by <a
+href="https://linode.com">Linode</a> (Which this site is also running
+on). Traffic is routed through an <a href="https://nginx.com">NGINX</a>
+reverse proxy, and forwarded to the <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> server.</li>
+<li>The <a href="https://swiftstarterkits.com">SwiftStarterKits</a>
+project itself is a single Git repository, with two subdirectories:
+"starterkits-web" and "starterkits-ios". One houses the website and
+server infrastructure, and the other the iOS template projects and
+shareable components, respectively.</li>
+<li>The server is built completely with Common Lisp, backed by the
+excellent <a href="https://github.com/fukamachi/caveman">Caveman2 web
+framework</a> and serving dynamic content created using the <a
+href="https://github.com/mmontone/djula">Djula</a> templating engine
+(based on Python’s venerable Django templating engine). Layout and
+styling is handled directly within HTML using <a
+href="https://tailwindcss.com">TailwindCSS</a>. Javascript is generated
+using <a href="https://parenscript.common-lisp.dev">Parenscript</a> ,
+the Lisp to JS transpiler (It’s really really cool, but I’ll talk about
+this another time).</li>
+<li>SQLite3 for storage, wrapped by the <a
+href="https://github.com/fukamachi/cl-dbi">CL-DBI</a> package for
+portable database interactions.</li>
+<li>On my VPS, server processes are started/restarted automatically
+using <strong>systemctl</strong>, and logs are monitored using
+<strong>journalctl</strong>.</li>
+<li>I’m doing deployment the old fashion way: Push to Github, SSH into
+the VPS, pull from Github and restart the server process. These steps
+are wrapped in a single shell script, then hotkeyed in my Emacs
+configuration.</li>
+<li>Basic uptime monitoring is done via <a
+href="https://uptimerobot.com">UptimeRobot</a>. Currently using the free
+plan. This service quickly notifies me when the service goes down for
+whatever reason.</li>
+<li>For analytics, I’m using <a
+href="https://simpleanalytics.com">SimpleAnalytics</a> and paying for
+the yearly plan. Definitely worth the investment, allowing for anonymous
+tracking that respects user privacy.</li>
+<li>For emails, I wrote a small wrapper around the <a
+href="https://sendgrid.com">Sendgrid</a> API. Emails can be scheduled
+and sent from the Common Lisp repl.</li>
+<li>For payments, I’ve integrated the <a
+href="https://stripe.com">Stripe</a> payments API, and hooked up a
+webhook to notify my server when a payment goes through.</li>
+<li>For product delivery, I’m storing zipped Xcode projects in a AWS S3
+bucket, and emailing users a dynamic download link upon receiving a
+payment webhook. This will probably need to be revisited in the future,
+since I haven’t built user authentication into <a
+href="https://swiftstarterkits.com">SwiftStarterKits</a> quite yet (As a
+result, self-service redownloading of previously purchased templates is
+unsupported right now). I figure this is a non-problem at the moment,
+given I can handle this manually if emailed by customers.</li>
+<li>On the iOS side of things, the MVP template is a fully functional
+app that integrates all popular third party authentication providers
+(Google, Apple, Facebook, etc). With much of the user management
+boilerplate built out, a login page, app onboarding, and a cohesive
+architecture that is easily extendable. Additionally, I’ve included the
+foundations of a reusable design system implementation, with sematic
+color and component names.</li>
+<li>With a purchase/download, customers receive the complete Xcode
+project, with source files, assets, documentation for getting set up,
+and a straight forward license of what you can/can’t do with the project
+(Ship it, but please don’t resell it as your own template). I’m
+including a license and terms along every download, but is also a hard
+copy of the license that I’m hosting <a
+href="https://swiftstarterkits.com/license">on the website</a>. While
+the product is "Xcode project templates", customers are really buying a
+license to use the packaged source code. Maybe I sell different license
+types with varying usage terms in the future (I.E. offer an enterprise
+license with an added support package)?</li>
+<li>Once the MVP template was finished, I spent some time factoring out
+all the reusable bits into a "Default Template". Which I’m using as a
+more sane starting point for upcoming iOS work.</li>
+<li>I’m building out templates using UIKit, but plan to adopt SwiftUI
+where it makes sense. I’m of the opinion that UIKit still has its place
+at the core of a production ready app, and SwiftUI can be adopted
+iteratively while providing out of the box support for using both
+technologies in unison.</li>
+</ol>
+<h2 id="whats-next">What’s next?</h2>
+<p>My immediate roadmap consists of three things:</p>
+<ol type="1">
+<li>Working on a dedicated product page (The only existing template has
+a tiny overview on the homepage, which doesn’t give any space for
+upselling usecases and features).</li>
+<li>Working on a small overhaul of the home page, to make room for a
+grid based catalogue of products.</li>
+<li>Working on a free template, which can provide a better foundation
+for upselling paid templates.</li>
+</ol>
+<p>Lots to do! I plan to be as transparent as I can about what I’m
+building and why. If and when we get some sales, you’ll be the first to
+hear about it.</p>

@@ -1,0 +1,113 @@
+<p>One of the great features of Swift’s collection implementation is the
+first party support of various <a
+href="https://en.wikipedia.org/wiki/Higher-order_function">“higher
+order”</a> functions like map, filter and reduce. When Objective-C still
+reigned supreme, the iOS open-source community created <a
+href="https://github.com/supermarin/objectivesugar">their own
+abstractions</a> in an attempt to make Objective-C more functional.
+While the community did a wonderful job of making a verbose language
+more terse, it never really felt like Objective-C was meant for it. This
+time around however, Swift gives us built in support through the
+SequenceType protocol. The <a
+href="https://developer.apple.com/library/tvos/documentation/Swift/Reference/Swift_SequenceType_Protocol/index.html#//apple_ref/swift/intfm/SequenceType/s:FeRq_Ss12SequenceTypeqqq_S_9GeneratorSs13GeneratorType7ElementS__SsS_7flattenuRq_S_qqq_S_9GeneratorS0_7ElementS__Fq_FT_GVSs15FlattenSequenceq__">Swift
+Developer Library</a> defines SequenceType as being any “type that can
+be iterated with a for…in loop.” This means that any collection that can
+be iterated over (i.e. Array, Set) can adopt the SequenceType protocol,
+gaining access to its useful top-level functions. You can even adopt
+SequenceType within your own <a
+href="http://kelan.io/2015/swift-adopting-sequencetype/">custom
+collections</a>!</p>
+<p>The SequenceType protocol aims to solve a number of common problems
+in a functional and expressive way, making your code more readable and
+succinct. Here’s a rundown of what SequenceType has to offer:</p>
+<p>Say we start with a standard Swift array like so.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">numbers</span> <span class="op">=</span> <span class="op">[</span><span class="dv">10</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">60</span><span class="op">,</span><span class="dv">100</span><span class="op">]</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [10,2,60,100]</span></span></code></pre></div>
+<p>After passing this collection around our app, we need to manipulate
+it by adding a ‘$’ sign before each number. Easy, let’s use Map.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>map<span class="op">({</span><span class="st">&quot;</span><span class="ss">$</span><span class="er">\(</span><span class="ss">$</span><span class="st">0)&quot;</span><span class="op">})</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [&quot;$10&quot;,&quot;$2&quot;,&quot;$60&quot;,&quot;$100&quot;]</span></span></code></pre></div>
+<p>What’s happening here is that the whole ‘numbers’ array is iterated
+over, appending each number into a string along with a ‘$’ sign. The
+‘$0’ is shorthand in Swift for the first argument to this <a
+href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Closures.html">closure</a>.
+Let’s contrast this to what it would look like without Map.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">money</span> <span class="op">=</span> <span class="op">[</span>String<span class="op">]()</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number <span class="cf">in</span> numbers <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    money<span class="op">.</span>append<span class="op">(</span><span class="st">&quot;</span><span class="ss">$</span><span class="er">\(</span><span class="st">number)&quot;</span><span class="op">)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">// [&quot;$10&quot;,&quot;$2&quot;,&quot;$60&quot;,&quot;$100&quot;]</span></span></code></pre></div>
+<p>Way more verbose. While this is still understandable and standard
+code, I don’t like the thought process of it. This naive approach I tend
+to read as “Initialize an array called money that accepts String types,
+then iterate over each number in the numbers array appending a string
+that concatenates $ and number”. Bleh. The Map version on the other hand
+can be read “for each number in numbers, map $ and number to a
+string”.</p>
+<p>Our goal while programming should always be to write code that is
+easily understood. The Map function lets us easily do this by clearly
+conveying intent, while still remaining as succinct as possible. Lets
+take a look at the other instance methods of the SequenceType
+protocol.</p>
+<p>Need to “filter” your array by a comparator? Use Filter.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>filter<span class="op">({</span>$<span class="dv">0</span> <span class="op">&gt;</span> <span class="dv">10</span><span class="op">})</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [60, 100]</span></span></code></pre></div>
+<p>What about “reducing” each number in my array to a single sum? Go use
+Reduce.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>reduce<span class="op">(</span><span class="dv">0</span><span class="op">,</span> combine<span class="op">:</span> <span class="op">{</span>$<span class="dv">0</span> <span class="op">+</span> $<span class="dv">1</span><span class="op">})</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 172 (i.e. 10 + 2 + 60 + 100)</span></span></code></pre></div>
+<p>This can even be further “reduced” since operators are also methods
+in Swift.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>reduce<span class="op">(</span><span class="dv">0</span><span class="op">,</span> combine<span class="op">:</span> <span class="op">+)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// 172 (i.e. 10 + 2 + 60 + 100)</span></span></code></pre></div>
+<p>Lets drop the first number in numbers</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>dropFirst<span class="op">()</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [2, 60, 100]</span></span></code></pre></div>
+<p>Woops, I meant the last.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>dropLast<span class="op">()</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [10, 2, 60]</span></span></code></pre></div>
+<p>Nevermind, the first two actually</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>dropFirst<span class="op">(</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [60, 100]</span></span></code></pre></div>
+<p>Can we check if the number 2 exists in the array? Sure.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>contains<span class="op">(</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">// true</span></span></code></pre></div>
+<p>What about 10000?</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>contains<span class="op">(</span><span class="dv">10000</span><span class="op">)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">// false</span></span></code></pre></div>
+<p>Darn, lets see if this other array matches our good old number
+array.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>elementsEqual<span class="op">([</span><span class="dv">10</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">100</span><span class="op">])</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">// true</span></span></code></pre></div>
+<p>Woo! What about this array?</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>elementsEqual<span class="op">([</span><span class="dv">10</span><span class="op">])</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">// false</span></span></code></pre></div>
+<p>Shucks. Can we “join” all of our numbers together into one String?
+Sure, but only if they are Strings in the first place.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="va">numberStrings</span> <span class="op">=</span> numbers<span class="op">.</span>map<span class="op">({</span><span class="st">&quot;</span><span class="er">\(</span><span class="ss">$</span><span class="st">0)&quot;</span><span class="op">})</span> <span class="co">// Map to string values</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>numberStrings<span class="op">.</span>joinWithSeparator<span class="op">(</span><span class="st">&quot; | &quot;</span><span class="op">)</span>     <span class="co">// then join</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">// &quot;10 | 2 | 60 | 100&quot;</span></span></code></pre></div>
+<p>You know what, lets just print all of our numbers out, since
+SequenceType functions don’t overwrite our mutable data.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode swift"><code class="sourceCode swift"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>numbers<span class="op">.</span>enumerate<span class="op">()</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Outputs:</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 0 : 10</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 1 : 2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 2 : 60</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">// 3 : 100</span></span></code></pre></div>
