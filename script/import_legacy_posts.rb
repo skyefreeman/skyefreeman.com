@@ -41,7 +41,7 @@ def attach_and_rewrite_figures(post, html)
     count += 1
     "src=\"#{blob_path}\""
   end
-  [updated, count]
+  [ updated, count ]
 end
 
 html_files = Dir.glob("#{HTML_DIR}/*.html").sort
@@ -60,7 +60,7 @@ html_files.each do |html_path|
     next
   end
 
-  meta  = YAML.safe_load(File.read(meta_path), permitted_classes: [Date, Time]) || {}
+  meta  = YAML.safe_load(File.read(meta_path), permitted_classes: [ Date, Time ]) || {}
   title = meta["title"].to_s.strip
 
   if title.empty?

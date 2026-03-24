@@ -12,9 +12,9 @@ HTML_OUT_DIR     = File.expand_path("legacy-posts/html", __dir__)
 
 def parse_front_matter(raw)
   match = raw.match(/\A---\n(.*?)\n---\n(.*)\z/m)
-  return [{}, raw] unless match
-  meta = YAML.safe_load(match[1], permitted_classes: [Date, Time]) || {}
-  [meta, match[2]]
+  return [ {}, raw ] unless match
+  meta = YAML.safe_load(match[1], permitted_classes: [ Date, Time ]) || {}
+  [ meta, match[2] ]
 end
 
 def markdown_to_html(markdown)

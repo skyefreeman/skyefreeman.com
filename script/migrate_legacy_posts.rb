@@ -25,7 +25,7 @@ def parse_posts(lisp_source)
       date:        extract_field(block, "date"),
       filepath:    extract_field(block, "filepath"),
       image:       extract_field(block, "image"),
-      url_slug:    raw_url.sub(%r{\A/blog/}, ""),
+      url_slug:    raw_url.sub(%r{\A/blog/}, "")
     }
   end
 end
@@ -49,7 +49,7 @@ def front_matter(post)
     "title: \"#{post[:title].gsub('"', '\\"')}\"",
     "date: \"#{post[:date]}\"",
     "author: #{post[:author]}",
-    "description: \"#{post[:description].gsub('"', '\\"')}\"",
+    "description: \"#{post[:description].gsub('"', '\\"')}\""
   ]
   lines << "image: \"#{post[:image]}\"" unless post[:image].to_s.strip.empty?
   lines << "url_slug: #{post[:url_slug]}" unless post[:url_slug].to_s.strip.empty?
@@ -99,7 +99,7 @@ end
 
 def html_to_markdown(html)
   prepared = normalize_html_styles(html)
-  md = IO.popen(["pandoc", "-f", "html", "-t", "markdown"], "r+") do |io|
+  md = IO.popen([ "pandoc", "-f", "html", "-t", "markdown" ], "r+") do |io|
     io.write(prepared)
     io.close_write
     io.read
@@ -126,7 +126,7 @@ posts = parse_posts(lisp_source)
 
 markdown_files = Dir.glob("#{MARKDOWN_DIR}/*.{md,markdown}").map do |path|
   ext = File.extname(path)
-  [File.basename(path, ext), path]
+  [ File.basename(path, ext), path ]
 end.to_h
 
 FileUtils.mkdir_p(OUTPUT_DIR)
