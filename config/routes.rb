@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :posts, except: [:index]
+
   get "blog", to: "posts#blog"
+  get "blog/new", to: "posts#new"
+
   get "about", to: "pages#about"
   get "projects", to: "pages#projects"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

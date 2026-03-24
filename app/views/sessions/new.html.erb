@@ -1,6 +1,10 @@
 <div class="login">
   <h1 class="login__title">Sign in</h1>
 
+  <% if flash[:notice] %>
+    <div class="login__notice"><%= flash[:notice] %></div>
+  <% end %>
+
   <% if flash[:alert] %>
     <div class="login__alert"><%= flash[:alert] %></div>
   <% end %>
