@@ -18,13 +18,4 @@
   <% end %>
 
   <div class="post__body"><%= @post.body %></div>
-
-  <% if @post.body_attachments.attached? %>
-    <div class="post__attachments">
-      <p class="post__attachments-title">Attachments</p>
-      <% @post.body_attachments.each do |attachment| %>
-        <%= link_to attachment.filename, rails_blob_path(attachment, disposition: "attachment"), class: "post__attachment-link" %>
-      <% end %>
-    </div>
-  <% end %>
 </div>
