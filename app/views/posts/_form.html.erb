@@ -21,6 +21,11 @@
   </div>
 
   <div class="form__group">
+    <%= f.label :url_slug, class: "form__label" %>
+    <%= f.text_field :url_slug, class: "form__input", placeholder: "e.g. my-great-post" %>
+  </div>
+
+  <div class="form__group">
     <%= f.label :header_attachment, class: "form__label" %>
     <%= f.file_field :header_attachment %>
   </div>
