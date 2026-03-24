@@ -7,7 +7,7 @@
   </div>
 
   <p class="post__meta">
-    <%= @post.created_at.strftime("%B %d, %Y") %>
+    <%= @post.published_at.strftime("%B %d, %Y") %>
     <% if @post.deleted_at %>
       &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>

@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
 
   def blog
-    @posts = Post.order(created_at: :desc)
+    @posts = Post.order(published_at: :desc)
   end
 
   def show
