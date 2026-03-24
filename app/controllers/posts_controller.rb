@@ -11,8 +11,11 @@ class PostsController < ApplicationController
   end
 
   def show_by_date_slug
-    @post = Post.find_by!(url_slug: params[:slug])
+    date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+    @post = Post.find_by!(url_slug: params[:slug], published_at: date.beginning_of_day..date.end_of_day)
     render :show
+  rescue ArgumentError
+    raise ActiveRecord::RecordNotFound
   end
 
   def new

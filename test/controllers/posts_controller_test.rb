@@ -30,6 +30,24 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.post-list__title", text: posts(:two).title
   end
 
+  # Date/slug lookup
+
+  test "show_by_date_slug finds post when date and slug match" do
+    post = posts(:one)
+    get post_by_date_slug_path(year: 2026, month: "01", day: "01", slug: "first-post")
+    assert_response :success
+  end
+
+  test "show_by_date_slug returns 404 when slug matches but date does not" do
+    get post_by_date_slug_path(year: 2025, month: "01", day: "01", slug: "first-post")
+    assert_response :not_found
+  end
+
+  test "show_by_date_slug returns 404 when date matches but slug does not" do
+    get post_by_date_slug_path(year: 2026, month: "01", day: "01", slug: "wrong-slug")
+    assert_response :not_found
+  end
+
   # Unauthenticated access to write actions redirects to login
 
   test "new redirects to login when unauthenticated" do
