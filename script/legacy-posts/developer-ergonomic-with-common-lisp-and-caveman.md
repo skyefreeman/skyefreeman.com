@@ -4,6 +4,8 @@ title: "Developer Ergonomics with Common Lisp"
 date: "April 21th, 2023"
 author: Skye Freeman
 description: "Common Lisp is an incredible tool for writing software. Let's explore some simple ways to amplify productivity."
+image: "/images/banner-developer-ergonomics-lisp.jpg"
+url_slug: developer-ergonomics-with-common-lisp
 ---
 All of the websites that I maintain are being served with Common Lisp, utilizing the [Caveman2](https://github.com/fukamachi/caveman) web framework.
 

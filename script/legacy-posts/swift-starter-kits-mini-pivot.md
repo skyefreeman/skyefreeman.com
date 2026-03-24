@@ -4,6 +4,8 @@ title: "My First Startup Pivot"
 date: "October 13, 2022"
 author: Skye Freeman
 description: "Some soul searching on what to focus on next for SwiftStarterKits."
+image: "/images/banner-first-startup-pivot.jpg"
+url_slug: swift-starter-kits-mini-pivot
 ---
 After a week of working on a [side project](https://cheesebyjg.com) with
 a friend, I'm eager to get back to

@@ -4,6 +4,7 @@ title: "My Bicycle is Eating my Mind"
 date: "February 24, 2023"
 author: Skye Freeman
 description: "Our technology has gotten too damn noisy, and it's holding us back."
+url_slug: my-bicycle-is-eating-my-mind
 ---
 Quoted from the book [User
 Friendly](https://www.fabricant.design/userfriendly):

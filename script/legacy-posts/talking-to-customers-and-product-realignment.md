@@ -4,6 +4,8 @@ title: "Learning to Cold Email and Shrinking Product Scope"
 date: "January 20, 2023"
 author: Skye Freeman
 description: "It's been a light month on product work so far, but I've been hard at work learning to talk to customers, and finding focus for the overall vision for SwiftStarterKits."
+image: "/images/banner-learning-to-cold-email.jpg"
+url_slug: talking-to-customers-and-product-realignment
 ---
 It has been a light couple of weeks on
 [SwiftStarterKits](https://swiftstarterkits.com) work. I've been

@@ -141,8 +141,8 @@ posts.each do |post|
   if (source_path = markdown_files[stem])
     dest_path = File.join(OUTPUT_DIR, File.basename(source_path))
     content   = File.read(source_path)
-    body = content.start_with?("---") ? content : front_matter(post) + content
-    File.write(dest_path, body)
+    body      = content.sub(/\A---\n.*?\n---\n/m, "")
+    File.write(dest_path, front_matter(post) + body)
     matched << { stem: stem, source: :markdown }
 
   elsif (html_path = find_html_file(stem))

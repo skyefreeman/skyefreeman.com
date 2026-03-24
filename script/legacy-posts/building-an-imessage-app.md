@@ -4,6 +4,8 @@ title: "Building an iMessage App"
 date: "October 5, 2022"
 author: Skye Freeman
 description: "A small side project in building and releasing a standalone iMessage app."
+image: "/images/banner-building-an-imessage-app.jpg"
+url_slug: building-an-imessage-app
 ---
 I took a small detour the past couple of days from
 [SwiftStarterKits](https://swiftstarterkits.com) to build an iMessage

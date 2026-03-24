@@ -4,6 +4,8 @@ title: "February 2023 Update"
 date: "March 3, 2023"
 author: Skye Freeman
 description: "SwiftStarterKits got a LOT of product updates and website additions in February. Also a big uptick in passive search engine traffic."
+image: "/images/banner-february-2023-update.jpg"
+url_slug: february-2023-update
 ---
 My wife and I were knocked out for the final week of February with
 COVID-19, the first time for both of us. The start was rough, but

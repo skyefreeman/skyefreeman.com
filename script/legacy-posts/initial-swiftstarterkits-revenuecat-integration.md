@@ -4,6 +4,8 @@ title: "SwiftStarterKits' RevenueCat Integration: The Story So Far."
 date: "May 3, 2023"
 author: Skye Freeman
 description: "Shifting gears back to product work, SwiftStarterKits is going to soon deliver on its promise of amplifying development of subscription apps with the help of RevenueCat."
+image: "/images/banner-initial-revenuecat-integration.jpg"
+url_slug: initial-swiftstarterkits-revenuecat-integration
 ---
 With the first version of the [SwiftStarterKits documentation](/blog/shipped-swiftstarterkits-documentation-v1) published, I'd like to shift gears to improving the SwiftStarterKits core product. While the existing documentation needs more investment, I simultaneously started marketing product features that *don't currently exist*. 
 

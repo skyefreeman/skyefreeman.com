@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Translating Your Bash Configuration to Eshell
-date: 2017-08-03 15:53:39.000000000 -04:00
+date: August 3rd, 2017
 author: Skye Freeman
-categories: Programming Emacs
+description: One of the mental barriers I had in making the switch over from iTerm2
+  + Bash to the Emacs Eshell was translating my .bash_profile into Emacs Lisp.
+url_slug: converting-your-bash-config-to-eshell

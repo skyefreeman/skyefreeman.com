@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: What Makes a Developer Better? 
-date: 2016-01-31 19:53:05 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "What will make you a better software developer?"
+date: "January 31st, 2016"
+author: Skye Freeman
+description: "How to we define “better” in the context of software creation? There really isn’t an obvious metric to define such a thing."
+url_slug: what-will-make-you-a-better-developer
 ---
 
 How to we define "better" in the context of software creation.  What makes a software developer better? There really isn't a common metric to define such a thing.  Are they faster? Is the code they produce cleaner, more extendible or less buggy? Do they know more? Probably some combination of each.

@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Understanding Swift's SequenceType Protocol
-date: 2016-01-11 18:36:38.000000000 -05:00
+date: January 11th, 2016
 author: Skye Freeman
-categories: Programming
+description: One of the great features of Swift’s collection implementation is the
+  first party support of various “higher order” functions like map, filter and reduce.
+url_slug: understanding-the-swift-sequencetype-protocol

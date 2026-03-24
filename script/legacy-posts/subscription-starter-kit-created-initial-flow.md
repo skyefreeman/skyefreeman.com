@@ -4,6 +4,8 @@ title: "Subscription Starter Kit: Initial App Layout and SwiftUI Navigation"
 date: "May 9, 2023"
 author: Skye Freeman
 description: "Development of the SwiftUI Subscription Starter Kit is under way. First steps are getting the home and settings screens in place, plus some basic navigation controls."
+image: "/images/banner-subscription-starter-kit-initial-layout.jpg"
+url_slug: subscription-starter-kit-created-initial-flow
 ---
 With the [planning and ideation done](/blog/subscription-starter-kit-swiftui-boilerplate), I've set to work on an iOS starter kit that will provide all of the infrastructure needed for a cloud enabled, subscription ready native app with reusable foundational features. 
 

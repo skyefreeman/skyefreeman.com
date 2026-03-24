@@ -1,9 +1,10 @@
 ---
 layout: post
-title: UIStoryboard Woes
-date: 2016-02-10 15:51:04
+title: "UIStoryboard Woes"
+date: "February 10th, 2016"
 author: Skye Freeman
-categories: Programming
+description: "Since their introduction, UIStoryboards have been a hot topic in the iOS community. Some people love them, some don’t. I’ve gone through stints of Storyboard use, but generally have come to avoid them."
+url_slug: uistoryboard-woes
 ---
 
   Since their introduction, UIStoryboards have been a hot topic in the iOS community. Some people love them, some don't.  I've gone through stints of Storyboard use, but generally have come to avoid them.

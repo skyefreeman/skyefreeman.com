@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: "My Year in Programming" 
-date: 2016-01-03 16:01:33 
-author: Skye Freeman 
-categories: Personal
+layout: post
+title: "My Year in Programming"
+date: "January 3rd, 2016"
+author: Skye Freeman
+description: "Starting a blog has been on my todo list for a while now, I can finally check it off! I thought that a good place to start might be a look back at my year I..."
+url_slug: my-year-in-programming-2015
 ---
 
 Starting a blog has been on my todo list for a while now, I can finally check it off!  I thought that a good place to start might be a look back at my year in programming. Being a new year, there's no better time for reflection.

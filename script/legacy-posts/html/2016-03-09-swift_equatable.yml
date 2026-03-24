@@ -1,6 +1,8 @@
 ---
 layout: post
-title: Swift - Equatable
-date: 2016-03-09 16:37:40.000000000 -05:00
+title: Swift's Equatable Protocol
+date: March 9th 2016
 author: Skye Freeman
-categories: Programming
+description: The mathematical operators utilized by Swift are just functions with
+  special names. For example, the ‘==’ operator tests equality between two types.
+url_slug: swift-equatable-protocol

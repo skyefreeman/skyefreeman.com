@@ -4,6 +4,8 @@ title: "December 2022 Update"
 date: "January 4, 2023"
 author: Skye Freeman
 description: "It's a brand new year! But first, I'd like to take a moment to reflect on this past December, touch base on SwiftStarterKits' latest metrics, and talk about this new writing habit that I'm going to solidify in the form of a monthly newsletter."
+image: "/images/banner-december-2022-update.jpg"
+url_slug: december-2022-update
 ---
 This past month has been full of learning, building, writing, friends
 and family. For the holidays, taking some time off of startup work was a

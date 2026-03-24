@@ -4,6 +4,8 @@ title: "Practical SQLite3 Reference For Developers In A Hurry"
 date: "April 26, 2023"
 author: Skye Freeman
 description: "As it is with all computer related things, I occasionally find myself needing a reminder on how to achieve certain database related tasks. Let this be a living reference for working with SQLite3. No guarantees are made regarding completeness."
+image: "/images/banner-sqlite3-reference-for-developers.jpg"
+url_slug: sqlite3-reference-guide-for-developers-in-a-hurry
 ---
 SQLite is a terrific, lightweight, general purpose tool. But, as it is with all computer related things, I occasionally find myself needing a reminder on how to achieve certain database related tasks. 
 

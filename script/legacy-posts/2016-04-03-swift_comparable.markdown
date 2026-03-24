@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: Swift - Comparable
-date: 2016-04-03 17:35:51 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Swift's Comparable Protocol"
+date: "April 3rd, 2016"
+author: Skye Freeman
+description: "Adopting the Comparable protocol allows for a custom type to define its own rule for the <, <=, >, >= infix operators."
+url_slug: swift-comparable-protocol
 ---
 
 My last blog post I wrote briefly about [Swift's Equatable protocol][equatable-link], which allows the use of == and != between custom defined types. Naturally, I feel its fitting to talk a bit about Equatable's close relative -- the [Comparable protocol][comparable-link].

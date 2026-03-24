@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: "iOS: The Builder Pattern"
-date: 2017-02-07 08:49:02 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Using the Builder Pattern on iOS"
+date: "February 7th, 2017"
+author: Skye Freeman
+description: "Some of the most involved and repetitive code we write is the instantiation and configuration of objects. So why ever do it more than once?"
+url_slug: using-the-builder-pattern-on-ios
 ---
 
 Some of the most involved and repetitive code we write is the instantiation and configuration of objects. So why ever do it more than once? As an objects interface grows, the amount of code needed to instantiate the same object externally will grow equally. This increases the possibility of inconsistencies between similar objects, and obfuscates the task at hand.

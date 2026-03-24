@@ -4,6 +4,8 @@ title: "Designing an Upcoming SwiftUI App Template"
 date: "October 14, 2022"
 author: Skye Freeman
 description: "A short design exploration, while brainstorming the first free SwiftStarterKits app template."
+image: "/images/banner-designing-a-swiftui-app-template.jpg"
+url_slug: swift-starter-kits-designing-firebase-starter-kit
 ---
 After my previous brainstorm about [next steps for
 SwiftStarterKits](/blog/swift-starter-kits-mini-pivot) , I'm now

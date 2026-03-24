@@ -4,6 +4,8 @@ title: "Things you shouldn't do when building a startup"
 date: "July 27, 2023"
 author: Skye Freeman
 description: "I made some mistakes and you should too"
+image: "/images/banner-skyefreeman-com.jpg"
+url_slug: things-you-shouldnt-do-building-a-startup
 ---
 Here are some things that you shouldn't do when building an internet startup:
 

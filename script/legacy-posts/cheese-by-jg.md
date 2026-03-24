@@ -4,6 +4,8 @@ title: "Cheese by JG, an iMessage App Collaboration"
 date: "October 11, 2022"
 author: Skye Freeman
 description: "An iMessage sticker pack collaboration with artist JG Debray."
+image: "/images/banner-cheese-by-jg.jpg"
+url_slug: cheese-by-jg
 ---
 Alluded to in [my previous post](/blog/building-an-imessage-app) about
 building an iMessage app, I've been working on a software/art

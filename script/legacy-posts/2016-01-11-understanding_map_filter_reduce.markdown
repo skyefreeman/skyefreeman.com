@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: "Understanding Swift's SequenceType Protocol" 
-date: 2016-01-11 23:36:38 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Understanding Swift's SequenceType Protocol"
+date: "January 11th, 2016"
+author: Skye Freeman
+description: "One of the great features of Swift’s collection implementation is the first party support of various “higher order” functions like map, filter and reduce."
+url_slug: understanding-the-swift-sequencetype-protocol
 ---
 
 One of the great features of Swift's collection implementation is the first party support of various ["higher order"][higherOrderFunctionsLink] functions like map, filter and reduce.  When Objective-C still reigned supreme, the iOS open-source community created [their own abstractions][objectiveSugarLink] in an attempt to make Objective-C more functional.  While the community did a wonderful job of making a verbose language more terse, it never really felt like Objective-C was meant for it.  This time around however, Swift gives us built in support through the SequenceType protocol.  The [Swift Developer Library][swiftDeveloperLibraryLink] defines SequenceType as being any "type that can be iterated with a for...in loop."  This means that any collection that can be iterated over (i.e. Array, Set) can adopt the SequenceType protocol, gaining access to its useful top-level functions.  You can even adopt SequenceType within your own [custom collections][adoptingSequenceTypeLink]! 

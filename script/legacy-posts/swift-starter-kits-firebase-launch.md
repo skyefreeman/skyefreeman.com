@@ -4,6 +4,8 @@ title: "Firebase iOS App Template Launch"
 date: "December 12, 2022"
 author: Skye Freeman
 description: "An overdue progress update on SwiftStarterKits. I'll talk about shipping the latest starter kit, Firebase edge-case handling, and some new tools I've picked up."
+image: "/images/banner-firebase-app-template-launch.jpg"
+url_slug: swift-starter-kits-firebase-launch
 ---
 I'm long overdue for an update on
 [SwiftStarterKits](https://swiftstarterkits.com/). My previous post,

@@ -1,6 +1,8 @@
 ---
 layout: post
-title: Swift - Bits and Colors
-date: 2016-05-02 04:47:33.000000000 -04:00
+title: Bits and Colors in Swift
+date: May 2nd, 2016
 author: Skye Freeman
-categories: Programming
+description: While perusing Apple’s Swift language guide, I came across an interesting
+  section regarding bit manipulation.
+url_slug: bits-and-colors-in-swift

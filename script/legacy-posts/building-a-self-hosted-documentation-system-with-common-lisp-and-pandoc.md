@@ -4,6 +4,8 @@ title: "Building a Documentation System with Common Lisp and Pandoc"
 date: "April 25, 2023"
 author: Skye Freeman
 description: "Lets look at the current landscape of existing documentation engines, then ignore all of it and write our own using Common Lisp."
+image: "/images/banner-building-documentation-system-with-common-lisp.jpg"
+url_slug: building-a-documentation-system-with-common-lisp-and-pandoc
 ---
 I'm currently working through a first draft of a custom self-hosted documentation system for [SwiftStarterKits](https://swiftstarterkits.com). I wrote about the overall goals of this system [yesterday](/blog/writing-a-documentation-system), and is definitely recommended reading for continuity.
 

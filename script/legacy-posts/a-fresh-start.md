@@ -4,6 +4,8 @@ title: "A Fresh Start"
 date: "August 22, 2022"
 author: Skye Freeman
 description: "It's been a while. Here's a quick overview of what I've been up to for the past 5 years."
+image: "/images/banner-a-fresh-start.jpg"
+url_slug: fresh-start
 ---
 It's been a while since I last shared a professional update. I've been
 feeling like it was long overdue for an update of some kind, in addition

@@ -4,6 +4,8 @@ title: "Shipping a New Product Page"
 date: "October 1, 2022"
 author: Skye Freeman
 description: "SwiftStarterKits release 1.0.4 included a new product page, an overhauled home screen, and some under the hood website improvements."
+image: "/images/banner-shipping-a-new-product-page.jpg"
+url_slug: swift-starter-kits-created-product-page
 ---
 The first version of [SwiftStarterKits](https://swiftstarterkits.com)
 shipped without a dedicated product page. Upon landing on the website,

@@ -4,6 +4,8 @@ title: "January 2023 Update"
 date: "February 6, 2023"
 author: Skye Freeman
 description: "January was tough. However I succeeded in overhauling the entire SwiftStarterKits website and product vision. Also metrics and life updates."
+image: "/images/banner-january-2023-update.jpg"
+url_slug: january-2023-update
 ---
 This past month I **struggled** at building my company. Wearing all the
 hats brings with it a tremendous amount of context switching, but I'm

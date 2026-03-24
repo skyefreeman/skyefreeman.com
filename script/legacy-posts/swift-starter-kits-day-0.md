@@ -4,6 +4,8 @@ title: "Day 0 of Building a Software Business"
 date: "September 11, 2022"
 author: Skye Freeman
 description: "Building an app template and mobile app infrastructure business, and my goal to be transparent about it."
+image: "/images/banner-day-0-of-building-a-business.jpg"
+url_slug: swift-starter-kits-day-0
 ---
 I've been working on a project in my spare time called
 [SwiftStarterKits](https://swiftstarterkits.com). It's shipped,

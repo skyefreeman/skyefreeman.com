@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: Swift - Bits and Colors
-date: 2016-05-02 08:47:33 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Bits and Colors in Swift"
+date: "May 2nd, 2016"
+author: Skye Freeman
+description: "While perusing Apple’s Swift language guide, I came across an interesting section regarding bit manipulation."
+url_slug: bits-and-colors-in-swift
 ---
 
 While perusing Apple's Swift language guide, I came across an interesting section regarding bit manipulation. Unbeknownst to me, Swift sports the same bitwise and bit shifting operators used by both C and Objective-C. Here's a recap:

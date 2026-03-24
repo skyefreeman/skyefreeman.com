@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: Swift - Equatable
-date: 2016-03-09 21:37:40 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Swift's Equatable Protocol"
+date: "March 9th 2016"
+author: Skye Freeman
+description: "The mathematical operators utilized by Swift are just functions with special names. For example, the ‘==’ operator tests equality between two types."
+url_slug: swift-equatable-protocol
 ---
 Mathematical notation provides the foundation to which programming languages are built. These universally understood symbols allow us to convey meaning and intent to our programs in a concise way. The mathematical operators utilized by Swift are just regular functions with special names. For example, the '==' operator tests equality between two types.
 

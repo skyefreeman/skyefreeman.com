@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: String's, Emoji's and Generator's
-date: 2016-01-17 23:24:50 
-author: Skye Freeman 
-categories: 
+layout: post
+title: "String's, Emoji's and Generator's."
+date: "January 17th, 2016"
+author: Skye Freeman
+description: "A core feature of any programming languages is the ability to model and manipulate text. When defining a variable that represents text, we traditionally call it a string. In Swift, strings are a series of encoding-independent unicode characters."
+url_slug: strings-emojis-and-generators-in-swift
 ---
 
 A core feature of any programming languages is the ability to model and manipulate text.  When defining a variable that represents text, we traditionally call it a string. In Swift,  strings are a series of encoding-independent unicode characters.  This means that any character can be accessed directly by their unicode representation and vice-versa. For example, the hexadecimal unicode representation for the capital letter 'A' is '0x41', which can be accessed in a Swift string like so:

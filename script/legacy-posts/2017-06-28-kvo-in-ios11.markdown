@@ -1,9 +1,10 @@
 ---
 layout: post
-title: Key Value Observation in iOS 11
-date: 2017-06-28 11:19:00
+title: "Key Value Observation in iOS 11"
+date: "June 28th, 2017"
 author: Skye Freeman
-categories: programming
+description: "One of the most exciting additions to the Foundation library in iOS 11 that somehow flew under my radar was the new Swift syntax for key value observation."
+url_slug: kvo-in-ios-11
 ---
 
 It seems like the past few weeks in iOS news has been dominated by the addition of the Encodable, Decodable and Codable protocols - finally fixing the ugly problem of dealing with JSON in Swift. The deprecation of the open source libraries that simplify dealing with JSON is a good thing, and I hope the community at large can come to an agreement that we've found an optimal solution to the problem. 

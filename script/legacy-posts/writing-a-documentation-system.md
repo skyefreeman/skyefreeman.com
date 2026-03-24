@@ -4,6 +4,8 @@ title: "Working on a Documentation System for SwiftStarterKits"
 date: "April 24, 2023"
 author: Skye Freeman
 description: "SwiftStarterKits is slowly but surely getting docs and developer focused guides."
+image: "/images/banner-documentation-for-swiftstarterkits.jpg"
+url_slug: writing-a-documentation-system
 ---
 Since the first customers purchased a SwiftStarterKits license, the most frequent feedback I've received has been to improve documentation. So that's what I'm focusing on.
 

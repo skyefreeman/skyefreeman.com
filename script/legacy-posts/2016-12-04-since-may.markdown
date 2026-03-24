@@ -1,9 +1,10 @@
 ---
-layout: post 
+layout: post
 title: "Since May"
-date: 2016-12-04 14:43:39 
-author: Skye Freeman 
-categories: Personal
+date: "December 4th, 2016"
+author: Skye Freeman
+description: "A lot has happened in the past 6 months, here's a summary of my recent life."
+url_slug: since-may
 ---
 
 A lot has happened in the past 6 months. Apart from the terrifying election that recently came to a close, I've moved to Hoboken, got a new job and shipped some cool software.

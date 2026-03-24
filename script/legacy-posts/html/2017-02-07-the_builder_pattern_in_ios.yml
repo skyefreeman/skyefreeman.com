@@ -1,6 +1,8 @@
 ---
 layout: post
-title: 'iOS: The Builder Pattern'
-date: 2017-02-07 03:49:02.000000000 -05:00
+title: Using the Builder Pattern on iOS
+date: February 7th, 2017
 author: Skye Freeman
-categories: Programming
+description: Some of the most involved and repetitive code we write is the instantiation
+  and configuration of objects. So why ever do it more than once?
+url_slug: using-the-builder-pattern-on-ios

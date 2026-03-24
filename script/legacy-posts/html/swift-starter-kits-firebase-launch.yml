@@ -6,3 +6,5 @@ author: Skye Freeman
 description: An overdue progress update on SwiftStarterKits. I'll talk about shipping
   the latest starter kit, Firebase edge-case handling, and some new tools I've picked
   up.
+image: "/images/banner-firebase-app-template-launch.jpg"
+url_slug: swift-starter-kits-firebase-launch

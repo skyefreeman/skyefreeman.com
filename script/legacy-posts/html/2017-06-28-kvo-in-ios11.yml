@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Key Value Observation in iOS 11
-date: 2017-06-28 07:19:00.000000000 -04:00
+date: June 28th, 2017
 author: Skye Freeman
-categories: programming
+description: One of the most exciting additions to the Foundation library in iOS 11
+  that somehow flew under my radar was the new Swift syntax for key value observation.
+url_slug: kvo-in-ios-11

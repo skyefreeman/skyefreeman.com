@@ -4,6 +4,8 @@ title: "Shipped SwiftStarterKits Documentation"
 date: "May 1, 2023"
 author: Skye Freeman
 description: "There's finally a starting point for documentation and guides on using SwiftStarterKits effectively."
+image: "/images/banner-shipped-swiftstarterkits-documentation.jpg"
+url_slug: shipped-swiftstarterkits-documentation-v1
 ---
 I've recently been working on building out a documentation system for SwiftStarterKits, which I write about in detail [here](/blog/writing-a-documentation-system) and [here](/blog/building-a-documentation-system-with-common-lisp-and-pandoc).
 

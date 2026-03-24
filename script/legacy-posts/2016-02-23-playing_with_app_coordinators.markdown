@@ -1,9 +1,10 @@
 ---
-layout: post 
-title: Swift - Coordinators
-date: 2016-02-23 15:30:58 
-author: Skye Freeman 
-categories: Programming
+layout: post
+title: "Application Coordinators in Swift"
+date: "February 23rd, 2016"
+author: Skye Freeman
+description: "This past week I came across an interesting talk post by Soroush Khanlou introducing the idea of using coordinators when building iOS apps."
+url_slug: swift-application-coordinators
 ---
 
 This past week I came across an interesting talk post by [Soroush Khanlou][souroushLink] introducing the idea of using coordinators when building iOS apps.  I decided to take a crack at the concept by building out a small login/sign up workflow using coordinators to drive my app logic, in short, the experience was a revelation.
