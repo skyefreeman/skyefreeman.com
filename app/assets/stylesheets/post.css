@@ -29,6 +29,31 @@
   margin-bottom: 2rem;
 }
 
+.post__body p,
+.post__body ol,
+.post__body ul,
+.post__body h2,
+.post__body h3,
+.post__body h4,
+.post__body pre {
+  margin-bottom: 1.25rem;
+}
+
+.post__body h2,
+.post__body h3,
+.post__body h4 {
+  margin-top: 2rem;
+}
+
+.post__body ol,
+.post__body ul {
+  padding-left: 1.5rem;
+}
+
+.post__body li {
+  margin-bottom: 0.4rem;
+}
+
 .post__attachments {
   margin-top: 2rem;
 }
