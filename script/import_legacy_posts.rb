@@ -37,10 +37,9 @@ def attach_and_rewrite_figures(post, html)
     )
     post.body_attachments.attach(blob)
 
-    url_opts = Rails.application.config.action_mailer.default_url_options || {}
-    blob_url = Rails.application.routes.url_helpers.rails_blob_url(blob, **url_opts)
+    blob_path = Rails.application.routes.url_helpers.rails_blob_path(blob)
     count += 1
-    "src=\"#{blob_url}\""
+    "src=\"#{blob_path}\""
   end
   [updated, count]
 end
