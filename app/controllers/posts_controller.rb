@@ -16,6 +16,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
+    @post.published_at = Time.current if params[:publish]
     if @post.save
       redirect_to @post
     else
@@ -27,7 +28,9 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    @post.assign_attributes(post_params)
+    @post.published_at = Time.current if params[:publish]
+    if @post.save
       redirect_to @post
     else
       render :edit, status: :unprocessable_entity

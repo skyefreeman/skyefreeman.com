@@ -26,6 +26,9 @@
   </div>
 
   <div class="form__group">
-    <%= f.submit class: "form__submit" %>
+    <%= f.submit "Save", class: "form__submit" %>
+    <% if show_publish_button %>
+      <%= f.submit "Publish", name: "publish", class: "form__submit" %>
+    <% end %>
   </div>
 <% end %>

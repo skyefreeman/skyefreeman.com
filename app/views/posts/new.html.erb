@@ -1,7 +1,7 @@
 <div class="page-content">
   <h1 class="page-content__title">New Post</h1>
 
-  <%= render "form", post: @post %>
+  <%= render "form", post: @post, show_publish_button: true %>
 
   <%= link_to "← Back", blog_path, class: "post__back" %>
 </div>
