@@ -24,7 +24,8 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    @post.published_at = Time.current if params[:publish]
+    @publishing = params[:publish].present?
+    @post.published_at = Time.current if @publishing
     if @post.save
       redirect_to @post
     else
@@ -37,7 +38,8 @@ class PostsController < ApplicationController
 
   def update
     @post.assign_attributes(post_params)
-    @post.published_at = Time.current if params[:publish]
+    @publishing = params[:publish].present?
+    @post.published_at = Time.current if @publishing
     if @post.save
       redirect_to @post
     else

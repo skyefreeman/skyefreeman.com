@@ -32,4 +32,19 @@ class PostTest < ActiveSupport::TestCase
     assert_nil post.deleted_at
   end
 
+  test "is valid as a draft without url_slug" do
+    post = Post.new(title: "Hello", author: "Skye")
+    assert post.valid?
+  end
+
+  test "is invalid when published without url_slug" do
+    post = Post.new(title: "Hello", author: "Skye", published_at: Time.current)
+    assert_not post.valid?
+    assert_includes post.errors[:url_slug], "is required when publishing"
+  end
+
+  test "is valid when published with url_slug" do
+    post = Post.new(title: "Hello", author: "Skye", url_slug: "hello", published_at: Time.current)
+    assert post.valid?
+  end
 end
