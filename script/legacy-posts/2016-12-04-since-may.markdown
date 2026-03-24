@@ -1,0 +1,29 @@
+---
+layout: post 
+title: "Since May"
+date: 2016-12-04 14:43:39 
+author: Skye Freeman 
+categories: Personal
+---
+
+A lot has happened in the past 6 months. Apart from the terrifying election that recently came to a close, I've moved to Hoboken, got a new job and shipped some cool software.
+
+Getting away from New York and living in the Appalachian mountains was always a one year plan. Getting the chance to focus on your craft in solitude is an opportunity that is both rare and invaluable, so I jumped for it without hesitation. In a nutshell, I can describe it as being a programming bootcamp on steroids - where I completely surrounded myself with code.
+
+I continued my contracting work throughout the year, which was a good source of funding to comfortably spend a significant amount of free time learning and experimenting with other languages and technologies. 
+
+It of course had it's ups and downs. I had to re-adjust my habits to better suit remote life, forging a terrific routine in the process:
+
+- Wake up around 5:30am, make coffee and breakfast
+- Spend a solid 2 hours learning from 6 - 8am.
+- Take an hour break to go to the gym. Exercise from 8-9am.
+- Contracting work from 9:30am to 4pm
+- Take an hour break to eat, relax - 4-5pm
+- An undirected programming session from 5-8pm
+- Take the rest of the evening to decompress, and get a good nights sleep.
+
+It was gosh darn productive, although isolating at times. Ultimately I think it was a good trade off - being a short term < 1 year stint, I was able to completely cut out interruption and take my skill set to the next level. 
+
+Jumping forward a bit, this past August I accepted a full time position as part of the mobile development team at Bloglovin', which prompted a move back to the New York City area. The company is a great personal fit - I get to contribute to an awesome project with a established community of users, and write some code that I'm seriously proud of.  More than anything, I joined a very tight knit engineering team that has been a joy to work with thus far. We're shipping some seriously cool stuff soon that I can't wait to be in the hands of users.
+
+Overall, I think a solid year of exclusive remote life was enough. I'm grateful for all the things that came out of it, both personally and professionally. One day I'm sure I'll go back to it, but for now I'm happy where I've ended up. Cheers.

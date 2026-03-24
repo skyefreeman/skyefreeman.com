@@ -1,0 +1,43 @@
+---
+layout: post
+title: Key Value Observation in iOS 11
+date: 2017-06-28 11:19:00
+author: Skye Freeman
+categories: programming
+---
+
+It seems like the past few weeks in iOS news has been dominated by the addition of the Encodable, Decodable and Codable protocols - finally fixing the ugly problem of dealing with JSON in Swift. The deprecation of the open source libraries that simplify dealing with JSON is a good thing, and I hope the community at large can come to an agreement that we've found an optimal solution to the problem. 
+
+One of the most exciting additions to the Foundation library in iOS 11 that somehow flew under my radar was the new Swift syntax for key value observation. It's long been known that the KVO API was one of the more obfuscated and confusing in Cocoa, which makes this change so exciting. Not only is it type safe, but also terse as hell:
+
+```swift
+@objcMembers class Foo: NSObject {
+    dynamic var string: String
+    override init() {
+        string = "hotdog"
+        super.init()
+    }
+}
+
+let foo = Foo()
+
+// Here it is, kvo in 2 lines of code!
+let observation = foo.observe(\.string) { (foo, change) in
+    print("new foo.string: \(foo.string)")
+}
+
+foo.string = "not hotdog"
+// new foo.string: not hotdog
+```
+
+A couple things to note:
+
+- In Swift 4 `@objc` is no longer automatically inferred on subclasses of `NSObject`. In order to activate Objective-C's introspective capabilities for an entire Swift class heirarchy, we need to use the new keyword `@objcMembers`. This essentially re-enables `@objc` inference on all subclasses and extensions of `Foo`, allowing the use of KVO. For further reading on the why of this change, I recommend taking a look at the [Swift evolution proposal on the subject.][swift-evolution]
+- The `dynamic` keyword is required for the `observe` closure to fire after a value change. Without it, `observe` will fail silently.
+- Notice how the key path used for key value observation is a type safe variable of the class `Foo`. The `\.string` syntax is shorthand for `Foo.string`, which is the result of a new generic class introduced with iOS 11 called `KeyPath`. `KeyPath` inherits from `PartialKeyPath` and `AnyKeyPath`, and is what allows the transformation of what used to be an unsafe stringly typed Objective-C API, into a Swifty type safe API.
+- The cherry on top here is that we no longer need to remove the observer at `deinit`, I know I'm not the only one that has been bitten by that in the past.
+
+I'm very excited about the additions to the Foundation library in iOS 11, particularly those that ease the interoperability of writing Swift on top of the Objective-C runtime. I recommend taking the time to [watch the WWDC video][wwdc-foundation] highlighting the addition and usage of Codable, KeyPath and the KVO related changes.
+
+[wwdc-foundation]: https://developer.apple.com/videos/play/wwdc2017/212/
+[swift-evolution]: https://github.com/apple/swift-evolution/blob/master/proposals/0160-objc-inference.md#re-enabling-objc-inference-within-a-class-hierarchy
