@@ -37,7 +37,7 @@ def attach_and_rewrite_figures(post, html)
     )
     post.body_attachments.attach(blob)
 
-    blob_path = Rails.application.routes.url_helpers.rails_blob_path(blob)
+    blob_path = Rails.application.routes.url_helpers.rails_blob_path(blob, only_path: true)
     count += 1
     "src=\"#{blob_path}\""
   end
