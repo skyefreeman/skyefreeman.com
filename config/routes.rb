@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
-  resources :posts, except: [:index]
+  resources :posts, except: [ :index ]
 
   get "blog", to: "posts#blog"
   get "blog/new", to: "posts#new"
