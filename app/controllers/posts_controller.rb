@@ -7,6 +7,27 @@ class PostsController < ApplicationController
     @posts = @posts.where.not(published_at: nil) unless authenticated?
   end
 
+  def by_year
+    @year = params[:year].to_i
+    @posts = published_posts_in_range(Date.new(@year).beginning_of_year..Date.new(@year).end_of_year)
+  end
+
+  def by_month
+    @year  = params[:year].to_i
+    @month = params[:month].to_i
+    @posts = published_posts_in_range(Date.new(@year, @month).beginning_of_month..Date.new(@year, @month).end_of_month)
+  end
+
+  def by_day
+    @year  = params[:year].to_i
+    @month = params[:month].to_i
+    @day   = params[:day].to_i
+    date   = Date.new(@year, @month, @day)
+    @posts = published_posts_in_range(date.beginning_of_day..date.end_of_day)
+  rescue ArgumentError
+    raise ActiveRecord::RecordNotFound
+  end
+
   def show
   end
 
@@ -56,6 +77,10 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
+  end
+
+  def published_posts_in_range(range)
+    Post.where(published_at: range).order(published_at: :desc)
   end
 
   def post_params

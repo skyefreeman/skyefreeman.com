@@ -1,0 +1,13 @@
+<% if posts.empty? %>
+  <p class="post-list__empty">No posts found.</p>
+<% else %>
+  <ul class="post-list">
+    <% posts.each do |post| %>
+      <li class="post-list__item">
+        <%= link_to post.title, post_url_path(post), class: "post-list__title" %>
+        <span class="post-list__date"><%= post.published_at.strftime("%B %d, %Y") %></span>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<%= link_to "← Back to blog", blog_path, class: "post__back" %>

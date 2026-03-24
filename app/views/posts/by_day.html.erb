@@ -1,0 +1,4 @@
+<div class="page-content">
+  <h1 class="page-content__title"><%= Date.new(@year, @month, @day).strftime("%B %d, %Y") %></h1>
+  <%= render "archive_post_list", posts: @posts %>
+</div>

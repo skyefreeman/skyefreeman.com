@@ -48,6 +48,44 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  # Date archive pages
+
+  test "by_year returns posts for matching year" do
+    get posts_by_year_path(year: 2026)
+    assert_response :success
+    assert_select "a.post-list__title", text: posts(:one).title
+  end
+
+  test "by_year returns empty list for year with no posts" do
+    get posts_by_year_path(year: 2020)
+    assert_response :success
+    assert_select "p.post-list__empty"
+  end
+
+  test "by_month returns posts for matching year and month" do
+    get posts_by_month_path(year: 2026, month: "01")
+    assert_response :success
+    assert_select "a.post-list__title", text: posts(:one).title
+  end
+
+  test "by_month returns empty list for month with no posts" do
+    get posts_by_month_path(year: 2026, month: "06")
+    assert_response :success
+    assert_select "p.post-list__empty"
+  end
+
+  test "by_day returns posts for matching date" do
+    get posts_by_day_path(year: 2026, month: "01", day: "01")
+    assert_response :success
+    assert_select "a.post-list__title", text: posts(:one).title
+  end
+
+  test "by_day returns empty list for day with no posts" do
+    get posts_by_day_path(year: 2026, month: "01", day: "15")
+    assert_response :success
+    assert_select "p.post-list__empty"
+  end
+
   # Unauthenticated access to write actions redirects to login
 
   test "new redirects to login when unauthenticated" do
