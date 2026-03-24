@@ -13,6 +13,23 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Draft post visibility
+
+  test "blog hides draft posts from unauthenticated users" do
+    get blog_path
+    assert_response :success
+    assert_select "a.post-list__title", text: posts(:one).title
+    assert_select "a.post-list__title", text: posts(:two).title, count: 0
+  end
+
+  test "blog shows draft posts to authenticated users" do
+    sign_in_as(users(:one))
+    get blog_path
+    assert_response :success
+    assert_select "a.post-list__title", text: posts(:one).title
+    assert_select "a.post-list__title", text: posts(:two).title
+  end
+
   # Unauthenticated access to write actions redirects to login
 
   test "new redirects to login when unauthenticated" do

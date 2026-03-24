@@ -1,9 +1,10 @@
 one:
   title: First Post
   author: Skye Freeman
+  published_at: 2026-01-01
   created_at: 2026-01-01 00:00:00
 
 two:
-  title: Second Post
+  title: Draft Post
   author: Skye Freeman
   created_at: 2026-02-01 00:00:00

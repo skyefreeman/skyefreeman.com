@@ -3,24 +3,22 @@
 }
 
 .post-list__item {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
+  display: block;
   padding: 0.5rem 0;
   background-color: #ffffff;
 }
 
-.post-list__date {
-  font-size: 1rem;
-  color: #888;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .post-list__title {
+  display: block;
   font-size: 1rem;
   text-decoration: none;
   color: #1a1a1a;
+}
+
+.post-list__date {
+  display: block;
+  font-size: 0.85rem;
+  color: #888;
 }
 
 .post-list__title:hover {

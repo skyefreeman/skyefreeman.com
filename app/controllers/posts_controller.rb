@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
   def blog
     @posts = Post.order(published_at: :desc)
+    @posts = @posts.where.not(published_at: nil) unless authenticated?
   end
 
   def show
