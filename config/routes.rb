@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get "blog", to: "posts#blog"
   get "blog/new", to: "posts#new"
+  get "blog/:year/:month/:day/:slug", to: "posts#show_by_date_slug", as: :post_by_date_slug
 
   get "about", to: "pages#about"
   get "projects", to: "pages#projects"

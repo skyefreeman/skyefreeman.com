@@ -17,12 +17,15 @@ OUTPUT_DIR   = File.expand_path("legacy-posts", __dir__)
 def parse_posts(lisp_source)
   lisp_source.scan(/make-instance 'post(.*?)(?=make-instance 'post|\z)/m).map do |match|
     block = match[0]
+    raw_url = extract_field(block, "url")
     {
       title:       extract_field(block, "title"),
       description: extract_field(block, "description"),
       author:      extract_field(block, "author"),
       date:        extract_field(block, "date"),
       filepath:    extract_field(block, "filepath"),
+      image:       extract_field(block, "image"),
+      url_slug:    raw_url.sub(%r{\A/blog/}, ""),
     }
   end
 end
@@ -40,15 +43,18 @@ def filepath_stem(filepath_str)
 end
 
 def front_matter(post)
-  <<~YAML
-    ---
-    layout: post
-    title: "#{post[:title].gsub('"', '\\"')}"
-    date: "#{post[:date]}"
-    author: #{post[:author]}
-    description: "#{post[:description].gsub('"', '\\"')}"
-    ---
-  YAML
+  lines = [
+    "---",
+    "layout: post",
+    "title: \"#{post[:title].gsub('"', '\\"')}\"",
+    "date: \"#{post[:date]}\"",
+    "author: #{post[:author]}",
+    "description: \"#{post[:description].gsub('"', '\\"')}\"",
+  ]
+  lines << "image: \"#{post[:image]}\"" unless post[:image].to_s.strip.empty?
+  lines << "url_slug: #{post[:url_slug]}" unless post[:url_slug].to_s.strip.empty?
+  lines << "---"
+  lines.join("\n") + "\n"
 end
 
 # Extract content between {% block post-content %} and {% endblock %}

@@ -76,7 +76,8 @@ html_files.each do |html_path|
     title:        title,
     author:       meta["author"] || "Skye Freeman",
     description:  meta["description"],
-    published_at: published_at
+    published_at: published_at,
+    url_slug:     meta["url_slug"].presence
   )
 
   html, figure_count = attach_and_rewrite_figures(post, html)

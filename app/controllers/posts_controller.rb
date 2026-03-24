@@ -10,6 +10,11 @@ class PostsController < ApplicationController
   def show
   end
 
+  def show_by_date_slug
+    @post = Post.find_by!(url_slug: params[:slug])
+    render :show
+  end
+
   def new
     @post = Post.new
   end
@@ -50,7 +55,7 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(
-      :title, :deleted_at,
+      :title, :deleted_at, :url_slug,
       :body, :header_attachment
     )
   end
