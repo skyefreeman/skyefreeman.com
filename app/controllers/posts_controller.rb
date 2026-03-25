@@ -10,7 +10,10 @@ class PostsController < ApplicationController
   def feed
     @posts = Post.where.not(published_at: nil).order(published_at: :desc).limit(20)
     respond_to do |format|
-      format.atom { render layout: false }
+      format.atom do
+        response.headers["Content-Type"] = "text/xml; charset=utf-8"
+        render layout: false
+      end
     end
   end
 

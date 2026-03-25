@@ -103,7 +103,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   test "feed returns atom content type" do
     get blog_feed_path(format: :atom)
     assert_response :success
-    assert_equal "application/atom+xml", response.media_type
+    assert_equal "text/xml", response.media_type
   end
 
   test "feed includes published posts" do
