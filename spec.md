@@ -29,6 +29,19 @@ RESTful resource: `resources :posts`
 | PATCH  | /posts/:id       | update  |
 | DELETE | /posts/:id       | destroy |
 
+## Views & Helpers
+
+### Meta Tags
+- `app/views/shared/_meta_tags.html.erb` — partial accepting `title`, `description`, `og_type`, `canonical_url`, `image_url` locals
+- Renders standard `<meta name="description">`, canonical link, Open Graph, and Twitter Card tags
+- All locals are optional; falls back gracefully when absent
+- `twitter:card` is `summary_large_image` when `image_url` is present, `summary` otherwise
+
+### PostsHelper
+- `post_url_path(post)` — returns relative path (date-slug or `/posts/:id`)
+- `post_full_url(post)` — returns absolute URL for canonical/OG tags
+- `post_og_image_url(post)` — returns absolute URL for `header_attachment`, or `nil`
+
 ## Changelog
 
 - Scaffolded Rails 8.1 app with PostgreSQL

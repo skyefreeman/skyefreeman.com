@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <%= render "shared/meta_tags",
+    title: @post.title,
+    description: @post.description,
+    og_type: "article",
+    canonical_url: post_full_url(@post),
+    image_url: post_og_image_url(@post) %>
+<% end %>
+
 <div class="post">
   <div class="post__header">
     <h1 class="post__title"><%= @post.title %></h1>

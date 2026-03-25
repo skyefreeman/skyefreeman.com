@@ -1,0 +1,29 @@
+<% if local_assigns[:description].present? %>
+  <meta name="description" content="<%= description %>">
+<% end %>
+
+<% if local_assigns[:canonical_url].present? %>
+  <link rel="canonical" href="<%= canonical_url %>">
+<% end %>
+
+<meta property="og:site_name" content="Skye Freeman">
+<meta property="og:title" content="<%= local_assigns[:title] || "Skye Freeman" %>">
+<% if local_assigns[:description].present? %>
+  <meta property="og:description" content="<%= description %>">
+<% end %>
+<meta property="og:type" content="<%= local_assigns[:og_type] || "website" %>">
+<% if local_assigns[:canonical_url].present? %>
+  <meta property="og:url" content="<%= canonical_url %>">
+<% end %>
+<% if local_assigns[:image_url].present? %>
+  <meta property="og:image" content="<%= image_url %>">
+<% end %>
+
+<meta name="twitter:card" content="<%= local_assigns[:image_url].present? ? "summary_large_image" : "summary" %>">
+<meta name="twitter:title" content="<%= local_assigns[:title] || "Skye Freeman" %>">
+<% if local_assigns[:description].present? %>
+  <meta name="twitter:description" content="<%= description %>">
+<% end %>
+<% if local_assigns[:image_url].present? %>
+  <meta name="twitter:image" content="<%= image_url %>">
+<% end %>

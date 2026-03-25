@@ -15,4 +15,24 @@ class PostsHelperTest < ActionView::TestCase
     post = Post.new(id: 0, title: "No Date", url_slug: "no-date")
     assert_equal post_path(post), post_url_path(post)
   end
+
+  test "post_full_url returns absolute date slug url when post has published_at and url_slug" do
+    post = posts(:one)
+    assert_match %r{/blog/2026/01/01/first-post$}, post_full_url(post)
+  end
+
+  test "post_full_url returns absolute post url when url_slug is missing" do
+    post = posts(:two)
+    assert_match %r{/posts/\d+$}, post_full_url(post)
+  end
+
+  test "post_full_url returns absolute post url when published_at is missing" do
+    post = Post.new(id: 0, title: "No Date", url_slug: "no-date")
+    assert_match %r{/posts/0$}, post_full_url(post)
+  end
+
+  test "post_og_image_url returns nil when header_attachment is not attached" do
+    post = posts(:one)
+    assert_nil post_og_image_url(post)
+  end
 end
