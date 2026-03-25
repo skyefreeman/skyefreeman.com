@@ -31,6 +31,28 @@
   margin-bottom: 0;
 }
 
+.about-intro {
+  margin-bottom: 1.5rem;
+}
+
+.about-intro__photo {
+  display: block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.about-intro p {
+  margin-bottom: 0;
+}
+
+.page-content p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
 .page-content__action {
   font-size: 0.85rem;
   text-decoration: none;
