@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :posts, except: [ :index ]
 
   get "blog", to: "posts#blog"
+  get "blog/feed", to: "posts#feed", as: :blog_feed
   get "blog/new", to: "posts#new"
   get "blog/:year", to: "posts#by_year", as: :posts_by_year, constraints: { year: /\d{4}/ }
   get "blog/:year/:month", to: "posts#by_month", as: :posts_by_month, constraints: { year: /\d{4}/, month: /\d{2}/ }

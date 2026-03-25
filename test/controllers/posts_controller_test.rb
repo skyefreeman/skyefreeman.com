@@ -98,6 +98,39 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_select "p.post-list__empty"
   end
 
+  # Atom feed
+
+  test "feed returns atom content type" do
+    get blog_feed_path(format: :atom)
+    assert_response :success
+    assert_equal "application/atom+xml", response.media_type
+  end
+
+  test "feed includes published posts" do
+    get blog_feed_path(format: :atom)
+    assert_includes response.body, posts(:one).title
+  end
+
+  test "feed excludes draft posts" do
+    get blog_feed_path(format: :atom)
+    assert_not_includes response.body, posts(:two).title
+  end
+
+  test "feed is valid atom xml" do
+    get blog_feed_path(format: :atom)
+    doc = Nokogiri::XML(response.body)
+    assert doc.errors.empty?, "Feed XML has errors: #{doc.errors}"
+    assert_equal "http://www.w3.org/2005/Atom", doc.root.namespace.href
+  end
+
+  test "feed entries include post links" do
+    get blog_feed_path(format: :atom)
+    doc = Nokogiri::XML(response.body)
+    doc.remove_namespaces!
+    links = doc.xpath("//entry/link/@href").map(&:value)
+    assert_not_empty links
+  end
+
   # Unauthenticated access to write actions redirects to login
 
   test "new redirects to login when unauthenticated" do

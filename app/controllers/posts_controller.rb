@@ -7,6 +7,13 @@ class PostsController < ApplicationController
     @posts = @posts.where.not(published_at: nil) unless authenticated?
   end
 
+  def feed
+    @posts = Post.where.not(published_at: nil).order(published_at: :desc).limit(20)
+    respond_to do |format|
+      format.atom { render layout: false }
+    end
+  end
+
   def by_year
     @year = params[:year].to_i
     @posts = published_posts_in_range(Date.new(@year).beginning_of_year..Date.new(@year).end_of_year)
