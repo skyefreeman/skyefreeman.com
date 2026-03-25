@@ -38,3 +38,26 @@
   margin: 0;
   font-size: 0.9rem;
 }
+
+.project-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.project-item__header h3 {
+  margin: 0;
+}
+
+.project-item__badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #fde68a;
+  color: #92400e;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
