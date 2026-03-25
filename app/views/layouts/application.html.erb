@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Skyefreeman Com" %></title>
+    <title><%= content_for(:title).presence ? "#{content_for(:title)} — Skye" : "Skye" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Skyefreeman Com">
@@ -9,7 +9,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= render "shared/meta_tags", title: content_for(:title).presence || "Skye Freeman" %>
+    <%= render "shared/meta_tags", title: content_for(:title).presence || "Skye" %>
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>

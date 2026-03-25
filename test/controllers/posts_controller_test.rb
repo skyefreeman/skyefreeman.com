@@ -13,6 +13,18 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Page titles
+
+  test "blog page has title Blog — Skye" do
+    get blog_path
+    assert_select "title", text: "Blog — Skye"
+  end
+
+  test "post show page title includes post title" do
+    get post_path(posts(:one))
+    assert_select "title", text: "#{posts(:one).title} — Skye"
+  end
+
   # Draft post visibility
 
   test "blog hides draft posts from unauthenticated users" do
