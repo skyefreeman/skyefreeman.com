@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :links
   resource :session
+  resources :links
   resources :passwords, param: :token
   resources :posts, except: [ :index ]
 
