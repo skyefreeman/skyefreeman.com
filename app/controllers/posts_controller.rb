@@ -96,7 +96,7 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(
       :title, :deleted_at, :url_slug,
-      :body, :header_attachment
+      :body, :header_attachment, :tag_names
     )
   end
 end

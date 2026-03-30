@@ -15,7 +15,7 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `header_attachment` (ActiveStorage `has_one_attached`)
 - `body_attachments` (ActiveStorage `has_many_attached`)
 - `tags` (has many through `taggings`)
-- `tag_names` / `tag_names=` — convenience accessors for comma-separated tag names
+- `tag_names` / `tag_names=` — comma-separated tag name accessors; tags created on first use if absent
 
 ### Tag
 - `name` (string, unique, case-insensitive)
@@ -63,3 +63,4 @@ RESTful resource: `resources :posts`
 - Removed state column from posts
 - Rotated master.key; removed from source control
 - Added post tagging system: Tag and Tagging models with has_many :through association on Post
+- Added Tags field to post new/edit form; input is comma-separated, tags auto-created if absent

@@ -189,4 +189,25 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     delete post_path(posts(:one))
     assert_redirected_to blog_path
   end
+
+  # Tags via form
+
+  test "create assigns tags from tag_names param" do
+    sign_in_as(users(:one))
+    post posts_path, params: { post: { title: "Tagged Post", body: "Hello", tag_names: "baseball,opera,barack obama" } }
+    created = Post.last
+    assert_equal 3, created.tags.count
+    assert_includes created.tags.map(&:name), "baseball"
+    assert_includes created.tags.map(&:name), "opera"
+    assert_includes created.tags.map(&:name), "barack obama"
+  end
+
+  test "update replaces tags from tag_names param" do
+    sign_in_as(users(:one))
+    patch post_path(posts(:two)), params: { post: { title: posts(:two).title, tag_names: "jazz,chess" } }
+    posts(:two).reload
+    assert_equal 2, posts(:two).tags.count
+    assert_includes posts(:two).tags.map(&:name), "jazz"
+    assert_includes posts(:two).tags.map(&:name), "chess"
+  end
 end
