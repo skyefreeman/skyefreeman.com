@@ -213,27 +213,24 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   # Tags in views
 
-  test "show displays tags when post has tags" do
+  test "show displays tags inline with date when post has tags" do
     get post_path(posts(:one))
-    assert_select "p.post__tags", text: /Tags:/
-    assert_select "p.post__tags", text: /ruby/
-    assert_select "p.post__tags", text: /rails/
+    assert_select "p.post__meta", text: /ruby/
+    assert_select "p.post__meta", text: /rails/
   end
 
-  test "show omits tags section when post has no tags" do
+  test "show omits tags from meta when post has no tags" do
     get post_path(posts(:two))
-    assert_select "p.post__tags", count: 0
+    assert_select "p.post__meta", text: /ruby/, count: 0
   end
 
-  test "archive list displays tags for tagged posts" do
+  test "archive list displays tags inline with date for tagged posts" do
     get posts_by_year_path(year: 2026)
-    assert_select "span.post-list__tags", text: /Tags:/
-    assert_select "span.post-list__tags", text: /ruby/
+    assert_select "span.post-list__date", text: /ruby/
   end
 
-  test "blog page displays tags for tagged posts" do
+  test "blog page displays tags inline with date for tagged posts" do
     get blog_path
-    assert_select "span.post-list__tags", text: /Tags:/
-    assert_select "span.post-list__tags", text: /ruby/
+    assert_select "span.post-list__date", text: /ruby/
   end
 end

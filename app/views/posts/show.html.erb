@@ -21,6 +21,9 @@
     <% if @post.deleted_at %>
       &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>
+    <% if @post.tags.any? %>
+      &middot; <%= @post.tag_names %>
+    <% end %>
   </p>
 
   <% if @post.header_attachment.attached? %>
@@ -28,8 +31,4 @@
   <% end %>
 
   <div class="post__body"><%= @post.body %></div>
-
-  <% if @post.tags.any? %>
-    <p class="post__tags">Tags: <%= @post.tag_names %></p>
-  <% end %>
 </div>
