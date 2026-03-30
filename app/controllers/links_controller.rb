@@ -25,7 +25,7 @@ class LinksController < ApplicationController
 
     respond_to do |format|
       if @link.save
-        format.html { redirect_to @link, notice: "Link was successfully created." }
+        format.html { redirect_to links_path, notice: "Link was successfully created." }
         format.json { render :show, status: :created, location: @link }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class LinksController < ApplicationController
   def update
     respond_to do |format|
       if @link.update(link_params)
-        format.html { redirect_to @link, notice: "Link was successfully updated.", status: :see_other }
+        format.html { redirect_to links_path, notice: "Link was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @link }
       else
         format.html { render :edit, status: :unprocessable_entity }

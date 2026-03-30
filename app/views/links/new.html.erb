@@ -1,11 +1,15 @@
-<% content_for :title, "New link" %>
+<div class="page-content">
+  <% content_for :title, "New link" %>
 
-<h1>New link</h1>
+  <h1>New link</h1>
 
-<%= render "form", link: @link %>
+  <%= render "form", link: @link %>
 
-<br>
+  <br>
 
-<div>
-  <%= link_to "Back to links", links_path %>
-</div>
+  <div>
+    <%= link_to "Back to links", links_path %>
+  </div>
+
+</div> 
+

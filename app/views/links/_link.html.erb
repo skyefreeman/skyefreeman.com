@@ -1,7 +1,11 @@
 <div id="<%= dom_id link %>">
-  <div>
-    <strong>Url:</strong>
-    <%= link.url %>
+  <div class="">
+    <a class="" href=<%= ensure_https_prefix(link.url) %>>
+      <%= link.url %>
+    </a>
+    
   </div>
-
+  <div class="link__date">
+    Link saved on <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%I:%M %p")%>
+  </div> 
 </div>
