@@ -210,4 +210,30 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes posts(:two).tags.map(&:name), "jazz"
     assert_includes posts(:two).tags.map(&:name), "chess"
   end
+
+  # Tags in views
+
+  test "show displays tags when post has tags" do
+    get post_path(posts(:one))
+    assert_select "p.post__tags", text: /Tags:/
+    assert_select "p.post__tags", text: /ruby/
+    assert_select "p.post__tags", text: /rails/
+  end
+
+  test "show omits tags section when post has no tags" do
+    get post_path(posts(:two))
+    assert_select "p.post__tags", count: 0
+  end
+
+  test "archive list displays tags for tagged posts" do
+    get posts_by_year_path(year: 2026)
+    assert_select "span.post-list__tags", text: /Tags:/
+    assert_select "span.post-list__tags", text: /ruby/
+  end
+
+  test "blog page displays tags for tagged posts" do
+    get blog_path
+    assert_select "span.post-list__tags", text: /Tags:/
+    assert_select "span.post-list__tags", text: /ruby/
+  end
 end
