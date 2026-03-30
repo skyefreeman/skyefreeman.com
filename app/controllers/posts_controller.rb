@@ -17,6 +17,15 @@ class PostsController < ApplicationController
     end
   end
 
+  def tags_index
+    @tags = Tag.joins(:posts).where.not(posts: { published_at: nil }).order(:name).distinct
+  end
+
+  def tags_show
+    @tag = Tag.find_by!(name: params[:name])
+    @posts = @tag.posts.where.not(published_at: nil).order(published_at: :desc)
+  end
+
   def by_year
     @year = params[:year].to_i
     @posts = published_posts_in_range(Date.new(@year).beginning_of_year..Date.new(@year).end_of_year)

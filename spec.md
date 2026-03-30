@@ -30,15 +30,20 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 
 RESTful resource: `resources :posts`
 
-| Verb   | Path             | Action  |
-|--------|------------------|---------|
-| GET    | /posts           | index   |
-| GET    | /posts/:id       | show    |
-| GET    | /posts/new       | new     |
-| POST   | /posts           | create  |
-| GET    | /posts/:id/edit  | edit    |
-| PATCH  | /posts/:id       | update  |
-| DELETE | /posts/:id       | destroy |
+| Verb   | Path                        | Action            |
+|--------|-----------------------------|-------------------|
+| GET    | /posts/:id                  | show              |
+| GET    | /posts/new                  | new               |
+| POST   | /posts                      | create            |
+| GET    | /posts/:id/edit             | edit              |
+| PATCH  | /posts/:id                  | update            |
+| DELETE | /posts/:id                  | destroy           |
+| GET    | /blog                       | blog              |
+| GET    | /blog/tags                  | tags_index        |
+| GET    | /blog/tags/:name            | tags_show         |
+| GET    | /blog/:year                 | by_year           |
+| GET    | /blog/:year/:month          | by_month          |
+| GET    | /blog/:year/:month/:day     | by_day            |
 
 ## Views & Helpers
 
@@ -64,3 +69,4 @@ RESTful resource: `resources :posts`
 - Rotated master.key; removed from source control
 - Added post tagging system: Tag and Tagging models with has_many :through association on Post
 - Added Tags field to post new/edit form; input is comma-separated, tags auto-created if absent
+- Added /blog/tags (all tags with post counts) and /blog/tags/:name (posts for a tag) routes and views

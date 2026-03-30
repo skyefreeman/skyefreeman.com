@@ -1,0 +1,16 @@
+<% content_for :title, "Tags" %>
+<div class="page-content">
+  <h1 class="page-content__title">Tags</h1>
+  <% if @tags.empty? %>
+    <p class="post-list__empty">No tags found.</p>
+  <% else %>
+    <ul class="post-list">
+      <% @tags.each do |tag| %>
+        <li class="post-list__item">
+          <%= link_to tag.name, blog_tag_path(tag.name), class: "post-list__title" %>
+          <span class="post-list__date"><%= pluralize(tag.posts.where.not(published_at: nil).count, "post") %></span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
