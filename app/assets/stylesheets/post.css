@@ -96,6 +96,11 @@
   margin-bottom: 2rem;
 }
 
+.post__tag-link {
+  color: #888;
+  text-decoration: underline;
+}
+
 .post__back {
   font-size: 0.9rem;
   display: inline-block;

@@ -213,25 +213,25 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   # Tags in views
 
-  test "show displays tags inline with date when post has tags" do
+  test "show displays tags as links in post meta" do
     get post_path(posts(:one))
-    assert_select "p.post__meta", text: /ruby/
-    assert_select "p.post__meta", text: /rails/
+    assert_select "p.post__meta a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
+    assert_select "p.post__meta a.post__tag-link[href='#{blog_tag_path("rails")}']", text: "rails"
   end
 
-  test "show omits tags from meta when post has no tags" do
+  test "show omits tag links when post has no tags" do
     get post_path(posts(:two))
-    assert_select "p.post__meta", text: /ruby/, count: 0
+    assert_select "p.post__meta a.post__tag-link", count: 0
   end
 
-  test "archive list displays tags inline with date for tagged posts" do
+  test "archive list displays tags as links" do
     get posts_by_year_path(year: 2026)
-    assert_select "span.post-list__date", text: /ruby/
+    assert_select "span.post-list__date a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
   end
 
-  test "blog page displays tags inline with date for tagged posts" do
+  test "blog page displays tags as links" do
     get blog_path
-    assert_select "span.post-list__date", text: /ruby/
+    assert_select "span.post-list__date a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
   end
 
   # Tag index

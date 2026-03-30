@@ -22,7 +22,7 @@
       &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>
     <% if @post.tags.any? %>
-      &middot; <%= @post.tag_names %>
+      &middot; <%= post_tag_links(@post) %>
     <% end %>
   </p>
 

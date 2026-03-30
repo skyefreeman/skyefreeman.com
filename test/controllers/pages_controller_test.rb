@@ -16,8 +16,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "title", text: "Projects — Skye"
   end
 
-  test "home page displays tags inline with date for tagged posts" do
+  test "home page displays tags as links" do
     get root_path
-    assert_select "span.post-list__date", text: /ruby/
+    assert_select "span.post-list__date a.post__tag-link", text: "ruby"
   end
 end

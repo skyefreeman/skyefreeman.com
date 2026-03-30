@@ -18,4 +18,10 @@ module PostsHelper
 
     url_for(post.header_attachment)
   end
+
+  def post_tag_links(post)
+    post.tags.map { |tag|
+      link_to(tag.name, blog_tag_path(tag.name), class: "post__tag-link")
+    }.join(", ").html_safe
+  end
 end
