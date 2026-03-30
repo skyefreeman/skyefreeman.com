@@ -14,6 +14,17 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `body` (ActionText rich text via `has_rich_text`)
 - `header_attachment` (ActiveStorage `has_one_attached`)
 - `body_attachments` (ActiveStorage `has_many_attached`)
+- `tags` (has many through `taggings`)
+- `tag_names` / `tag_names=` — convenience accessors for comma-separated tag names
+
+### Tag
+- `name` (string, unique, case-insensitive)
+- `has_many :posts, through: :taggings`
+
+### Tagging
+- Join model between `Post` and `Tag`
+- `post_id`, `tag_id` (foreign keys)
+- Unique constraint on `[post_id, tag_id]` to prevent duplicate taggings
 
 ## Routes
 
@@ -51,3 +62,4 @@ RESTful resource: `resources :posts`
 - Posts listed in descending order by created_at on index
 - Removed state column from posts
 - Rotated master.key; removed from source control
+- Added post tagging system: Tag and Tagging models with has_many :through association on Post
