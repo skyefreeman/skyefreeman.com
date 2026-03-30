@@ -4,6 +4,7 @@
 
   <%= render "form", link: @link %>
   <div class="form__group">
-    <%= button_to "Delete", @link, method: :delete, class: "form__submit" %>
+    <%= link_to "Back to links", links_path %>
+    <%= button_to "Delete", @link, method: :delete, class: "link__delete-button" %>
   </div>
 </div> 
