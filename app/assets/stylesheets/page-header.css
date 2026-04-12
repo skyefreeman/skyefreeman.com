@@ -53,6 +53,11 @@
   margin-bottom: 1.5rem;
 }
 
+.page-content__subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
 .page-content__action {
   font-size: 0.85rem;
   text-decoration: none;
