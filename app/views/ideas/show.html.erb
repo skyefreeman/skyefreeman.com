@@ -11,6 +11,6 @@
   <p class="post__meta"><%= @idea.updated_at.strftime("%B %d, %Y") %></p>
 
   <% if @idea.output_url.present? %>
-    <p class="post__meta"><%= link_to @idea.output_url, @idea.output_url %></p>
+    <p class="post__meta"><span class="idea__done">DONE</span> - <%= link_to @idea.output_url, @idea.output_url %></p>
   <% end %>
 </div>

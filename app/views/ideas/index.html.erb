@@ -8,6 +8,8 @@
     <% end %>
   </div>
 
+  <p class="page-content__subtitle">A collection of things that I might learn, write or build someday.</p>
+
   <% if @ideas.any? %>
     <ul class="post-list">
       <% @ideas.each do |idea| %>
@@ -16,7 +18,7 @@
           <span class="post-list__date">
             <%= idea.updated_at.strftime("%B %d, %Y") %>
             <% if idea.output_url.present? %>
-              &middot; <%= link_to idea.output_url, idea.output_url %>
+              &middot; <span class="idea__done">DONE</span> - <%= link_to idea.output_url, idea.output_url %>
             <% end %>
           </span>
         </li>

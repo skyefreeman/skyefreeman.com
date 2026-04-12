@@ -13,9 +13,31 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.post-list__title", text: ideas(:one).title
   end
 
+  test "index displays subtitle" do
+    get ideas_path
+    assert_select "p.page-content__subtitle", text: "A collection of things that I might learn, write or build someday."
+  end
+
   test "index shows output_url as link when present" do
     get ideas_path
     assert_select "a[href='#{ideas(:one).output_url}']"
+  end
+
+  test "index shows DONE label next to output_url" do
+    get ideas_path
+    assert_select "span.idea__done", text: "DONE"
+  end
+
+  test "show shows DONE label next to output_url" do
+    sign_in_as(users(:one))
+    get idea_path(ideas(:one))
+    assert_select "span.idea__done", text: "DONE"
+  end
+
+  test "show omits DONE label when output_url is absent" do
+    sign_in_as(users(:one))
+    get idea_path(ideas(:two))
+    assert_select "span.idea__done", count: 0
   end
 
   test "index omits output_url link when absent" do
