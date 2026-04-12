@@ -3,7 +3,9 @@
 <div class="post">
   <div class="post__header">
     <h1 class="post__title"><%= @note.title %></h1>
-    <%= link_to "Edit Note", edit_note_path(@note), class: "page-content__action" %>
+    <% if authenticated? %>
+      <%= link_to "Edit Note", edit_note_path(@note), class: "page-content__action" %>
+    <% end %>
   </div>
 
   <p class="post__meta"><%= @note.updated_at.strftime("%B %d, %Y") %> at <%= @note.updated_at.strftime("%l:%M %p").strip %></p>

@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_action :require_authentication, only: %i[new create edit update destroy]
+  before_action :require_authentication, only: %i[show new create edit update destroy]
   before_action :set_idea, only: %i[show edit update destroy]
 
   def index

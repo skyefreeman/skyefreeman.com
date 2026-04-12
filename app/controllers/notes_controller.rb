@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :require_authentication
+  before_action :require_authentication, only: %i[new create edit update destroy]
   before_action :set_note, only: %i[show edit update destroy]
 
   def index

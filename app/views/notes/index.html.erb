@@ -3,7 +3,9 @@
 <div class="page-content">
   <div class="post__header">
     <h1 class="page-content__title">Notes</h1>
-    <%= link_to "New Note", new_note_path, class: "page-content__action" %>
+    <% if authenticated? %>
+      <%= link_to "New Note", new_note_path, class: "page-content__action" %>
+    <% end %>
   </div>
 
   <% if @notes.any? %>

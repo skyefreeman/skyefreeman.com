@@ -30,7 +30,8 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{ideas(:one).output_url}']"
   end
 
-  test "show shows output_url as link when present regardless of auth" do
+  test "show shows output_url as link when present" do
+    sign_in_as(users(:one))
     get idea_path(ideas(:one))
     assert_select "a[href='#{ideas(:one).output_url}']"
   end
@@ -41,6 +42,7 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show shows DONE label next to output_url" do
+    sign_in_as(users(:one))
     get idea_path(ideas(:one))
     assert_select "span.idea__done", text: "DONE"
   end
@@ -58,9 +60,9 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "show is accessible without authentication" do
+  test "show redirects to login when unauthenticated" do
     get idea_path(ideas(:one))
-    assert_response :success
+    assert_redirected_to new_session_path
   end
 
   # Unauthenticated access to write actions redirects to login

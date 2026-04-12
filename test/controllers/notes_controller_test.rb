@@ -1,17 +1,19 @@
 require "test_helper"
 
 class NotesControllerTest < ActionDispatch::IntegrationTest
-  # Unauthenticated access redirects to login
+  # Public access
 
-  test "index redirects to login when unauthenticated" do
+  test "index is accessible without authentication" do
     get notes_path
-    assert_redirected_to new_session_path
+    assert_response :success
   end
 
-  test "show redirects to login when unauthenticated" do
+  test "show is accessible without authentication" do
     get note_path(notes(:one))
-    assert_redirected_to new_session_path
+    assert_response :success
   end
+
+  # Unauthenticated write access redirects to login
 
   test "new redirects to login when unauthenticated" do
     get new_note_path
@@ -40,17 +42,9 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
 
   # Authenticated access succeeds
 
-  test "index lists notes when authenticated" do
-    sign_in_as(users(:one))
+  test "index lists notes" do
     get notes_path
-    assert_response :success
     assert_select "a.post-list__title", text: notes(:one).title
-  end
-
-  test "show returns a single note when authenticated" do
-    sign_in_as(users(:one))
-    get note_path(notes(:one))
-    assert_response :success
   end
 
   test "new returns a blank note form when authenticated" do
