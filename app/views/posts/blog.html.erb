@@ -10,7 +10,7 @@
     <% @posts.each do |post| %>
       <li class="post-list__item">
         <%= link_to post.title, post_url_path(post), class: "post-list__title" %>
-        <span class="post-list__date"><%= post.published_at ? post.published_at.strftime("%b %d, %Y") : "DRAFT" %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
+        <span class="post-list__date"><%= post.published_at ? "#{post.published_at.strftime("%B %d, %Y")} at #{post.published_at.strftime("%l:%M %p").strip}" : "DRAFT" %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
       </li>
     <% end %>
   </ul>

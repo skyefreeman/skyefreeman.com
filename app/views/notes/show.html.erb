@@ -6,7 +6,7 @@
     <%= link_to "Edit Note", edit_note_path(@note), class: "page-content__action" %>
   </div>
 
-  <p class="post__meta"><%= @note.created_at.strftime("%B %d, %Y") %></p>
+  <p class="post__meta"><%= @note.updated_at.strftime("%B %d, %Y") %> at <%= @note.updated_at.strftime("%l:%M %p").strip %></p>
 
   <div class="post__body"><%= @note.body %></div>
 </div>

@@ -11,7 +11,7 @@
       <% @notes.each do |note| %>
         <li class="post-list__item">
           <%= link_to note.title, note_path(note), class: "post-list__title" %>
-          <span class="post-list__date"><%= note.created_at.strftime("%B %d, %Y") %></span>
+          <span class="post-list__date"><%= note.updated_at.strftime("%B %d, %Y") %> at <%= note.updated_at.strftime("%l:%M %p").strip %></span>
         </li>
       <% end %>
     </ul>

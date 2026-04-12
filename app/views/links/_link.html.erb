@@ -6,6 +6,6 @@
     
   </div>
   <div class="link__date">
-    Link saved on <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%I:%M %p")%>
+    <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %>
   </div> 
 </div>

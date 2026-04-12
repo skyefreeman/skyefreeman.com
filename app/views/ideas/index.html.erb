@@ -16,7 +16,7 @@
         <li class="post-list__item">
           <%= link_to idea.title, idea_path(idea), class: "post-list__title" %>
           <span class="post-list__date">
-            <%= idea.updated_at.strftime("%B %d, %Y") %>
+            <%= idea.updated_at.strftime("%B %d, %Y") %> at <%= idea.updated_at.strftime("%l:%M %p").strip %>
             <% if idea.output_url.present? %>
               &middot; <span class="idea__done">DONE</span> - <%= link_to idea.output_url, idea.output_url %>
             <% end %>
