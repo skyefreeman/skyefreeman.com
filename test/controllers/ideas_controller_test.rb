@@ -8,7 +8,14 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "index lists ideas" do
+  test "index shows title as plain text when unauthenticated" do
+    get ideas_path
+    assert_select "span.post-list__title", text: ideas(:one).title
+    assert_select "a.post-list__title", count: 0
+  end
+
+  test "index shows title as link when authenticated" do
+    sign_in_as(users(:one))
     get ideas_path
     assert_select "a.post-list__title", text: ideas(:one).title
   end
@@ -18,8 +25,13 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_select "p.page-content__subtitle", text: "A collection of things that I might learn, write or build someday."
   end
 
-  test "index shows output_url as link when present" do
+  test "index shows output_url as link when present regardless of auth" do
     get ideas_path
+    assert_select "a[href='#{ideas(:one).output_url}']"
+  end
+
+  test "show shows output_url as link when present regardless of auth" do
+    get idea_path(ideas(:one))
     assert_select "a[href='#{ideas(:one).output_url}']"
   end
 
@@ -29,7 +41,6 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show shows DONE label next to output_url" do
-    sign_in_as(users(:one))
     get idea_path(ideas(:one))
     assert_select "span.idea__done", text: "DONE"
   end
@@ -43,7 +54,7 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   test "index omits output_url link when absent" do
     get ideas_path
     assert_select "li.post-list__item", text: /#{ideas(:two).title}/ do
-      assert_select "a[href]", count: 1 # only the title link
+      assert_select "a[href]", count: 0
     end
   end
 
