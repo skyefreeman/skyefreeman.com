@@ -1,0 +1,28 @@
+<% content_for :title, "Ideas" %>
+
+<div class="page-content">
+  <div class="post__header">
+    <h1 class="page-content__title">Ideas</h1>
+    <% if authenticated? %>
+      <%= link_to "New Idea", new_idea_path, class: "page-content__action" %>
+    <% end %>
+  </div>
+
+  <% if @ideas.any? %>
+    <ul class="post-list">
+      <% @ideas.each do |idea| %>
+        <li class="post-list__item">
+          <%= link_to idea.title, idea_path(idea), class: "post-list__title" %>
+          <span class="post-list__date">
+            <%= idea.updated_at.strftime("%B %d, %Y") %>
+            <% if idea.output_url.present? %>
+              &middot; <%= link_to idea.output_url, idea.output_url %>
+            <% end %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="post-list__empty">No ideas yet.</p>
+  <% end %>
+</div>

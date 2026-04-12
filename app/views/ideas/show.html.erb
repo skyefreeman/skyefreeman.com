@@ -1,0 +1,16 @@
+<% content_for :title, @idea.title %>
+
+<div class="post">
+  <div class="post__header">
+    <h1 class="post__title"><%= @idea.title %></h1>
+    <% if authenticated? %>
+      <%= link_to "Edit Idea", edit_idea_path(@idea), class: "page-content__action" %>
+    <% end %>
+  </div>
+
+  <p class="post__meta"><%= @idea.updated_at.strftime("%B %d, %Y") %></p>
+
+  <% if @idea.output_url.present? %>
+    <p class="post__meta"><%= link_to @idea.output_url, @idea.output_url %></p>
+  <% end %>
+</div>

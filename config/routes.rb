@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :ideas
   resources :notes
   resource :session
   resources :links

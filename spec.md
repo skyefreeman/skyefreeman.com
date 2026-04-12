@@ -31,6 +31,11 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `created_at`, `updated_at` (timestamps)
 - `body` (ActionText rich text via `has_rich_text`)
 
+### Idea
+- `title` (text)
+- `output_url` (string, optional)
+- `created_at`, `updated_at` (timestamps)
+
 ## Routes
 
 RESTful resource: `resources :posts`
@@ -62,6 +67,18 @@ RESTful resource: `resources :notes`
 | PATCH  | /notes/:id          | update  |
 | DELETE | /notes/:id          | destroy |
 
+RESTful resource: `resources :ideas`
+
+| Verb   | Path                | Action  |
+|--------|---------------------|---------|
+| GET    | /ideas              | index   |
+| GET    | /ideas/:id          | show    |
+| GET    | /ideas/new          | new     |
+| POST   | /ideas              | create  |
+| GET    | /ideas/:id/edit     | edit    |
+| PATCH  | /ideas/:id          | update  |
+| DELETE | /ideas/:id          | destroy |
+
 ## Views & Helpers
 
 ### Meta Tags
@@ -88,3 +105,4 @@ RESTful resource: `resources :notes`
 - Added Tags field to post new/edit form; input is comma-separated, tags auto-created if absent
 - Added /blog/tags (all tags with post counts) and /blog/tags/:name (posts for a tag) routes and views
 - Added Note resource with title, body (rich text via ActionText); full CRUD behind authentication; views styled to match Posts flow
+- Added Idea resource with title (text) and optional output_url; index/show public, write actions behind authentication; index displays output_url as clickable link only when present
