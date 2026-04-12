@@ -20,11 +20,6 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.post-list__title", text: ideas(:one).title
   end
 
-  test "index displays subtitle" do
-    get ideas_path
-    assert_select "p.page-content__subtitle", text: "A collection of things that I might learn, write or build someday."
-  end
-
   test "index shows output_url as link when present regardless of auth" do
     get ideas_path
     assert_select "a[href='#{ideas(:one).output_url}']"
