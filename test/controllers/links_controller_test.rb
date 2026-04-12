@@ -11,6 +11,21 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index is accessible without authentication" do
+    get links_url
+    assert_response :success
+  end
+
+  test "index renders title as link text when title is present" do
+    get links_url
+    assert_select "a[href='#{links(:one).url}']", text: links(:one).title
+  end
+
+  test "index renders url as link text when title is absent" do
+    get links_url
+    assert_select "a[href='#{links(:two).url}']", text: links(:two).url
+  end
+
   test "should get new" do
     get new_link_url
     assert_response :success

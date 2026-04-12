@@ -11,7 +11,12 @@
   </div>
   <% end %>
 
-  <div class="form_group">
+  <div class="form__group">
+    <%= form.label :title, class: "form__label" %>
+    <%= form.text_field :title, class: "form__input" %>
+  </div>
+
+  <div class="form__group">
     <%= form.label :url, class: "form__label" %>
     <%= form.text_field :url, placeholder: "skyefreeman.com", class: "form__input" %>
   </div>

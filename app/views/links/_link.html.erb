@@ -1,9 +1,8 @@
 <div id="<%= dom_id link %>">
   <div class="">
-    <a class="" href=<%= ensure_https_prefix(link.url) %>>
-      <%= link.url %>
+    <a href="<%= ensure_https_prefix(link.url) %>">
+      <%= link.title.present? ? link.title : link.url %>
     </a>
-    
   </div>
   <div class="link__date">
     <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %>
