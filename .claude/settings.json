@@ -1,0 +1,8 @@
+{
+  "hooks": {
+    "postEdit": {
+      "command": "bundle exec rubocop --force-exclusion --format simple $CLAUDE_EDITED_FILES 2>/dev/null || true",
+      "description": "Auto-lint Ruby files after edits"
+    }
+  }
+}
