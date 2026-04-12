@@ -3,6 +3,7 @@ require "test_helper"
 class LinksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @link = links(:one)
+    sign_in_as(users(:one))
   end
 
   test "should get index" do
@@ -20,7 +21,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
       post links_url, params: { link: { url: @link.url } }
     end
 
-    assert_redirected_to link_url(Link.last)
+    assert_redirected_to links_url
   end
 
   test "should show link" do
@@ -35,7 +36,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
   test "should update link" do
     patch link_url(@link), params: { link: { url: @link.url } }
-    assert_redirected_to link_url(@link)
+    assert_redirected_to links_url
   end
 
   test "should destroy link" do
