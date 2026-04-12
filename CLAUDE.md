@@ -53,6 +53,7 @@
 * Do not change test assertions during refactoring
 * Do not skip failing tests
 * Do not invent unknown APIs; ask if you unsure
+- Do not crawl the entire code base, ever. Ask for files or context if you need it.
 
 ### Project Preferences
 
