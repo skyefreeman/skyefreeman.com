@@ -26,6 +26,11 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `post_id`, `tag_id` (foreign keys)
 - Unique constraint on `[post_id, tag_id]` to prevent duplicate taggings
 
+### Note
+- `title` (string)
+- `created_at`, `updated_at` (timestamps)
+- `body` (ActionText rich text via `has_rich_text`)
+
 ## Routes
 
 RESTful resource: `resources :posts`
@@ -44,6 +49,18 @@ RESTful resource: `resources :posts`
 | GET    | /blog/:year                 | by_year           |
 | GET    | /blog/:year/:month          | by_month          |
 | GET    | /blog/:year/:month/:day     | by_day            |
+
+RESTful resource: `resources :notes`
+
+| Verb   | Path                | Action  |
+|--------|---------------------|---------|
+| GET    | /notes              | index   |
+| GET    | /notes/:id          | show    |
+| GET    | /notes/new          | new     |
+| POST   | /notes              | create  |
+| GET    | /notes/:id/edit     | edit    |
+| PATCH  | /notes/:id          | update  |
+| DELETE | /notes/:id          | destroy |
 
 ## Views & Helpers
 
@@ -70,3 +87,4 @@ RESTful resource: `resources :posts`
 - Added post tagging system: Tag and Tagging models with has_many :through association on Post
 - Added Tags field to post new/edit form; input is comma-separated, tags auto-created if absent
 - Added /blog/tags (all tags with post counts) and /blog/tags/:name (posts for a tag) routes and views
+- Added Note resource with title, body (rich text via ActionText); full CRUD behind authentication; views styled to match Posts flow

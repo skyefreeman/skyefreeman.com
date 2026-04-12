@@ -1,0 +1,21 @@
+<% content_for :title, "Notes" %>
+
+<div class="page-content">
+  <div class="post__header">
+    <h1 class="page-content__title">Notes</h1>
+    <%= link_to "New Note", new_note_path, class: "page-content__action" %>
+  </div>
+
+  <% if @notes.any? %>
+    <ul class="post-list">
+      <% @notes.each do |note| %>
+        <li class="post-list__item">
+          <%= link_to note.title, note_path(note), class: "post-list__title" %>
+          <span class="post-list__date"><%= note.created_at.strftime("%B %d, %Y") %></span>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="post-list__empty">No notes yet.</p>
+  <% end %>
+</div>
