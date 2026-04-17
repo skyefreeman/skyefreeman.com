@@ -1,4 +1,4 @@
-<%= form_with model: idea do |f| %>
+<%= form_with model: idea, id: "idea-form" do |f| %>
   <% if idea.errors.any? %>
     <div class="form__errors">
       <p><%= pluralize(idea.errors.count, "error") %> prevented this idea from being saved:</p>
@@ -20,7 +20,4 @@
     <%= f.text_field :output_url, class: "form__input", placeholder: "https://..." %>
   </div>
 
-  <div class="form__group">
-    <%= f.submit "Save", class: "form__submit" %>
-  </div>
 <% end %>

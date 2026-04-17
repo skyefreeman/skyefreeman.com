@@ -41,6 +41,27 @@
   background: #444;
 }
 
+.form__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.form__delete {
+  font-size: 0.9rem;
+  font-family: inherit;
+  padding: 0.5rem 1.25rem;
+  background: none;
+  color: #c00;
+  border: 1px solid #c00;
+  cursor: pointer;
+}
+
+.form__delete:hover {
+  background: #c00;
+  color: #fff;
+}
+
 .form__errors {
   margin-bottom: 1.5rem;
   padding: 1rem;

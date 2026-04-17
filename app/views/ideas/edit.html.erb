@@ -3,5 +3,8 @@
 
   <%= render "form", idea: @idea %>
 
-  <%= link_to "← Back", idea_path(@idea), class: "post__back" %>
+  <div class="form__actions">
+    <input type="submit" form="idea-form" value="Save" class="form__submit">
+    <%= button_to "Delete", idea_path(@idea), method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this idea?" } %>
+  </div>
 </div>

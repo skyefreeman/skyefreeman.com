@@ -12,7 +12,7 @@
     <ul class="post-list">
       <% @ideas.each do |idea| %>
         <li class="post-list__item">
-          <%= authenticated? ? link_to(idea.title, idea_path(idea), class: "post-list__title") : content_tag(:span, idea.title, class: "post-list__title") %>
+          <%= authenticated? ? link_to(idea.title, edit_idea_path(idea), class: "post-list__title") : content_tag(:span, idea.title, class: "post-list__title") %>
           <span class="post-list__date">
             <%= idea.updated_at.strftime("%B %d, %Y") %> at <%= idea.updated_at.strftime("%l:%M %p").strip %>
             <% if idea.output_url.present? %>
