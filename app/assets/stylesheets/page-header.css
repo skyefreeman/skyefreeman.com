@@ -53,6 +53,13 @@
   margin-bottom: 1.5rem;
 }
 
+.page-content__section-title {
+  font-size: 1.4rem;
+  font-weight: normal;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .page-content__subtitle {
   color: #666;
   margin-bottom: 1.5rem;
