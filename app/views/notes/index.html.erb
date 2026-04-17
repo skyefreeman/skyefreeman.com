@@ -1,7 +1,7 @@
 <% content_for :title, "Notes" %>
 
 <div class="page-content">
-  <div class="post__header">
+  <div class="page-content__header">
     <h1 class="page-content__title">Notes</h1>
     <% if authenticated? %>
       <%= link_to "New Note", new_note_path, class: "page-content__action" %>

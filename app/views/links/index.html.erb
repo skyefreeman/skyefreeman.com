@@ -1,5 +1,4 @@
 <% content_for :title, "Links" %>
-<p class="link__notice"><%= notice %></p>
 <div class="page-content">
 
   <div class="page-content__header">
@@ -11,18 +10,18 @@
   </div> 
 
   
-  <div id="links">
+  <% if notice.present? %><p class="link__notice"><%= notice %></p><% end %>
+
+  <ul class="post-list" id="links">
     <% @links.each do |link| %>
-    <%= render link %>
-    
-    <p>
-      <% if authenticated? %>
-      <%= link_to "Edit", edit_link_path(link) %>
-      <% end %>
-    </p>
-    
+      <li class="post-list__item">
+        <%= render link %>
+        <% if authenticated? %>
+          <%= link_to "Edit", edit_link_path(link), class: "post-list__date" %>
+        <% end %>
+      </li>
     <% end %>
-  </div>
+  </ul>
 
 </div> 
 

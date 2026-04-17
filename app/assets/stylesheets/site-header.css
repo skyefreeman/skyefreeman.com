@@ -30,6 +30,7 @@
 
 .site-header__nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.25rem;
   margin-top: 0.75rem;
 }
