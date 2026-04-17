@@ -59,6 +59,23 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to note_path(Note.last)
   end
 
+  test "create saves tags when tag_names param is provided" do
+    sign_in_as(users(:one))
+    post notes_path, params: { note: { title: "Tagged Note", tag_names: "ruby, elixir" } }
+    assert_equal 2, Note.last.tags.count
+  end
+
+  test "update saves tags when tag_names param is provided" do
+    sign_in_as(users(:one))
+    patch note_path(notes(:one)), params: { note: { tag_names: "elixir" } }
+    assert_includes notes(:one).reload.tags.map(&:name), "elixir"
+  end
+
+  test "index shows tags for tagged notes" do
+    get notes_path
+    assert_select "span.post-list__date", /ruby/
+  end
+
   test "edit returns the note form when authenticated" do
     sign_in_as(users(:one))
     get edit_note_path(notes(:one))

@@ -21,4 +21,9 @@
     <%= form.text_field :url, placeholder: "skyefreeman.com", class: "form__input" %>
   </div>
 
+  <div class="form__group">
+    <%= form.label :tag_names, "Tags", class: "form__label" %>
+    <%= form.text_field :tag_names, class: "form__input", placeholder: "e.g. design, tools, reading" %>
+  </div>
+
 <% end %>

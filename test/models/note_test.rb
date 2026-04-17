@@ -16,4 +16,35 @@ class NoteTest < ActiveSupport::TestCase
     note = notes(:one)
     assert_respond_to note, :body
   end
+
+  test "has many tags through taggings" do
+    note = notes(:one)
+    assert_includes note.tags.map(&:name), "ruby"
+  end
+
+  test "tag_names= assigns tags from comma-separated string" do
+    note = notes(:two)
+    note.tag_names = "ruby, elixir"
+    assert_equal 2, note.tags.length
+    assert_includes note.tags.map(&:name), "ruby"
+    assert_includes note.tags.map(&:name), "elixir"
+  end
+
+  test "tag_names returns comma-separated tag names" do
+    note = notes(:one)
+    assert_includes note.tag_names.split(", "), "ruby"
+  end
+
+  test "tag_names= reuses existing tags" do
+    note = notes(:two)
+    note.tag_names = "ruby"
+    assert_equal 1, Tag.where(name: "ruby").count
+  end
+
+  test "destroying a note destroys its taggings" do
+    note = notes(:one)
+    assert_difference "Tagging.count", -1 do
+      note.destroy
+    end
+  end
 end

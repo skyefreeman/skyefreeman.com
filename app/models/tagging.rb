@@ -1,6 +1,6 @@
 class Tagging < ApplicationRecord
-  belongs_to :post
+  belongs_to :taggable, polymorphic: true
   belongs_to :tag
 
-  validates :post_id, uniqueness: { scope: :tag_id }
+  validates :taggable_id, uniqueness: { scope: [:taggable_type, :tag_id] }
 end

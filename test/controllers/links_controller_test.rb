@@ -61,4 +61,19 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to links_url
   end
+
+  test "create saves tags when tag_names param is provided" do
+    post links_url, params: { link: { url: "https://new.com", tag_names: "ruby, elixir" } }
+    assert_equal 2, Link.last.tags.count
+  end
+
+  test "update saves tags when tag_names param is provided" do
+    patch link_url(@link), params: { link: { tag_names: "elixir" } }
+    assert_includes @link.reload.tags.map(&:name), "elixir"
+  end
+
+  test "index shows tags for tagged links" do
+    get links_url
+    assert_select "span.post-list__date", /ruby/
+  end
 end

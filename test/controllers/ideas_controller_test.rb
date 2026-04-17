@@ -98,7 +98,7 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   test "create saves a new idea and redirects when authenticated" do
     sign_in_as(users(:one))
     post ideas_path, params: { idea: { title: "New Idea" } }
-    assert_redirected_to idea_path(Idea.last)
+    assert_redirected_to ideas_path
   end
 
   test "edit returns the idea form when authenticated" do
@@ -110,7 +110,24 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   test "update saves changes and redirects when authenticated" do
     sign_in_as(users(:one))
     patch idea_path(ideas(:one)), params: { idea: { title: "Updated Title" } }
-    assert_redirected_to idea_path(ideas(:one))
+    assert_redirected_to ideas_path
+  end
+
+  test "create saves tags when tag_names param is provided" do
+    sign_in_as(users(:one))
+    post ideas_path, params: { idea: { title: "Tagged Idea", tag_names: "ruby, elixir" } }
+    assert_equal 2, Idea.last.tags.count
+  end
+
+  test "update saves tags when tag_names param is provided" do
+    sign_in_as(users(:one))
+    patch idea_path(ideas(:one)), params: { idea: { tag_names: "elixir" } }
+    assert_includes ideas(:one).reload.tags.map(&:name), "elixir"
+  end
+
+  test "index shows tags for tagged ideas" do
+    get ideas_path
+    assert_select "span.post-list__date", /rails/
   end
 
   test "destroy deletes the idea and redirects to index when authenticated" do

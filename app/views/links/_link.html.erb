@@ -3,6 +3,6 @@
     <%= link.title.present? ? link.title : link.url %>
   </a>
   <span class="post-list__date">
-    <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %>
+    <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %><% if link.tags.any? %> &middot; <%= link.tags.map(&:name).join(", ") %><% end %>
   </span>
 </div>

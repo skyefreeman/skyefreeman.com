@@ -24,9 +24,24 @@ class TagTest < ActiveSupport::TestCase
     assert_includes tag.posts, posts(:one)
   end
 
+  test "has many notes through taggings" do
+    tag = tags(:ruby)
+    assert_includes tag.notes, notes(:one)
+  end
+
+  test "has many ideas through taggings" do
+    tag = tags(:rails)
+    assert_includes tag.ideas, ideas(:one)
+  end
+
+  test "has many links through taggings" do
+    tag = tags(:ruby)
+    assert_includes tag.links, links(:one)
+  end
+
   test "destroying a tag destroys its taggings" do
     tag = tags(:ruby)
-    assert_difference "Tagging.count", -1 do
+    assert_difference "Tagging.count", -3 do
       tag.destroy
     end
   end
