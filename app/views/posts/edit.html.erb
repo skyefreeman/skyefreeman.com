@@ -3,4 +3,11 @@
 
   <%= render "form", post: @post, show_publish_button: @post.published_at.nil? || @publishing %>
 
+  <div class="form__actions">
+    <input type="submit" form="post-form" value="Save" class="form__submit">
+    <% if @post.published_at.nil? || @publishing %>
+      <input type="submit" form="post-form" name="publish" value="Publish" class="form__submit">
+    <% end %>
+    <%= button_to "Delete", post_path(@post), method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this post?" } %>
+  </div>
 </div>

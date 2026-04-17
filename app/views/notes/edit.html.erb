@@ -3,4 +3,8 @@
 
   <%= render "form", note: @note %>
 
+  <div class="form__actions">
+    <input type="submit" form="note-form" value="Save" class="form__submit">
+    <%= button_to "Delete", note_path(@note), method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this note?" } %>
+  </div>
 </div>

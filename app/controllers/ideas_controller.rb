@@ -16,7 +16,7 @@ class IdeasController < ApplicationController
   def create
     @idea = Idea.new(idea_params)
     if @idea.save
-      redirect_to @idea
+      redirect_to ideas_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class IdeasController < ApplicationController
 
   def update
     if @idea.update(idea_params)
-      redirect_to @idea
+      redirect_to ideas_path
     else
       render :edit, status: :unprocessable_entity
     end

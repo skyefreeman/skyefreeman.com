@@ -3,5 +3,7 @@
 
   <%= render "form", note: @note %>
 
-  <%= link_to "← Back", notes_path, class: "post__back" %>
+  <div class="form__actions">
+    <input type="submit" form="note-form" value="Save" class="form__submit">
+  </div>
 </div>

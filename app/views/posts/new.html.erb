@@ -3,5 +3,8 @@
 
   <%= render "form", post: @post, show_publish_button: true %>
 
-  <%= link_to "← Back", blog_path, class: "post__back" %>
+  <div class="form__actions">
+    <input type="submit" form="post-form" value="Save" class="form__submit">
+    <input type="submit" form="post-form" name="publish" value="Publish" class="form__submit">
+  </div>
 </div>

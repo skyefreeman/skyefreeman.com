@@ -3,7 +3,8 @@
   <h1 class="page-content__title">Editing link</h1>
 
   <%= render "form", link: @link %>
-  <div class="form__group">
-    <%= button_to "Delete", @link, method: :delete, class: "link__delete-button" %>
+  <div class="form__actions">
+    <input type="submit" form="link-form" value="Save" class="form__submit">
+    <%= button_to "Delete", @link, method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this link?" } %>
   </div>
 </div> 

@@ -1,4 +1,4 @@
-<%= form_with model: post do |f| %>
+<%= form_with model: post, id: "post-form" do |f| %>
   <% if post.errors.any? %>
     <div class="form__errors">
       <p><%= pluralize(post.errors.count, "error") %> prevented this post from being saved:</p>
@@ -35,10 +35,4 @@
     <%= f.file_field :header_attachment %>
   </div>
 
-  <div class="form__group">
-    <%= f.submit "Save", class: "form__submit" %>
-    <% if show_publish_button %>
-      <%= f.submit "Publish", name: "publish", class: "form__submit" %>
-    <% end %>
-  </div>
 <% end %>
