@@ -1,0 +1,18 @@
+<% content_for :title, "Tags" %>
+<div class="page-content">
+  <div class="page-content__header">
+    <h1 class="page-content__title">Tags</h1>
+  </div>
+
+  <% if @tags.any? %>
+    <ul class="post-list">
+      <% @tags.each do |tag| %>
+        <li class="post-list__item">
+          <%= link_to tag.name, tag_path(tag.name), class: "post-list__title" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="post-list__empty">No tags yet.</p>
+  <% end %>
+</div>

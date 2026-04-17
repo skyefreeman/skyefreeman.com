@@ -21,7 +21,7 @@ module PostsHelper
 
   def post_tag_links(post)
     post.tags.map { |tag|
-      link_to(tag.name, blog_tag_path(tag.name), class: "post__tag-link")
+      link_to(tag.name, tag_path(tag.name), class: "post__tag-link")
     }.join(", ").html_safe
   end
 end

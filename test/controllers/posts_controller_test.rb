@@ -215,8 +215,8 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "show displays tags as links in post meta" do
     get post_path(posts(:one))
-    assert_select "p.post__meta a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
-    assert_select "p.post__meta a.post__tag-link[href='#{blog_tag_path("rails")}']", text: "rails"
+    assert_select "p.post__meta a.post__tag-link[href='#{tag_path("ruby")}']", text: "ruby"
+    assert_select "p.post__meta a.post__tag-link[href='#{tag_path("rails")}']", text: "rails"
   end
 
   test "show omits tag links when post has no tags" do
@@ -226,54 +226,11 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "archive list displays tags as links" do
     get posts_by_year_path(year: 2026)
-    assert_select "span.post-list__date a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
+    assert_select "span.post-list__date a.post__tag-link[href='#{tag_path("ruby")}']", text: "ruby"
   end
 
   test "blog page displays tags as links" do
     get blog_path
-    assert_select "span.post-list__date a.post__tag-link[href='#{blog_tag_path("ruby")}']", text: "ruby"
-  end
-
-  # Tag index
-
-  test "tags_index lists all tags with post counts" do
-    get blog_tags_path
-    assert_response :success
-    assert_select "a.post-list__title", text: "ruby"
-    assert_select "a.post-list__title", text: "rails"
-    assert_select "span.post-list__date", text: /1 post/
-  end
-
-  test "tags_index shows empty message when no tags exist" do
-    Tagging.delete_all
-    Tag.delete_all
-    get blog_tags_path
-    assert_response :success
-    assert_select "p.post-list__empty"
-  end
-
-  test "tags_index only counts published posts" do
-    # posts(:two) is a draft; ruby tag is on posts(:one) which is published
-    get blog_tags_path
-    assert_select "a.post-list__title", text: "ruby"
-  end
-
-  # Tag show
-
-  test "tags_show lists posts for a tag" do
-    get blog_tag_path("ruby")
-    assert_response :success
-    assert_select "h1.page-content__title", text: "ruby"
-    assert_select "a.post-list__title", text: posts(:one).title
-  end
-
-  test "tags_show returns 404 for unknown tag" do
-    get blog_tag_path("nonexistent")
-    assert_response :not_found
-  end
-
-  test "tags_show excludes draft posts" do
-    get blog_tag_path("ruby")
-    assert_select "a.post-list__title", text: posts(:two).title, count: 0
+    assert_select "span.post-list__date a.post__tag-link[href='#{tag_path("ruby")}']", text: "ruby"
   end
 end

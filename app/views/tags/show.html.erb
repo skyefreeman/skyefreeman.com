@@ -1,5 +1,5 @@
 <% content_for :title, @tag.name %>
 <div class="page-content">
   <h1 class="page-content__title"><%= @tag.name %></h1>
-  <%= render "archive_post_list", posts: @posts %>
+  <%= render "posts/archive_post_list", posts: @posts %>
 </div>

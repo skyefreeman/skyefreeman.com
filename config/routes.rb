@@ -9,12 +9,13 @@ Rails.application.routes.draw do
   get "blog", to: "posts#blog"
   get "blog/feed", to: "posts#feed", as: :blog_feed
   get "blog/new", to: "posts#new"
-  get "blog/tags", to: "posts#tags_index", as: :blog_tags
-  get "blog/tags/:name", to: "posts#tags_show", as: :blog_tag
   get "blog/:year", to: "posts#by_year", as: :posts_by_year, constraints: { year: /\d{4}/ }
   get "blog/:year/:month", to: "posts#by_month", as: :posts_by_month, constraints: { year: /\d{4}/, month: /\d{2}/ }
   get "blog/:year/:month/:day", to: "posts#by_day", as: :posts_by_day, constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
   get "blog/:year/:month/:day/:slug", to: "posts#show_by_date_slug", as: :post_by_date_slug
+
+  get "tags", to: "tags#index"
+  get "tags/:name", to: "tags#show", as: :tag
 
   get "about", to: "pages#about"
   get "projects", to: "pages#projects"
