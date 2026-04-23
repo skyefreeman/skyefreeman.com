@@ -31,7 +31,7 @@
     <ul class="post-list">
       <% @ideas.each do |idea| %>
         <li class="post-list__item">
-          <span class="post-list__title"><%= idea.title %></span>
+          <%= authenticated? ? link_to(idea.title, edit_idea_path(idea), class: "post-list__title") : content_tag(:span, idea.title, class: "post-list__title") %>
           <span class="post-list__date"><%= idea.updated_at.strftime("%B %d, %Y") %></span>
         </li>
       <% end %>
@@ -45,6 +45,9 @@
         <li class="post-list__item">
           <a href="<%= ensure_https_prefix(link.url) %>" class="post-list__title"><%= link.title.present? ? link.title : link.url %></a>
           <span class="post-list__date"><%= link.created_at.strftime("%B %d, %Y") %></span>
+          <% if authenticated? %>
+            <%= link_to "Edit", edit_link_path(link), class: "post-list__date" %>
+          <% end %>
         </li>
       <% end %>
     </ul>
