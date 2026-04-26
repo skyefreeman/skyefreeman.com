@@ -3,6 +3,6 @@
     <%= link.title.present? ? link.title : link.url %>
   </a>
   <span class="post-list__date">
-    <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %><% if link.tags.any? %> &middot; <%= link.tags.map { |t| link_to(t.name, tag_path(t.name), class: "post__tag-link") }.join(", ").html_safe %><% end %>
+    <%= link.created_at.strftime("%B %d, %Y") %> at <%= link.created_at.strftime("%l:%M %p").strip %><% if link.tags.any? %> &middot; <%= safe_join(link.tags.map { |t| link_to(t.name, tag_path(t.name), class: "post__tag-link") }, ", ") %><% end %>
   </span>
 </div>

@@ -13,7 +13,7 @@
       <% @notes.each do |note| %>
         <li class="post-list__item">
           <%= link_to note.title, note_path(note), class: "post-list__title" %>
-          <span class="post-list__date"><%= note.updated_at.strftime("%B %d, %Y") %> at <%= note.updated_at.strftime("%l:%M %p").strip %><% if note.tags.any? %> &middot; <%= note.tags.map { |t| link_to(t.name, tag_path(t.name), class: "post__tag-link") }.join(", ").html_safe %><% end %></span>
+          <span class="post-list__date"><%= note.updated_at.strftime("%B %d, %Y") %> at <%= note.updated_at.strftime("%l:%M %p").strip %><% if note.tags.any? %> &middot; <%= safe_join(note.tags.map { |t| link_to(t.name, tag_path(t.name), class: "post__tag-link") }, ", ") %><% end %></span>
         </li>
       <% end %>
     </ul>
