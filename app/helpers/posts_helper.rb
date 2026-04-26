@@ -23,7 +23,7 @@ module PostsHelper
     month_link = link_to(date.strftime("%B"), posts_by_month_path(year: date.year, month: date.strftime("%m")))
     day_link   = link_to(date.strftime("%d"), posts_by_day_path(year: date.year, month: date.strftime("%m"), day: date.strftime("%d")))
     year_link  = link_to(date.strftime("%Y"), posts_by_year_path(year: date.year))
-    safe_join([month_link, " ", day_link, ", ", year_link])
+    safe_join([ month_link, " ", day_link, ", ", year_link ])
   end
 
   def post_tag_links(post)
