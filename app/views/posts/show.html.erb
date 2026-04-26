@@ -17,7 +17,7 @@
   </div>
 
   <p class="post__meta">
-    <%= @post.published_at ? "#{@post.published_at.strftime("%B %d, %Y")} at #{@post.published_at.strftime("%l:%M %p").strip}" : "DRAFT" %>
+    <%= @post.published_at ? render("published_date", post: @post) : "DRAFT" %>
     <% if @post.deleted_at %>
       &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>

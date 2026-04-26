@@ -19,6 +19,13 @@ module PostsHelper
     url_for(post.header_attachment)
   end
 
+  def post_published_date_links(date)
+    month_link = link_to(date.strftime("%B"), posts_by_month_path(year: date.year, month: date.strftime("%m")))
+    day_link   = link_to(date.strftime("%d"), posts_by_day_path(year: date.year, month: date.strftime("%m"), day: date.strftime("%d")))
+    year_link  = link_to(date.strftime("%Y"), posts_by_year_path(year: date.year))
+    safe_join([month_link, " ", day_link, ", ", year_link])
+  end
+
   def post_tag_links(post)
     safe_join(post.tags.map { |tag|
       link_to(tag.name, tag_path(tag.name), class: "post__tag-link")
