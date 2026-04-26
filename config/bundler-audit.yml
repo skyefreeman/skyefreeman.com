@@ -3,3 +3,4 @@
 
 ignore:
   - CVE-THAT-DOES-NOT-APPLY
+  - CVE-2026-33946  # mcp gem — Claude Code system dependency, not part of this app
