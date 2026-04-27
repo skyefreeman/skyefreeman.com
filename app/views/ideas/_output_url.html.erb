@@ -1,0 +1,3 @@
+<% if idea.output_url.present? %>
+  &middot; <%= link_to "DONE", ensure_https_prefix(idea.output_url), class: "idea__done" %>
+<% end %>

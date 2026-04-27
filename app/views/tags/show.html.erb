@@ -32,7 +32,10 @@
       <% @ideas.each do |idea| %>
         <li class="post-list__item">
           <%= authenticated? ? link_to(idea.title, edit_idea_path(idea), class: "post-list__title") : content_tag(:span, idea.title, class: "post-list__title") %>
-          <span class="post-list__date"><%= idea.updated_at.strftime("%B %d, %Y") %></span>
+          <span class="post-list__date">
+            <%= idea.updated_at.strftime("%B %d, %Y") %>
+            <%= render("ideas/output_url", idea: idea) %>
+          </span>
         </li>
       <% end %>
     </ul>

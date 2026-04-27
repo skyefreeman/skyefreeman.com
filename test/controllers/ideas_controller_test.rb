@@ -33,19 +33,19 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
 
   test "index shows DONE label next to output_url" do
     get ideas_path
-    assert_select "span.idea__done", text: "DONE"
+    assert_select "a.idea__done", text: "DONE"
   end
 
   test "show shows DONE label next to output_url" do
     sign_in_as(users(:one))
     get idea_path(ideas(:one))
-    assert_select "span.idea__done", text: "DONE"
+    assert_select "a.idea__done", text: "DONE"
   end
 
   test "show omits DONE label when output_url is absent" do
     sign_in_as(users(:one))
     get idea_path(ideas(:two))
-    assert_select "span.idea__done", count: 0
+    assert_select "a.idea__done", count: 0
   end
 
   test "index omits output_url link when absent" do

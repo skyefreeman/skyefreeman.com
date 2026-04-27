@@ -11,6 +11,6 @@
   <p class="post__meta"><%= @idea.updated_at.strftime("%B %d, %Y") %> at <%= @idea.updated_at.strftime("%l:%M %p").strip %></p>
 
   <% if @idea.output_url.present? %>
-    <p class="post__meta"><span class="idea__done">DONE</span> - <%= link_to @idea.output_url, ensure_https_prefix(@idea.output_url) %></p>
+    <p class="post__meta"><%= render("output_url", idea: @idea) %></p>
   <% end %>
 </div>
