@@ -1,0 +1,52 @@
+<%= form_with(model: game, id: "game-form") do |form| %>
+  <% if game.errors.any? %>
+    <div class="form__errors">
+      <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
+      <ul>
+        <% game.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__group">
+    <%= form.label :title, class: "form__label" %>
+    <%= form.text_field :title, class: "form__input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :url_slug, "URL Slug", class: "form__label" %>
+    <%= form.text_field :url_slug, class: "form__input", placeholder: "space-shooter" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :description, class: "form__label" %>
+    <%= form.text_area :description, class: "form__input", rows: 5 %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :cover_image, class: "form__label" %>
+    <%= form.file_field :cover_image, class: "form__input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :download_url_linux, "Download URL (Linux)", class: "form__label" %>
+    <%= form.text_field :download_url_linux, class: "form__input", placeholder: "https://..." %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :download_url_macos, "Download URL (macOS)", class: "form__label" %>
+    <%= form.text_field :download_url_macos, class: "form__input", placeholder: "https://..." %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :download_url_windows, "Download URL (Windows)", class: "form__label" %>
+    <%= form.text_field :download_url_windows, class: "form__input", placeholder: "https://..." %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :download_url_itch, "Download URL (itch.io)", class: "form__label" %>
+    <%= form.text_field :download_url_itch, class: "form__input", placeholder: "https://username.itch.io/game" %>
+  </div>
+<% end %>

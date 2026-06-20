@@ -1,0 +1,39 @@
+.game-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.game-list__item {
+  display: block;
+}
+
+.game-list__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.game-list__cover,
+.game__cover-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.75rem;
+}
+
+.game-list__title {
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin: 0 0 0.4rem;
+  text-decoration: underline;
+  color: #1a1a1a;
+}
+
+.game-list__description {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+}

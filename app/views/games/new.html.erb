@@ -1,0 +1,10 @@
+<% content_for :title, "New Game" %>
+<div class="page-content">
+  <h1 class="page-content__title">New Game</h1>
+
+  <%= render "form", game: @game %>
+
+  <div class="form__actions">
+    <input type="submit" form="game-form" value="Save" class="form__submit">
+  </div>
+</div>

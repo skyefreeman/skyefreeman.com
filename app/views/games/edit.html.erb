@@ -1,0 +1,11 @@
+<% content_for :title, "Editing Game" %>
+<div class="page-content">
+  <h1 class="page-content__title">Editing Game</h1>
+
+  <%= render "form", game: @game %>
+
+  <div class="form__actions">
+    <input type="submit" form="game-form" value="Save" class="form__submit">
+    <%= button_to "Delete", @game, method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this game?" } %>
+  </div>
+</div>

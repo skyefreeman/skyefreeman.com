@@ -1,0 +1,27 @@
+<% content_for :title, "Games" %>
+<div class="page-content">
+
+  <div class="page-content__header">
+    <h1 class="page-content__title">Games</h1>
+    <% if authenticated? %>
+      <%= link_to "New", new_game_path, class: "page-content__action" %>
+    <% end %>
+  </div>
+
+  <ul class="game-list">
+    <% @games.each do |game| %>
+      <li class="game-list__item">
+        <%= link_to game.url_slug.present? ? game_by_slug_path(game.url_slug) : game_path(game), class: "game-list__link" do %>
+          <h2 class="game-list__title"><%= game.title %></h2>
+          <% if game.cover_image.attached? %>
+            <%= image_tag game.cover_image, class: "game-list__cover" %>
+          <% end %>
+          <% if game.description.present? %>
+            <p class="game-list__description"><%= game.description %></p>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+</div>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :games
+  get "games/:url_slug", to: "games#show_by_slug", as: :game_by_slug
   resources :ideas
   resources :notes
   resource :session

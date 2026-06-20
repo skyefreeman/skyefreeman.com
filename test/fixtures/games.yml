@@ -1,0 +1,12 @@
+one:
+  title: Space Shooter
+  description: A classic arcade-style space shooter.
+  url_slug: space-shooter
+  download_url_linux: https://example.com/space-shooter-linux.zip
+  download_url_macos: https://example.com/space-shooter-macos.zip
+  download_url_windows: https://example.com/space-shooter-windows.zip
+  download_url_itch: https://example.itch.io/space-shooter
+
+two:
+  title: Puzzle Game
+  description: A challenging puzzle game.
