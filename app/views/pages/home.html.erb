@@ -2,9 +2,9 @@
   <ul class="post-list">
     <% @posts.each do |post| %>
       <li class="post-list__item">
-        <%= link_to post.title, post_url_path(post), class: "post-list__title" %>
+        <h1 class="post-list__title"><%= link_to post.title, post_url_path(post) %></h1>
         <% if post.body.present? %>
-          <p class="post-list__excerpt"><%= post.excerpt %> <%= link_to "continue reading", post_url_path(post), class: "post-list__continue" %></p>
+          <p class="post-list__excerpt"><%= post.excerpt %></p>
         <% end %>
         <span class="post-list__date"><%= post.published_at ? render("posts/published_date", post: post) : "DRAFT" %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
       </li>
