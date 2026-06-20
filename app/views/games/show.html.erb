@@ -12,27 +12,23 @@
     <%= image_tag @game.cover_image, class: "game__cover-image" %>
   <% end %>
 
+  <p class="game__date"><%= @game.created_at.strftime("%B %d, %Y") %></p>
+
   <% if @game.description.present? %>
     <p class="game__description"><%= @game.description %></p>
   <% end %>
 
-  <% if @game.download_url_linux.present? || @game.download_url_macos.present? || @game.download_url_windows.present? || @game.download_url_itch.present? %>
-    <div class="game__downloads">
-      <% if @game.download_url_itch.present? %>
-        <%= link_to "Download on itch.io", @game.download_url_itch, class: "game__download-link" %>
-      <% end %>
-      <% if @game.download_url_linux.present? %>
-        <%= link_to "Download for Linux", @game.download_url_linux, class: "game__download-link" %>
-      <% end %>
-      <% if @game.download_url_macos.present? %>
-        <%= link_to "Download for macOS", @game.download_url_macos, class: "game__download-link" %>
-      <% end %>
-      <% if @game.download_url_windows.present? %>
-        <%= link_to "Download for Windows", @game.download_url_windows, class: "game__download-link" %>
-      <% end %>
-    </div>
+  <% platform_links = [
+    (@game.download_url_linux.present? ? link_to("Linux", @game.download_url_linux, class: "game__download-link") : nil),
+    (@game.download_url_macos.present? ? link_to("macOS", @game.download_url_macos, class: "game__download-link") : nil),
+    (@game.download_url_windows.present? ? link_to("Windows", @game.download_url_windows, class: "game__download-link") : nil)
+  ].compact %>
+  <% if platform_links.any? %>
+    <p class="game__downloads">Download it on <%= platform_links.join(", ").html_safe %></p>
   <% end %>
 
-  <p class="game__date"><%= @game.created_at.strftime("%B %d, %Y") %></p>
+  <% if @game.download_url_itch.present? %>
+    <p class="game__downloads">Play it on <%= link_to "itch.io", @game.download_url_itch, class: "game__download-link" %></p>
+  <% end %>
 
 </div>

@@ -12,10 +12,11 @@
     <% @games.each do |game| %>
       <li class="game-list__item">
         <%= link_to game.url_slug.present? ? game_by_slug_path(game.url_slug) : game_path(game), class: "game-list__link" do %>
-          <h2 class="game-list__title"><%= game.title %></h2>
           <% if game.cover_image.attached? %>
             <%= image_tag game.cover_image, class: "game-list__cover" %>
           <% end %>
+          <h2 class="game-list__title"><%= game.title %></h2>
+          <span class="game-list__date"><%= game.created_at.strftime("%B %d, %Y") %></span>
           <% if game.description.present? %>
             <p class="game-list__description"><%= game.description %></p>
           <% end %>
