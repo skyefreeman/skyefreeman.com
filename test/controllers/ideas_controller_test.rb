@@ -1,18 +1,14 @@
 require "test_helper"
 
 class IdeasControllerTest < ActionDispatch::IntegrationTest
-  # Public access to index and show
+  # Unauthenticated access redirects to login
 
-  test "index is accessible without authentication" do
+  test "index redirects to login when unauthenticated" do
     get ideas_path
-    assert_response :success
+    assert_redirected_to new_session_path
   end
 
-  test "index shows title as plain text when unauthenticated" do
-    get ideas_path
-    assert_select "span.post-list__title", text: ideas(:one).title
-    assert_select "a.post-list__title", count: 0
-  end
+  # Authenticated access
 
   test "index shows title as link when authenticated" do
     sign_in_as(users(:one))
@@ -20,7 +16,8 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.post-list__title", text: ideas(:one).title
   end
 
-  test "index shows output_url as link when present regardless of auth" do
+  test "index shows output_url as link when present" do
+    sign_in_as(users(:one))
     get ideas_path
     assert_select "a[href='#{ideas(:one).output_url}']"
   end
@@ -32,6 +29,7 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index shows DONE label next to output_url" do
+    sign_in_as(users(:one))
     get ideas_path
     assert_select "a.idea__done", text: "DONE"
   end
@@ -49,9 +47,10 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index omits output_url link when absent" do
+    sign_in_as(users(:one))
     get ideas_path
     assert_select "li.post-list__item", text: /#{ideas(:two).title}/ do
-      assert_select "a[href]", count: 0
+      assert_select "a.idea__done", count: 0
     end
   end
 
@@ -126,6 +125,7 @@ class IdeasControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index shows tags for tagged ideas" do
+    sign_in_as(users(:one))
     get ideas_path
     assert_select "span.post-list__date", /rails/
   end
