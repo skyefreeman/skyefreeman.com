@@ -25,4 +25,9 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_select "p.post-list__excerpt"
   end
+
+  test "home page displays continue reading link in excerpt" do
+    get root_path
+    assert_select "p.post-list__excerpt a.post-list__continue", text: "continue reading"
+  end
 end

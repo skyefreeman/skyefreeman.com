@@ -20,7 +20,13 @@ class Post < ApplicationRecord
   end
 
   def excerpt(word_limit = 100)
-    plain = body.to_plain_text.squish
-    plain.split.first(word_limit).join(" ")
+    plain = body.to_plain_text
+    first_paragraph = plain.split(/\n+/).first.to_s.squish
+    words = first_paragraph.split
+    if words.length > word_limit
+      words.first(word_limit).join(" ") + "…"
+    else
+      first_paragraph
+    end
   end
 end

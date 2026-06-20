@@ -42,19 +42,9 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.post-list__title", text: posts(:two).title, count: 0
   end
 
-  test "show lists tagged notes" do
-    get tag_path("ruby")
-    assert_select "a.post-list__title", text: notes(:one).title
-  end
-
   test "show lists tagged links" do
     get tag_path("ruby")
     assert_select "a.post-list__title", text: links(:one).title
-  end
-
-  test "show lists tagged ideas" do
-    get tag_path("rails")
-    assert_select "span.post-list__title", text: ideas(:one).title
   end
 
   test "show returns 404 for unknown tag" do

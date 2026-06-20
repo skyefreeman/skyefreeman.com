@@ -24,8 +24,9 @@ a.post-list__title {
   color: #1a1a1a;
 }
 
-.post-list__excerpt {
-  margin-bottom: 0.4rem;
+.post-list .post-list__excerpt {
+  margin-top: 4px;
+  margin-bottom: calc(0.4rem + 4px);
 }
 
 .post-list__date {
