@@ -18,4 +18,9 @@ class Post < ApplicationRecord
   def tag_names
     tags.map(&:name).join(", ")
   end
+
+  def excerpt(word_limit = 100)
+    plain = body.to_plain_text.squish
+    plain.split.first(word_limit).join(" ")
+  end
 end

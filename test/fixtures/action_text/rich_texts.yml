@@ -1,4 +1,4 @@
-# one:
-#   record: name_of_fixture (ClassOfFixture)
-#   name: content
-#   body: <p>In a <i>million</i> stars!</p>
+one:
+  record: one (Post)
+  name: body
+  body: "<p>This is the body of the first post with enough words to test the excerpt feature.</p>"

@@ -20,4 +20,9 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_select "span.post-list__date a.post__tag-link", text: "ruby"
   end
+
+  test "home page displays post excerpt" do
+    get root_path
+    assert_select "p.post-list__excerpt"
+  end
 end

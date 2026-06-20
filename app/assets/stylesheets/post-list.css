@@ -6,20 +6,26 @@
   display: block;
   padding: 0.5rem 0;
   background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.post-list__item:last-child {
+  border-bottom: none;
 }
 
 .post-list__title {
   display: block;
   font-size: 1rem;
+  margin-bottom: 0.4rem;
 }
 
 a.post-list__title {
-  text-decoration: none;
+  text-decoration: underline;
   color: #1a1a1a;
 }
 
-a.post-list__title:hover {
-  text-decoration: underline;
+.post-list__excerpt {
+  margin-bottom: 0.4rem;
 }
 
 .post-list__date {
