@@ -41,6 +41,7 @@
 
 .game-list__cover,
 .game__cover-image {
+  image-rendering: pixelated;
   display: block;
   max-width: 100%;
   height: auto;
