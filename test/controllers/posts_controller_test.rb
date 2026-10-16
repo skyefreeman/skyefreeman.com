@@ -1,6 +1,97 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
+  test "published post form offers unpublish and draft form offers publish" do
+    sign_in_as(users(:one))
+    get edit_post_path(posts(:one))
+    assert_select "input[name=unpublish][form=post-form]"
+    assert_select "input[name=publish]", count: 0
+
+    get edit_post_path(posts(:two))
+    assert_select "input[name=publish][form=post-form]"
+    assert_select "input[name=unpublish]", count: 0
+  end
+
+  test "unpublishing preserves the post and allows republishing" do
+    sign_in_as(users(:one))
+    record = posts(:one)
+    original_slug = record.url_slug
+    original_tags = record.tag_ids.sort
+    original_body = record.body.to_s
+
+    assert_no_difference "Post.count" do
+      patch post_path(record), params: { post: { title: "Saved draft" }, unpublish: "Unpublish" }
+    end
+    assert_redirected_to post_path(record)
+    record.reload
+    assert_nil record.published_at
+    assert_equal "Saved draft", record.title
+    assert_equal original_slug, record.url_slug
+    assert_equal original_tags, record.tag_ids.sort
+    assert_equal original_body, record.body.to_s
+    follow_redirect!
+    assert_response :success
+    assert_select "p.post__meta", text: /DRAFT/
+
+    patch post_path(record), params: { post: { title: record.title }, publish: "Publish" }
+    assert_redirected_to post_path(record)
+    assert_not_nil record.reload.published_at
+  end
+
+  test "unauthenticated users cannot unpublish posts" do
+    record = posts(:one)
+    assert_no_changes -> { record.reload.published_at } do
+      patch post_path(record), params: { post: { title: record.title }, unpublish: "Unpublish" }
+    end
+    assert_redirected_to new_session_path
+  end
+
+  test "draft URLs are hidden from unauthenticated users" do
+    get post_path(posts(:two))
+    assert_response :not_found
+  end
+
+  test "unpublished posts disappear from public pages and both URLs" do
+    sign_in_as(users(:one))
+    record = posts(:one)
+    old_url = post_by_date_slug_path(year: 2026, month: "01", day: "01", slug: record.url_slug)
+    patch post_path(record), params: { post: { title: record.title }, unpublish: "Unpublish" }
+    sign_out
+
+    [ post_path(record), old_url ].each do |path|
+      get path
+      assert_response :not_found
+    end
+
+    [ root_path, blog_path, tag_path("ruby"), posts_by_year_path(year: 2026),
+      posts_by_month_path(year: 2026, month: "01"),
+      posts_by_day_path(year: 2026, month: "01", day: "01"),
+      blog_feed_path(format: :atom) ].each do |path|
+      get path
+      assert_response :success
+      assert_not_includes response.body, record.title, "Post leaked at #{path}"
+    end
+  end
+
+  test "saving a published post preserves its publication date" do
+    sign_in_as(users(:one))
+    record = posts(:one)
+    assert_no_changes -> { record.reload.published_at } do
+      patch post_path(record), params: { post: { title: "Updated published post" } }
+    end
+    assert_redirected_to post_path(record)
+  end
+
+  test "invalid unpublish leaves the stored post published" do
+    sign_in_as(users(:one))
+    record = posts(:one)
+    assert_no_changes -> { record.reload.published_at } do
+      patch post_path(record), params: { post: { title: "" }, unpublish: "Unpublish" }
+    end
+    assert_response :unprocessable_entity
+    assert_select "input[name=unpublish]"
+  end
+
   # Public actions
 
   test "blog lists all posts" do
@@ -220,6 +311,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show omits tag links when post has no tags" do
+    sign_in_as(users(:one))
     get post_path(posts(:two))
     assert_select "p.post__meta a.post__tag-link", count: 0
   end

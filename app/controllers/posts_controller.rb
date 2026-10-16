@@ -71,6 +71,7 @@ class PostsController < ApplicationController
     @post.assign_attributes(post_params)
     @publishing = params[:publish].present?
     @post.published_at = Time.current if @publishing
+    @post.published_at = nil if params[:unpublish].present?
     if @post.save
       redirect_to @post
     else
@@ -86,7 +87,8 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    posts = authenticated? ? Post.all : Post.where.not(published_at: nil)
+    @post = posts.find(params[:id])
   end
 
   def published_posts_in_range(range)

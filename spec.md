@@ -7,6 +7,7 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 ## Models
 
 ### Post
+- `published_at` (datetime, nullable) — nil for drafts; publishing sets the current time
 - `title` (string)
 - `author` (string)
 - `deleted_at` (datetime, nullable) — soft delete marker
@@ -93,6 +94,8 @@ RESTful resource: `resources :ideas`
 - `post_og_image_url(post)` — returns absolute URL for `header_attachment`, or `nil`
 
 ## Changelog
+
+- Added Unpublish to the published post edit form, saving edits while returning the post to a draft without deleting its content, slug, tags, or attachments. Drafts remain available to signed-in users and can be republished with a new publication date. Public direct post URLs now return 404 for drafts; listings, archives, tags, and feeds exclude unpublished posts. Added integration coverage for visibility, authentication, validation, and republishing.
 
 - Scaffolded Rails 8.1 app with PostgreSQL
 - Installed ActionText (Trix editor) and ActiveStorage
