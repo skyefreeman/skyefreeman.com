@@ -95,6 +95,8 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Updated /games to show two columns above 480px and one column on smaller screens, matching /projects with light gray cards, rounded corners, padding, and spacing. Added browser layout coverage for desktop and mobile.
+
 - Updated AGENTS.md to prohibit automatic commits and require user review and explicit approval before committing changes.
 
 - Added upload percentage and saving feedback to new/edit game forms, disabled duplicate submission during uploads, and preserved inputs on validation, oversized upload, session, network, timeout, and server failures. Game create/update support JSON responses alongside the existing HTML flow. Added Rails integration and dependency-free JavaScript tests.

@@ -1,8 +1,16 @@
 .game-list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .game-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .game-upload progress {
@@ -14,12 +22,19 @@
 }
 
 .game-list__item {
-  display: block;
+  display: flex;
+  min-width: 0;
+  background-color: #f3f3f3;
+  border-radius: 6px;
 }
 
 .game-list__link {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  overflow-wrap: anywhere;
   text-decoration: none;
   color: inherit;
 }
