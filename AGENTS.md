@@ -41,7 +41,10 @@
 
 ### Commit Strategy
 
-* One prompt = one commit
+* Never create or amend commits automatically.
+* Leave changes uncommitted for the user to review all code.
+* Only commit after the user explicitly approves committing the reviewed changes.
+* When approved, keep each prompt's changes in one self-contained commit.
 * Each commit:
 
 * Self-contained
