@@ -1,0 +1,10 @@
+<%= link_to game.url_slug.present? ? game_by_slug_path(game.url_slug) : game_path(game), class: "home-feed__content-link" do %>
+  <h1 class="post-list__title"><%= game.title %></h1>
+  <% if game.cover_image.attached? %>
+    <%= image_tag game.cover_image, class: "game__cover-image", alt: "#{game.title} cartridge", loading: "lazy" %>
+  <% end %>
+<% end %>
+<% if game.description.present? %>
+  <p class="post-list__excerpt"><%= game.description %></p>
+<% end %>
+<span class="post-list__date"><span class="home-feed__badge home-feed__badge--game">Game</span> <%= tag.time(game.created_at.strftime("%B %d, %Y at %-I:%M %p"), datetime: game.created_at.iso8601) %></span>

@@ -95,6 +95,20 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Removed the All posts, All links, and All games links beneath the home feed. Pagination remains deferred.
+
+- Increased the combined home feed limit from 10 to 30 items, preserving chronological ordering and draft visibility. Updated limit coverage for mixed and post-only feeds.
+
+- Made home-feed post titles and excerpts a single tappable link, and game titles and cartridge images a single tappable link. Metadata remains separate, with existing title styling preserved.
+
+- Home-feed game entries now show their attached cartridge image directly beneath the title, using pixelated rendering and lazy loading. Cover attachments are preloaded for the feed.
+
+- Moved home-feed type badges to the beginning of the date row beneath each entry, inline with its timestamp.
+
+- Added home-feed type badges directly beneath titles: blue for blog posts, green for links, and purple for games. Badges share the archived-project shape and typography; draft status badges remain yellow.
+
+- Home now shows the ten newest entries across posts, links, and games, interleaved by publication time for published posts and creation time for drafts, links, and games. Drafts remain restricted to signed-in users. Projects are excluded. Added links to each full listing and integration coverage for ordering, visibility, limits, and empty feeds.
+
 - Home and blog draft entries now display their creation date and time next to the yellow DRAFT badge, with a machine-readable time element.
 
 - Home and blog now interleave drafts by creation time with published posts by publication time, newest first. Drafts remain private to signed-in users and use the shared yellow archived-project badge styling on listings and post detail pages.

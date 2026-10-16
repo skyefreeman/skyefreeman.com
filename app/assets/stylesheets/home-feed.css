@@ -1,0 +1,10 @@
+.home-feed__content-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-feed__content-link .post-list__title {
+  color: #1a1a1a;
+  text-decoration: underline;
+}

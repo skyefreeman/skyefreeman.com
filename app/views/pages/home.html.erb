@@ -1,14 +1,15 @@
 <div class="page-content">
   <ul class="post-list">
-    <% @posts.each do |post| %>
-      <li class="post-list__item">
-        <h1 class="post-list__title"><%= link_to post.title, post_url_path(post) %></h1>
-        <% if post.body.present? %>
-          <p class="post-list__excerpt"><%= post.excerpt %></p>
+    <% @entries.each do |entry| %>
+      <li class="post-list__item" id="home_<%= dom_id(entry) %>">
+        <% if entry.is_a?(Post) %>
+          <%= render "home_post", post: entry %>
+        <% elsif entry.is_a?(Game) %>
+          <%= render "home_game", game: entry %>
+        <% elsif entry.is_a?(Link) %>
+          <%= render entry, show_type: true %>
         <% end %>
-        <span class="post-list__date"><%= post.published_at ? render("posts/published_date", post: post) : render("posts/draft_date", post: post) %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
       </li>
     <% end %>
   </ul>
-  <%= link_to "Read more", blog_path, class: "post__back" %>
 </div>

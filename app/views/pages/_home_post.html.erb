@@ -1,0 +1,7 @@
+<%= link_to post_url_path(post), class: "home-feed__content-link" do %>
+  <h1 class="post-list__title"><%= post.title %></h1>
+  <% if post.body.present? %>
+    <p class="post-list__excerpt"><%= post.excerpt %></p>
+  <% end %>
+<% end %>
+<span class="post-list__date"><span class="home-feed__badge home-feed__badge--post">Blog post</span> <%= post.published_at ? render("posts/published_date", post: post) : render("posts/draft_date", post: post) %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
