@@ -5,6 +5,14 @@
   gap: 2rem;
 }
 
+.game-upload progress {
+  width: 100%;
+}
+
+.game-upload [role="alert"] {
+  color: #b42318;
+}
+
 .game-list__item {
   display: block;
 }

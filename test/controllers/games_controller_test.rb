@@ -5,6 +5,52 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     @game = games(:one)
   end
 
+  test "new and edit forms provide upload feedback and native fallback" do
+    sign_in_as(users(:one))
+    [ new_game_path, edit_game_path(@game) ].each do |path|
+      get path
+      assert_select "form#game-form[data-controller=game-upload][data-turbo=false][enctype='multipart/form-data']" do
+        assert_select "progress[data-game-upload-target=progress]"
+        assert_select "[role=status][data-game-upload-target=status]"
+        assert_select "[role=alert][data-game-upload-target=error]"
+      end
+      assert_select "input[type=submit][form=game-form]"
+    end
+  end
+
+  test "JSON create uploads a package and returns the saved game location" do
+    sign_in_as(users(:one))
+    assert_difference "Game.count" do
+      post games_path, params: { game: { title: "Uploaded", linux_package: fixture_file_upload("game.zip", "application/zip") } }, headers: { "Accept" => "application/json" }
+    end
+    assert_response :success
+    assert_equal game_path(Game.last), response.parsed_body["location"]
+    assert Game.last.linux_package.attached?
+  end
+
+  test "JSON update returns the saved location" do
+    sign_in_as(users(:one))
+    patch game_path(@game), params: { game: { title: "Updated upload" } }, headers: { "Accept" => "application/json" }
+    assert_response :success
+    assert_equal game_path(@game), response.parsed_body["location"]
+    assert_equal "Updated upload", @game.reload.title
+  end
+
+  test "JSON saves return validation errors without changing records" do
+    sign_in_as(users(:one))
+    assert_no_difference "Game.count" do
+      post games_path, params: { game: { title: "" } }, headers: { "Accept" => "application/json" }
+    end
+    assert_response :unprocessable_entity
+    assert_includes response.parsed_body["errors"], "Title can't be blank"
+
+    assert_no_changes -> { @game.reload.title } do
+      patch game_path(@game), params: { game: { title: "" } }, headers: { "Accept" => "application/json" }
+    end
+    assert_response :unprocessable_entity
+    assert_includes response.parsed_body["errors"], "Title can't be blank"
+  end
+
   # Unauthenticated access
 
   test "index is accessible without authentication" do

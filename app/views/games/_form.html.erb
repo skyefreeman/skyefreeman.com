@@ -1,4 +1,4 @@
-<%= form_with(model: game, id: "game-form") do |form| %>
+<%= form_with(model: game, id: "game-form", data: { controller: "game-upload", action: "submit->game-upload#submit", turbo: false }) do |form| %>
   <% if game.errors.any? %>
     <div class="form__errors">
       <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
@@ -43,5 +43,10 @@
   <div class="form__group">
     <%= form.label :download_url_itch, "Download URL (itch.io)", class: "form__label" %>
     <%= form.text_field :download_url_itch, class: "form__input", placeholder: "https://username.itch.io/game" %>
+  </div>
+  <div class="game-upload" data-game-upload-target="feedback" hidden>
+    <progress max="100" value="0" aria-label="Upload progress" data-game-upload-target="progress"></progress>
+    <p role="status" data-game-upload-target="status"></p>
+    <p role="alert" tabindex="-1" data-game-upload-target="error" hidden></p>
   </div>
 <% end %>

@@ -22,9 +22,12 @@ class GamesController < ApplicationController
   def create
     @game = Game.new(game_params)
     if @game.save
-      redirect_to @game
+      respond_to do |format|
+        format.html { redirect_to @game }
+        format.json { render json: { location: game_path(@game) } }
+      end
     else
-      render :new, status: :unprocessable_entity
+      render_save_errors(:new)
     end
   end
 
@@ -33,9 +36,12 @@ class GamesController < ApplicationController
 
   def update
     if @game.update(game_params)
-      redirect_to @game
+      respond_to do |format|
+        format.html { redirect_to @game }
+        format.json { render json: { location: game_path(@game) } }
+      end
     else
-      render :edit, status: :unprocessable_entity
+      render_save_errors(:edit)
     end
   end
 
@@ -45,6 +51,13 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def render_save_errors(template)
+    respond_to do |format|
+      format.html { render template, status: :unprocessable_entity }
+      format.json { render json: { errors: @game.errors.full_messages }, status: :unprocessable_entity }
+    end
+  end
 
   def set_game
     @game = Game.find_by(url_slug: params[:id]) || Game.find(params[:id])

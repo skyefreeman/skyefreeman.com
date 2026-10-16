@@ -95,6 +95,8 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Added upload percentage and saving feedback to new/edit game forms, disabled duplicate submission during uploads, and preserved inputs on validation, oversized upload, session, network, timeout, and server failures. Game create/update support JSON responses alongside the existing HTML flow. Added Rails integration and dependency-free JavaScript tests.
+
 - Added Unpublish to the published post edit form, saving edits while returning the post to a draft without deleting its content, slug, tags, or attachments. Drafts remain available to signed-in users and can be republished with a new publication date. Public direct post URLs now return 404 for drafts; listings, archives, tags, and feeds exclude unpublished posts. Added integration coverage for visibility, authentication, validation, and republishing.
 
 - Scaffolded Rails 8.1 app with PostgreSQL

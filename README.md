@@ -26,6 +26,24 @@ bin/dev
 rails test
 ```
 
+Run the upload controller tests with Node.js 20 or newer (no npm install needed):
+
+```bash
+node --test test/javascript/*.mjs
+```
+
+## Game uploads
+
+New and edited games show upload progress followed by a saving status. Save
+is disabled while a request is in progress. Validation, upload size, session,
+server, and network failures appear in the form without clearing selected
+files or entered values. Uploads time out after ten minutes. After a timeout
+or connection failure, check the Games page before retrying because the
+server may already have saved the game.
+
+The production proxy must allow the combined size of the cover image and
+game packages. Upload progress does not increase the server's upload limit.
+
 ## Publishing posts
 
 Signed-in users can save drafts and publish posts. To return a published
