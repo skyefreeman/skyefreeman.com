@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   allow_unauthenticated_access
 
   def home
-    @posts = Post.order(published_at: :desc)
+    @posts = Post.chronological
     @posts = @posts.where.not(published_at: nil) unless authenticated?
     @posts = @posts.limit(10)
   end

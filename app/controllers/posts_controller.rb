@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
 
   def blog
-    @posts = Post.order(published_at: :desc)
+    @posts = Post.chronological
     @posts = @posts.where.not(published_at: nil) unless authenticated?
   end
 

@@ -95,6 +95,10 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Home and blog draft entries now display their creation date and time next to the yellow DRAFT badge, with a machine-readable time element.
+
+- Home and blog now interleave drafts by creation time with published posts by publication time, newest first. Drafts remain private to signed-in users and use the shared yellow archived-project badge styling on listings and post detail pages.
+
 - Updated the About bio to name Engineering Manager at Duolingo as the current role and move Aura Frames into previous experience.
 
 - Applied pixelated image rendering to game cover images on the listing and detail pages to preserve sharp pixel-art edges when scaled.

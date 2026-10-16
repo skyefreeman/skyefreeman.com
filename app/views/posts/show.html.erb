@@ -17,7 +17,7 @@
   </div>
 
   <p class="post__meta">
-    <%= @post.published_at ? render("published_date", post: @post) : "DRAFT" %>
+    <%= @post.published_at ? render("published_date", post: @post) : tag.span("DRAFT", class: "post__draft-badge") %>
     <% if @post.deleted_at %>
       &middot; Deleted <%= @post.deleted_at.strftime("%B %d, %Y") %>
     <% end %>

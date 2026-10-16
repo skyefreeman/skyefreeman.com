@@ -6,7 +6,7 @@
         <% if post.body.present? %>
           <p class="post-list__excerpt"><%= post.excerpt %></p>
         <% end %>
-        <span class="post-list__date"><%= post.published_at ? render("posts/published_date", post: post) : "DRAFT" %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
+        <span class="post-list__date"><%= post.published_at ? render("posts/published_date", post: post) : render("posts/draft_date", post: post) %><% if post.tags.any? %> &middot; <%= post_tag_links(post) %><% end %></span>
       </li>
     <% end %>
   </ul>

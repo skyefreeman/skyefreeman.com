@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  scope :chronological, -> { order(Arel.sql("COALESCE(published_at, created_at) DESC"), id: :desc) }
+
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
 

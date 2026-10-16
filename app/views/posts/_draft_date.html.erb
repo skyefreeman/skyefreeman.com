@@ -1,0 +1,2 @@
+<%= tag.span("DRAFT", class: "post__draft-badge") %>
+<%= tag.time(post.created_at.strftime("%B %d, %Y at %-I:%M %p"), datetime: post.created_at.iso8601) %>
