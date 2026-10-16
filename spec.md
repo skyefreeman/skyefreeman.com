@@ -95,6 +95,8 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Updated the About bio to name Engineering Manager at Duolingo as the current role and move Aura Frames into previous experience.
+
 - Applied pixelated image rendering to game cover images on the listing and detail pages to preserve sharp pixel-art edges when scaled.
 
 - Updated /games to show two columns above 480px and one column on smaller screens, matching /projects with light gray cards, rounded corners, padding, and spacing. Added browser layout coverage for desktop and mobile.
