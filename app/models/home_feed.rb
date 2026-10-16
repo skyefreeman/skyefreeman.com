@@ -1,5 +1,5 @@
 class HomeFeed
-  def self.entries(include_drafts: false, limit: 30)
+  def self.entries(include_drafts: false, limit: 100)
     posts = Post.chronological
     posts = posts.where.not(published_at: nil) unless include_drafts
 

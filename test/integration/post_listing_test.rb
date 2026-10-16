@@ -42,14 +42,14 @@ class PostListingTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "home limits the combined chronological list to thirty posts" do
+  test "home limits the combined chronological list to one hundred posts" do
     sign_in_as(users(:one))
-    30.times do |index|
+    100.times do |index|
       Post.create!(title: "Recent post #{index}", url_slug: "recent-#{index}", published_at: Time.utc(2026, 2, 1) + index.days)
     end
 
     get root_path
-    assert_equal (0..29).to_a.reverse.map { |index| "Recent post #{index}" },
+    assert_equal (0..99).to_a.reverse.map { |index| "Recent post #{index}" },
       css_select(".post-list__title").map { |element| element.text.strip }
   end
 

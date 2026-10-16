@@ -95,6 +95,8 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Increased the combined home feed limit from 30 to 100 entries, with updated coverage for mixed and post-only feeds.
+
 - Removed the All posts, All links, and All games links beneath the home feed. Pagination remains deferred.
 
 - Increased the combined home feed limit from 10 to 30 items, preserving chronological ordering and draft visibility. Updated limit coverage for mixed and post-only feeds.

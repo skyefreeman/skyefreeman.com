@@ -33,13 +33,13 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
   end
 
   test "home limits the merged feed rather than each type separately" do
-    32.times do |index|
+    102.times do |index|
       Link.create!(title: "Link #{index}", url: "https://example.com/#{index}", created_at: Time.utc(2026, 2, 1) + index.hours)
     end
     @game.update!(created_at: Time.utc(2026, 3, 1))
     @post.update!(published_at: Time.utc(2026, 3, 2))
     get root_path
-    assert_equal [ @post.title, @game.title ] + (4..31).to_a.reverse.map { |index| "Link #{index}" }, titles
+    assert_equal [ @post.title, @game.title ] + (4..101).to_a.reverse.map { |index| "Link #{index}" }, titles
   end
 
   test "home handles untitled links and games without slugs" do
