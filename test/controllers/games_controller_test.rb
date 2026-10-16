@@ -106,4 +106,18 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to games_url
   end
+
+  test "create attaches linux package" do
+    sign_in_as(users(:one))
+    file = fixture_file_upload("game.zip", "application/zip")
+    post games_url, params: { game: { title: "New Game", linux_package: file } }
+    assert Game.last.linux_package.attached?
+  end
+
+  test "update attaches macos package" do
+    sign_in_as(users(:one))
+    file = fixture_file_upload("game.zip", "application/zip")
+    patch game_url(@game), params: { game: { macos_package: file } }
+    assert @game.reload.macos_package.attached?
+  end
 end

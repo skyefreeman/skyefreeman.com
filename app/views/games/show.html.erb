@@ -18,13 +18,13 @@
     <p class="game__description"><%= @game.description %></p>
   <% end %>
 
-  <% platform_links = [
-    (@game.download_url_linux.present? ? link_to("Linux", @game.download_url_linux, class: "game__download-link") : nil),
-    (@game.download_url_macos.present? ? link_to("macOS", @game.download_url_macos, class: "game__download-link") : nil),
-    (@game.download_url_windows.present? ? link_to("Windows", @game.download_url_windows, class: "game__download-link") : nil)
+  <% platform_packages = [
+    (@game.linux_package.attached? ? link_to("Linux", rails_blob_path(@game.linux_package, disposition: "attachment"), class: "game__download-link") : nil),
+    (@game.macos_package.attached? ? link_to("macOS", rails_blob_path(@game.macos_package, disposition: "attachment"), class: "game__download-link") : nil),
+    (@game.windows_package.attached? ? link_to("Windows", rails_blob_path(@game.windows_package, disposition: "attachment"), class: "game__download-link") : nil)
   ].compact %>
-  <% if platform_links.any? %>
-    <p class="game__downloads">Download it on <%= platform_links.join(", ").html_safe %></p>
+  <% if platform_packages.any? %>
+    <p class="game__downloads">Download it on <%= platform_packages.join(", ").html_safe %></p>
   <% end %>
 
   <% if @game.download_url_itch.present? %>

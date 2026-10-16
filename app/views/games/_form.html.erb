@@ -30,20 +30,15 @@
     <%= form.file_field :cover_image, class: "form__input" %>
   </div>
 
-  <div class="form__group">
-    <%= form.label :download_url_linux, "Download URL (Linux)", class: "form__label" %>
-    <%= form.text_field :download_url_linux, class: "form__input", placeholder: "https://..." %>
-  </div>
-
-  <div class="form__group">
-    <%= form.label :download_url_macos, "Download URL (macOS)", class: "form__label" %>
-    <%= form.text_field :download_url_macos, class: "form__input", placeholder: "https://..." %>
-  </div>
-
-  <div class="form__group">
-    <%= form.label :download_url_windows, "Download URL (Windows)", class: "form__label" %>
-    <%= form.text_field :download_url_windows, class: "form__input", placeholder: "https://..." %>
-  </div>
+  <% [[:linux_package, "Linux"], [:macos_package, "macOS"], [:windows_package, "Windows"]].each do |field, label| %>
+    <div class="form__group">
+      <%= form.label field, "#{label} Package (.zip)", class: "form__label" %>
+      <div class="drop-zone" data-controller="drop-zone">
+        <span data-drop-zone-target="label" class="drop-zone__label">Drop <%= label %> .zip here, or click to browse</span>
+        <%= form.file_field field, class: "drop-zone__input", accept: ".zip", data: { "drop-zone-target": "input" } %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="form__group">
     <%= form.label :download_url_itch, "Download URL (itch.io)", class: "form__label" %>

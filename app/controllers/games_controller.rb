@@ -53,7 +53,8 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game).permit(
       :title, :description, :url_slug, :cover_image,
-      :download_url_linux, :download_url_macos, :download_url_windows, :download_url_itch
+      :linux_package, :macos_package, :windows_package,
+      :download_url_itch
     )
   end
 end
