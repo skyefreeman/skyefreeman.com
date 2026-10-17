@@ -95,6 +95,10 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Configured external link cells to open destinations in a new browser tab with safe referrer isolation.
+
+- Added an optional body to links, including create/edit form fields and conditional rendering in link cells.
+
 - Increased the combined home feed limit from 30 to 100 entries, with updated coverage for mixed and post-only feeds.
 
 - Removed the All posts, All links, and All games links beneath the home feed. Pagination remains deferred.

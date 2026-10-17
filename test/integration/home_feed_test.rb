@@ -17,12 +17,23 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_equal [ @link.title, @post.title, @game.title ], titles
-    assert_select "#home_link_#{@link.id} a[href='https://example.com/article']"
+    assert_select "#home_link_#{@link.id} a[href='https://example.com/article'][target='_blank'][rel='noopener noreferrer']"
     assert_select "#home_game_#{@game.id} a[href='#{game_by_slug_path(@game.url_slug)}']"
     assert_select "#home_post_#{@post.id} .post-list__excerpt", text: "An excerpt from the post."
     assert_select "#home_game_#{@game.id} .post-list__excerpt", text: @game.description
     assert_select ".post__draft-badge", count: 0
     assert_select "nav[aria-label='More content']", count: 0
+  end
+
+  test "link cells render a body only when present" do
+    @link.update!(body: "A short description.")
+
+    get root_path
+    assert_select "#home_link_#{@link.id} .post-list__excerpt", text: "A short description."
+
+    @link.update!(body: "")
+    get links_path
+    assert_select "#link_#{@link.id} .post-list__excerpt", count: 0
   end
 
   test "signed in home includes drafts by creation time" do

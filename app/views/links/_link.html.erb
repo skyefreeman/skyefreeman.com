@@ -1,7 +1,10 @@
 <div id="<%= dom_id link %>">
-  <a href="<%= ensure_https_prefix(link.url) %>" class="post-list__title">
+  <a href="<%= ensure_https_prefix(link.url) %>" class="post-list__title" target="_blank" rel="noopener noreferrer">
     <%= link.title.present? ? link.title : link.url %>
   </a>
+  <% if link.body.present? %>
+    <p class="post-list__excerpt"><%= link.body %></p>
+  <% end %>
   <span class="post-list__date">
     <% if local_assigns[:show_type] %>
       <span class="home-feed__badge home-feed__badge--link">Link</span>

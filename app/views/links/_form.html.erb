@@ -22,6 +22,11 @@
   </div>
 
   <div class="form__group">
+    <%= form.label :body, class: "form__label" %>
+    <%= form.text_area :body, class: "form__input" %>
+  </div>
+
+  <div class="form__group">
     <%= form.label :tag_names, "Tags", class: "form__label" %>
     <%= form.text_field :tag_names, class: "form__input", placeholder: "e.g. design, tools, reading" %>
   </div>
