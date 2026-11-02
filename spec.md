@@ -95,6 +95,8 @@ RESTful resource: `resources :ideas`
 
 ## Changelog
 
+- Removed links from the home feed while preserving link views and listing behavior.
+
 - Configured external link cells to open destinations in a new browser tab with safe referrer isolation.
 
 - Added an optional body to links, including create/edit form fields and conditional rendering in link cells.

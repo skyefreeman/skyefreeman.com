@@ -13,11 +13,10 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
     @draft = Post.create!(title: "Private draft", created_at: Time.utc(2026, 1, 25))
   end
 
-  test "public home interleaves links posts and games with correct destinations" do
+  test "public home interleaves posts and games with correct destinations" do
     get root_path
     assert_response :success
-    assert_equal [ @link.title, @post.title, @game.title ], titles
-    assert_select "#home_link_#{@link.id} a[href='https://example.com/article'][target='_blank'][rel='noopener noreferrer']"
+    assert_equal [ @post.title, @game.title ], titles
     assert_select "#home_game_#{@game.id} a[href='#{game_by_slug_path(@game.url_slug)}']"
     assert_select "#home_post_#{@post.id} .post-list__excerpt", text: "An excerpt from the post."
     assert_select "#home_game_#{@game.id} .post-list__excerpt", text: @game.description
@@ -28,8 +27,8 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
   test "link cells render a body only when present" do
     @link.update!(body: "A short description.")
 
-    get root_path
-    assert_select "#home_link_#{@link.id} .post-list__excerpt", text: "A short description."
+    get links_path
+    assert_select "#link_#{@link.id} .post-list__excerpt", text: "A short description."
 
     @link.update!(body: "")
     get links_path
@@ -39,7 +38,7 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
   test "signed in home includes drafts by creation time" do
     sign_in_as(users(:one))
     get root_path
-    assert_equal [ @link.title, @draft.title, @post.title, @game.title ], titles
+    assert_equal [ @draft.title, @post.title, @game.title ], titles
     assert_select "#home_post_#{@draft.id} .post__draft-badge + time"
   end
 
@@ -50,15 +49,17 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
     @game.update!(created_at: Time.utc(2026, 3, 1))
     @post.update!(published_at: Time.utc(2026, 3, 2))
     get root_path
-    assert_equal [ @post.title, @game.title ] + (4..101).to_a.reverse.map { |index| "Link #{index}" }, titles
+    assert_equal [ @post.title, @game.title ], titles
   end
 
   test "home handles untitled links and games without slugs" do
     @link.update!(title: nil)
     @game.update!(url_slug: nil)
     get root_path
-    assert_select "#home_link_#{@link.id} a", text: @link.url
     assert_select "#home_game_#{@game.id} a[href='#{game_path(@game)}']"
+
+    get links_path
+    assert_select "#link_#{@link.id} a", text: @link.url
   end
 
   test "home renders with no content" do
@@ -74,7 +75,7 @@ class HomeFeedTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:one))
     get root_path
     { @post => [ "post", "Blog post" ], @draft => [ "post", "Blog post" ],
-      @link => [ "link", "Link" ], @game => [ "game", "Game" ] }.each do |entry, (type, label)|
+      @game => [ "game", "Game" ] }.each do |entry, (type, label)|
       assert_select "#home_#{type}_#{entry.id} .post-list__date > .home-feed__badge--#{type}:first-child", text: label
     end
   end

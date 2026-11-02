@@ -4,7 +4,6 @@ class HomeFeed
     posts = posts.where.not(published_at: nil) unless include_drafts
 
     entries = posts.includes(:tags, :rich_text_body).limit(limit).to_a +
-      Link.order(created_at: :desc, id: :desc).includes(:tags).limit(limit).to_a +
       Game.order(created_at: :desc, id: :desc).with_attached_cover_image.limit(limit).to_a
 
     entries.sort_by { |entry|
