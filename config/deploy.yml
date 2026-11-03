@@ -30,7 +30,7 @@ env:
     - AWS_S3_BUCKET
   clear:
     SOLID_QUEUE_IN_PUMA: true
-    AWS_REGION: us-east-1
+    AWS_REGION: us-east-2
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
