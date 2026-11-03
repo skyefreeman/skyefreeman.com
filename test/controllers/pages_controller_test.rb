@@ -26,4 +26,14 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "p.post-list__excerpt"
   end
 
+  test "navigation links to audio samples before games" do
+    get root_path
+
+    links = css_select("nav.site-header__nav a.site-header__nav-link")
+    audio_index = links.index { |link| link.text == "Audio" }
+    games_index = links.index { |link| link.text == "Games" }
+
+    assert_equal audio_samples_path, links[audio_index]["href"]
+    assert_operator audio_index, :<, games_index
+  end
 end

@@ -25,8 +25,12 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - SKYEFREEMAN_COM_DATABASE_PASSWORD
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_S3_BUCKET
   clear:
     SOLID_QUEUE_IN_PUMA: true
+    AWS_REGION: us-east-1
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"

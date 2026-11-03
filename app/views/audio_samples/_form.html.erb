@@ -1,0 +1,60 @@
+<%= form_with model: audio_sample,
+  id: "audio-sample-form",
+  data: {
+    controller: "audio-upload",
+    action: "submit->audio-upload#validate direct-uploads:start->audio-upload#uploadStarted direct-upload:progress->audio-upload#uploadProgress direct-upload:error->audio-upload#uploadFailed direct-uploads:end->audio-upload#uploadFinished"
+  } do |form| %>
+  <% if audio_sample.errors.any? %>
+    <div class="form__errors">
+      <h2><%= pluralize(audio_sample.errors.count, "error") %> prohibited this audio sample from being saved:</h2>
+      <ul>
+        <% audio_sample.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__group">
+    <%= form.label :description, class: "form__label" %>
+    <%= form.text_area :description, class: "form__input", rows: 5, required: true %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :latitude, class: "form__label" %>
+    <%= form.number_field :latitude, class: "form__input", min: -90, max: 90, step: "any" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :longitude, class: "form__label" %>
+    <%= form.number_field :longitude, class: "form__input", min: -180, max: 180, step: "any" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :audio_file, "MP3 file (20 MiB maximum)", class: "form__label" %>
+    <% if audio_sample.audio_file.attached? %>
+      <% if audio_sample.audio_file.blob.persisted? %>
+        <%= form.hidden_field :audio_file, value: audio_sample.audio_file.signed_id %>
+      <% end %>
+      <p class="form__hint">Current file: <%= audio_sample.audio_file.filename %></p>
+    <% end %>
+    <%= form.file_field :audio_file,
+      class: "form__input",
+      accept: "audio/mpeg,.mp3",
+      direct_upload: true,
+      required: !audio_sample.audio_file.attached?,
+      data: {
+        audio_upload_target: "file",
+        action: "change->audio-upload#selected",
+        direct_upload_url: audio_sample_direct_uploads_path
+      } %>
+  </div>
+
+  <%= form.hidden_field :duration_seconds, data: { audio_upload_target: "duration" } %>
+
+  <div class="audio-upload" data-audio-upload-target="feedback" hidden>
+    <progress max="100" value="0" aria-label="Upload progress" data-audio-upload-target="progress"></progress>
+    <p role="status" data-audio-upload-target="status"></p>
+  </div>
+  <p class="audio-upload__error" role="alert" tabindex="-1" data-audio-upload-target="error" hidden></p>
+<% end %>

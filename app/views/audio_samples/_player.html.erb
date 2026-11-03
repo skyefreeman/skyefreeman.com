@@ -1,0 +1,23 @@
+<div class="audio-player" data-controller="audio-player">
+  <button type="button"
+    class="audio-player__button"
+    aria-label="Play <%= audio_sample.description %>"
+    aria-pressed="false"
+    data-audio-player-target="button"
+    data-play-label="Play <%= audio_sample.description %>"
+    data-pause-label="Pause <%= audio_sample.description %>"
+    data-action="audio-player#toggle">
+    <span aria-hidden="true" data-audio-player-target="icon">▶</span>
+    <span data-audio-player-target="label">Play</span>
+  </button>
+  <span class="audio-player__duration"><%= format_audio_duration(audio_sample.duration_seconds) %></span>
+  <% if audio_sample.audio_file.attached? %>
+    <%= audio_tag rails_blob_path(audio_sample.audio_file, disposition: "inline"),
+      preload: "none",
+      data: {
+        audio_player_target: "audio",
+        action: "play->audio-player#playing pause->audio-player#paused ended->audio-player#ended error->audio-player#failed audio-player:started@window->audio-player#pauseForOther"
+      } %>
+  <% end %>
+  <span class="audio-player__error" role="alert" data-audio-player-target="error" hidden></span>
+</div>

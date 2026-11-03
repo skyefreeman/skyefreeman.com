@@ -1,0 +1,10 @@
+<% content_for :title, "New Audio Sample" %>
+
+<div class="page-content">
+  <h1 class="page-content__title">New Audio Sample</h1>
+  <%= render "form", audio_sample: @audio_sample %>
+
+  <div class="form__actions">
+    <input type="submit" form="audio-sample-form" value="Save" class="form__submit">
+  </div>
+</div>

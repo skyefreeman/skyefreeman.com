@@ -44,6 +44,43 @@ server may already have saved the game.
 The production proxy must allow the combined size of the cover image and
 game packages. Upload progress does not increase the server's upload limit.
 
+## Audio sample uploads
+
+Audio samples accept MP3 files up to 20 MiB. The browser reads the duration,
+then uploads the MP3 directly to private S3 storage before Rails saves the
+record. Uploaded MP3s are preserved without recompression. Latitude and
+longitude are entered manually and are never rendered on public pages.
+
+Production requires these deployment secrets:
+
+```text
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_S3_BUCKET
+```
+
+`AWS_REGION` defaults to `us-east-1` and is set in `config/deploy.yml`. The S3
+bucket must permit direct uploads from the production origin:
+
+```json
+[
+  {
+    "AllowedHeaders": [
+      "Content-Type",
+      "Content-MD5",
+      "Content-Disposition"
+    ],
+    "AllowedMethods": ["PUT"],
+    "AllowedOrigins": ["https://skyefreeman.com"],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
+The bucket should remain private. Playback uses signed Active Storage URLs.
+Unattached direct-upload blobs older than 24 hours are purged by the scheduled
+`PurgeUnattachedBlobsJob`.
+
 ## Publishing posts
 
 Signed-in users can save drafts and publish posts. To return a published

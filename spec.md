@@ -37,6 +37,15 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `output_url` (string, optional)
 - `created_at`, `updated_at` (timestamps)
 
+### AudioSample
+- `description` (text)
+- `latitude` (decimal, optional) — private metadata entered manually
+- `longitude` (decimal, optional) — private metadata entered manually
+- `duration_seconds` (decimal) — detected from the selected file in the browser
+- `audio_file` (ActiveStorage `has_one_attached`) — MP3, maximum 20 MiB
+- `created_at`, `updated_at` (timestamps)
+- Public pages show the description, formatted duration, and playback control; coordinates are only present in authenticated forms
+
 ## Routes
 
 RESTful resource: `resources :posts`
@@ -80,6 +89,20 @@ RESTful resource: `resources :ideas`
 | PATCH  | /ideas/:id          | update  |
 | DELETE | /ideas/:id          | destroy |
 
+RESTful resource: `resources :audio_samples`
+
+| Verb   | Path                    | Action  |
+|--------|-------------------------|---------|
+| GET    | /audio_samples          | index   |
+| GET    | /audio_samples/:id      | show    |
+| GET    | /audio_samples/new      | new     |
+| POST   | /audio_samples          | create  |
+| GET    | /audio_samples/:id/edit | edit    |
+| PATCH  | /audio_samples/:id      | update  |
+| DELETE | /audio_samples/:id      | destroy |
+
+Index and show are public. All write actions and direct-upload authorization require authentication.
+
 ## Views & Helpers
 
 ### Meta Tags
@@ -94,6 +117,8 @@ RESTful resource: `resources :ideas`
 - `post_og_image_url(post)` — returns absolute URL for `header_attachment`, or `nil`
 
 ## Changelog
+
+- Added audio samples with public playback, descriptions, formatted durations, private location metadata, authenticated CRUD, direct MP3 uploads to private S3 storage in production, responsive cards, and single-sample playback.
 
 - Removed links from the home feed while preserving link views and listing behavior.
 

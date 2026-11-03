@@ -1,0 +1,25 @@
+<% content_for :title, "Audio Samples" %>
+
+<div class="page-content">
+  <div class="page-content__header">
+    <h1 class="page-content__title">Audio Samples</h1>
+    <% if authenticated? %>
+      <%= link_to "New", new_audio_sample_path, class: "page-content__action" %>
+    <% end %>
+  </div>
+
+  <% if @audio_samples.any? %>
+    <ul class="audio-sample-list">
+      <% @audio_samples.each do |audio_sample| %>
+        <li class="audio-sample-list__item">
+          <%= render audio_sample %>
+          <% if authenticated? %>
+            <%= link_to "Edit", edit_audio_sample_path(audio_sample), class: "audio-sample-list__edit" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="audio-sample-list__empty">No audio samples yet.</p>
+  <% end %>
+</div>

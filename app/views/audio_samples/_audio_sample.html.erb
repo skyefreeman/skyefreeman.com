@@ -1,0 +1,6 @@
+<article class="audio-sample">
+  <p class="audio-sample-list__description">
+    <%= link_to audio_sample.description, audio_sample, class: "audio-sample-list__link" %>
+  </p>
+  <%= render "player", audio_sample: audio_sample %>
+</article>

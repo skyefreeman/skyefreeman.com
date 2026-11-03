@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post "/rails/active_storage/direct_uploads", to: "authenticated_direct_uploads#create"
+  post "/audio_samples/direct_uploads", to: "audio_sample_direct_uploads#create", as: :audio_sample_direct_uploads
+  resources :audio_samples
   resources :games
   get "games/:url_slug", to: "games#show_by_slug", as: :game_by_slug
   resources :ideas

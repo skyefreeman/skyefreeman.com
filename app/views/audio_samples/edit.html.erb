@@ -1,0 +1,11 @@
+<% content_for :title, "Editing Audio Sample" %>
+
+<div class="page-content">
+  <h1 class="page-content__title">Editing Audio Sample</h1>
+  <%= render "form", audio_sample: @audio_sample %>
+
+  <div class="form__actions">
+    <input type="submit" form="audio-sample-form" value="Save" class="form__submit">
+    <%= button_to "Delete", @audio_sample, method: :delete, class: "form__delete", data: { turbo_confirm: "Delete this audio sample?" } %>
+  </div>
+</div>
