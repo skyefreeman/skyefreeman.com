@@ -120,6 +120,10 @@ Index and show are public. All write actions and direct-upload authorization req
 
 ## Changelog
 
+- Added native browser audio controls to audio sample detail pages while retaining compact custom play buttons on the audio list.
+
+- Removed Edit links from the audio sample list; editing remains available from each sample's detail page.
+
 - Replaced the audio card grid with a compact, striped table inspired by classic media-library lists, with Title, Time, and Description columns and inline playback controls.
 
 - Changed the audio sample URL prefix from `/audio_samples` to `/audio`, including direct uploads, while retaining the existing Rails route helper names.

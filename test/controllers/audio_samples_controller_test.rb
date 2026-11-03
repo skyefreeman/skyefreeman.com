@@ -25,6 +25,7 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
       assert_select "thead th", text: /Time/, count: 1
       assert_select "thead th", text: /Description/, count: 1
       assert_select "tbody tr.audio-sample-list__row", count: 2
+      assert_select "audio[controls]", count: 0
       assert_select "tbody tr:first-child .audio-sample-list__title", text: audio_samples(:two).title
       assert_select "tbody tr:first-child .audio-sample-list__time", text: "2:05"
       assert_select "tbody tr:first-child .audio-sample-list__description", text: audio_samples(:two).description
@@ -33,12 +34,22 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
     assert_select "body", text: /#{Regexp.escape(@audio_sample.longitude.to_s)}/, count: 0
   end
 
+  test "index does not show edit links to authenticated users" do
+    sign_in_as(users(:one))
+
+    get audio_samples_url
+
+    assert_response :success
+    assert_select "a[href=?]", edit_audio_sample_path(@audio_sample), count: 0
+  end
+
   test "show is public and does not expose coordinates" do
     get audio_sample_url(@audio_sample)
 
     assert_response :success
     assert_select "h1.page-content__title", text: @audio_sample.title
-    assert_select ".audio-player"
+    assert_select "audio.audio-sample__native-player[controls][preload=metadata]", count: 1
+    assert_select ".audio-player__button", count: 0
     assert_select ".audio-sample__description", text: @audio_sample.description
     assert_select "body", text: /#{Regexp.escape(@audio_sample.latitude.to_s)}/, count: 0
     assert_select "body", text: /#{Regexp.escape(@audio_sample.longitude.to_s)}/, count: 0

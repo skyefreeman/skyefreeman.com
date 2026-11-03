@@ -4,9 +4,6 @@
       <%= render "player", audio_sample: audio_sample, compact: true, show_duration: false %>
       <span class="audio-sample-list__title">
         <%= link_to audio_sample.title, audio_sample, class: "audio-sample-list__link" %>
-        <% if authenticated? %>
-          <%= link_to "Edit", edit_audio_sample_path(audio_sample), class: "audio-sample-list__edit" %>
-        <% end %>
       </span>
     </div>
   </td>

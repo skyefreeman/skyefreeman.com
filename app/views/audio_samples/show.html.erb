@@ -9,5 +9,10 @@
   </div>
 
   <p class="audio-sample__description"><%= @audio_sample.description %></p>
-  <%= render "player", audio_sample: @audio_sample %>
+  <% if @audio_sample.audio_file.attached? %>
+    <%= audio_tag rails_blob_path(@audio_sample.audio_file, disposition: "inline"),
+      controls: true,
+      preload: "metadata",
+      class: "audio-sample__native-player" %>
+  <% end %>
 </div>
