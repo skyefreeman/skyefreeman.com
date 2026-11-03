@@ -8,5 +8,7 @@
     </div>
   </td>
   <td class="audio-sample-list__time"><%= format_audio_duration(audio_sample.duration_seconds) %></td>
-  <td class="audio-sample-list__description" title="<%= audio_sample.description %>"><%= audio_sample.description %></td>
+  <td class="audio-sample-list__description" title="<%= audio_sample.description %>">
+    <div class="audio-sample-list__description-content" tabindex="0"><%= audio_sample.description %></div>
+  </td>
 </tr>

@@ -120,6 +120,10 @@ Index and show are public. All write actions and direct-upload authorization req
 
 ## Changelog
 
+- Hid audio description scrollbars while preserving horizontal scrolling, preventing the scrollbar from covering row text.
+
+- Made long descriptions independently horizontally scrollable within compact audio list rows.
+
 - Centered the audio list's play and pause artwork with fixed SVG geometry inside the compact circular control.
 
 - Matched the production AWS region to the audio sample S3 bucket in `us-east-2`, preventing direct uploads from being redirected across origins.

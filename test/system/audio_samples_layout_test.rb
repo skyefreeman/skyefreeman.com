@@ -4,6 +4,13 @@ class AudioSamplesLayoutTest < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :headless_chrome, screen_size: [ 1200, 900 ]
 
   test "audio samples use aligned compact rows contained on mobile" do
+    audio_sample = audio_samples(:two)
+    audio_sample.audio_file.attach(
+      io: StringIO.new("mp3 data"),
+      filename: "sample.mp3",
+      content_type: "audio/mpeg"
+    )
+    audio_sample.update!(description: "A long field recording description " * 30)
     visit audio_samples_path
     assert_selector ".audio-sample-list__row", count: 2
     assert_selector ".audio-sample-list thead th", count: 3
@@ -18,6 +25,8 @@ class AudioSamplesLayoutTest < ActionDispatch::SystemTestCase
     assert_in_delta 6, desktop["playPathCenterY"], 0.01
     assert_in_delta 6, desktop["pausePathCenterX"], 0.01
     assert_in_delta 6, desktop["pausePathCenterY"], 0.01
+    assert_operator desktop["descriptionScrollWidth"], :>, desktop["descriptionClientWidth"]
+    assert_equal 0, desktop["descriptionScrollbarHeight"]
     assert_operator desktop["rowHeight"], :<, 64
 
     page.driver.browser.execute_cdp("Emulation.setDeviceMetricsOverride",
@@ -44,6 +53,7 @@ class AudioSamplesLayoutTest < ActionDispatch::SystemTestCase
         const icon = row.querySelector('.audio-player__icon').getBoundingClientRect();
         const playPath = row.querySelector('.audio-player__icon-play').getBBox();
         const pausePath = row.querySelector('.audio-player__icon-pause').getBBox();
+        const description = row.querySelector('.audio-sample-list__description-content');
         return {
           headers: headers.map(element => element.getBoundingClientRect().left),
           cells: cells.map(element => element.getBoundingClientRect().left),
@@ -55,6 +65,9 @@ class AudioSamplesLayoutTest < ActionDispatch::SystemTestCase
           playPathCenterY: playPath.y + playPath.height / 2,
           pausePathCenterX: pausePath.x + pausePath.width / 2,
           pausePathCenterY: pausePath.y + pausePath.height / 2,
+          descriptionScrollWidth: description.scrollWidth,
+          descriptionClientWidth: description.clientWidth,
+          descriptionScrollbarHeight: description.offsetHeight - description.clientHeight,
           rowHeight: row.getBoundingClientRect().height
         };
       })()
