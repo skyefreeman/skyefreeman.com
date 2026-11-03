@@ -15,6 +15,7 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select ".audio-sample-list__item", count: 2
+    assert_select "h2.audio-sample-list__title", text: audio_samples(:two).title, match: :first
     assert_select ".audio-sample-list__description", text: audio_samples(:two).description, match: :first
     assert_select "body", text: /#{Regexp.escape(@audio_sample.latitude.to_s)}/, count: 0
     assert_select "body", text: /#{Regexp.escape(@audio_sample.longitude.to_s)}/, count: 0
@@ -24,10 +25,24 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
     get audio_sample_url(@audio_sample)
 
     assert_response :success
+    assert_select "h1.page-content__title", text: @audio_sample.title
     assert_select ".audio-player"
     assert_select ".audio-sample__description", text: @audio_sample.description
     assert_select "body", text: /#{Regexp.escape(@audio_sample.latitude.to_s)}/, count: 0
     assert_select "body", text: /#{Regexp.escape(@audio_sample.longitude.to_s)}/, count: 0
+  end
+
+  test "show resolves a custom URL slug" do
+    get audio_sample_url(@audio_sample.url_slug)
+
+    assert_response :success
+    assert_select "h1.page-content__title", text: @audio_sample.title
+  end
+
+  test "show returns not found for an unknown URL slug" do
+    get audio_sample_url("unknown-recording")
+
+    assert_response :not_found
   end
 
   test "write actions require authentication" do
@@ -94,6 +109,8 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
 
     get new_audio_sample_url
 
+    assert_select "input[name='audio_sample[title]']"
+    assert_select "input[name='audio_sample[url_slug]']"
     assert_select "input[type=file][accept='audio/mpeg,.mp3'][data-direct-upload-url=?]", audio_sample_direct_uploads_path
     assert_select "input[type=hidden][name='audio_sample[duration_seconds]']"
   end
@@ -103,11 +120,18 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
 
     replacement = fixture_file_upload("sample.mp3", "audio/mpeg")
     patch audio_sample_url(@audio_sample), params: {
-      audio_sample: { description: "Evening birds", duration_seconds: 42.5, audio_file: replacement }
+      audio_sample: {
+        title: "Evening Birds",
+        url_slug: "evening-birds-new",
+        description: "Evening birds",
+        duration_seconds: 42.5,
+        audio_file: replacement
+      }
     }
 
-    assert_redirected_to audio_sample_url(@audio_sample)
+    assert_redirected_to audio_sample_url("evening-birds-new")
     @audio_sample.reload
+    assert_equal "Evening Birds", @audio_sample.title
     assert_equal "Evening birds", @audio_sample.description
     assert_equal "sample.mp3", @audio_sample.audio_file.filename.to_s
   end
@@ -134,6 +158,8 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
 
   def valid_attributes
     {
+      title: "Rain on the Roof",
+      url_slug: "rain-on-the-roof-#{SecureRandom.hex(4)}",
       description: "Rain on the roof",
       duration_seconds: 75.5,
       latitude: 40.7128,

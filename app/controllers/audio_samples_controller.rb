@@ -43,10 +43,11 @@ class AudioSamplesController < ApplicationController
   private
 
   def set_audio_sample
-    @audio_sample = AudioSample.find(params.expect(:id))
+    id = params.expect(:id)
+    @audio_sample = AudioSample.find_by(url_slug: id) || AudioSample.find(id)
   end
 
   def audio_sample_params
-    params.expect(audio_sample: [ :description, :latitude, :longitude, :duration_seconds, :audio_file ])
+    params.expect(audio_sample: [ :title, :url_slug, :description, :latitude, :longitude, :duration_seconds, :audio_file ])
   end
 end

@@ -3,6 +3,8 @@ require "test_helper"
 class AudioSampleTest < ActiveSupport::TestCase
   setup do
     @audio_sample = AudioSample.new(
+      title: "Morning in the Park",
+      url_slug: "morning-in-the-park-2",
       description: "Morning birds",
       latitude: 40.7128,
       longitude: -74.0060,
@@ -19,15 +21,32 @@ class AudioSampleTest < ActiveSupport::TestCase
     assert_predicate @audio_sample, :valid?
   end
 
-  test "requires a description, duration, and audio file" do
+  test "requires a title, description, duration, and audio file" do
+    @audio_sample.title = nil
     @audio_sample.description = nil
     @audio_sample.duration_seconds = nil
     @audio_sample.audio_file.detach
 
     assert_not @audio_sample.valid?
+    assert_equal [ "can't be blank" ], @audio_sample.errors[:title]
     assert_equal [ "can't be blank" ], @audio_sample.errors[:description]
     assert_equal [ "can't be blank" ], @audio_sample.errors[:duration_seconds]
     assert_equal [ "must be attached" ], @audio_sample.errors[:audio_file]
+  end
+
+  test "uses a unique optional URL slug as its route parameter" do
+    @audio_sample.id = 123
+    @audio_sample.url_slug = "  "
+    assert_predicate @audio_sample, :valid?
+    assert_nil @audio_sample.url_slug
+    assert_equal "123", @audio_sample.to_param
+
+    @audio_sample.url_slug = audio_samples(:one).url_slug
+    assert_not @audio_sample.valid?
+    assert_equal [ "has already been taken" ], @audio_sample.errors[:url_slug]
+
+    @audio_sample.url_slug = "custom-recording"
+    assert_equal "custom-recording", @audio_sample.to_param
   end
 
   test "requires a positive duration" do

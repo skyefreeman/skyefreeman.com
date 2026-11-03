@@ -16,6 +16,16 @@
   <% end %>
 
   <div class="form__group">
+    <%= form.label :title, class: "form__label" %>
+    <%= form.text_field :title, class: "form__input", required: true %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :url_slug, "URL Slug", class: "form__label" %>
+    <%= form.text_field :url_slug, class: "form__input", placeholder: "morning-in-the-park" %>
+  </div>
+
+  <div class="form__group">
     <%= form.label :description, class: "form__label" %>
     <%= form.text_area :description, class: "form__input", rows: 5, required: true %>
   </div>

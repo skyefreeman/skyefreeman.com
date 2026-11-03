@@ -38,6 +38,8 @@ Personal website built with Ruby on Rails. Supports authoring and publishing pos
 - `created_at`, `updated_at` (timestamps)
 
 ### AudioSample
+- `title` (string)
+- `url_slug` (string, optional, unique) — replaces the numeric ID in public and edit URLs when present
 - `description` (text)
 - `latitude` (decimal, optional) — private metadata entered manually
 - `longitude` (decimal, optional) — private metadata entered manually
@@ -117,6 +119,8 @@ Index and show are public. All write actions and direct-upload authorization req
 - `post_og_image_url(post)` — returns absolute URL for `header_attachment`, or `nil`
 
 ## Changelog
+
+- Added titles and optional custom URL slugs to audio samples, including description-based title backfill for existing records and numeric-ID URL fallback.
 
 - Added audio samples with public playback, descriptions, formatted durations, private location metadata, authenticated CRUD, direct MP3 uploads to private S3 storage in production, responsive cards, and single-sample playback.
 

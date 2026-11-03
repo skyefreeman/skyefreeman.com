@@ -6,7 +6,11 @@ class AudioSample < ApplicationRecord
     Rails.env.production? ? :amazon : Rails.configuration.active_storage.service
   }
 
+  normalizes :url_slug, with: ->(url_slug) { url_slug.strip.presence }
+
+  validates :title, presence: true
   validates :description, presence: true
+  validates :url_slug, uniqueness: true, allow_nil: true
   validates :duration_seconds, presence: true
   validates :duration_seconds, numericality: { greater_than: 0 }, allow_nil: true
   validates :latitude, numericality: { in: -90..90 }, allow_nil: true
@@ -14,6 +18,10 @@ class AudioSample < ApplicationRecord
   validate :audio_file_is_attached
   validate :audio_file_is_mp3
   validate :audio_file_is_within_size_limit
+
+  def to_param
+    url_slug.presence || super
+  end
 
   private
 

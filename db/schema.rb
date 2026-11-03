@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_024030) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_032352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,7 +58,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_024030) do
     t.decimal "duration_seconds", precision: 10, scale: 3, null: false
     t.decimal "latitude", precision: 10, scale: 7
     t.decimal "longitude", precision: 10, scale: 7
+    t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.string "url_slug"
+    t.index ["url_slug"], name: "index_audio_samples_on_url_slug", unique: true
   end
 
   create_table "games", force: :cascade do |t|

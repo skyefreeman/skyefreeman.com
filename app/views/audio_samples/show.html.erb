@@ -1,8 +1,8 @@
-<% content_for :title, "Audio Sample" %>
+<% content_for :title, @audio_sample.title %>
 
 <div class="page-content">
   <div class="page-content__header">
-    <h1 class="page-content__title">Audio Sample</h1>
+    <h1 class="page-content__title"><%= @audio_sample.title %></h1>
     <% if authenticated? %>
       <%= link_to "Edit", edit_audio_sample_path(@audio_sample), class: "page-content__action" %>
     <% end %>

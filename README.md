@@ -49,7 +49,9 @@ game packages. Upload progress does not increase the server's upload limit.
 Audio samples accept MP3 files up to 20 MiB. The browser reads the duration,
 then uploads the MP3 directly to private S3 storage before Rails saves the
 record. Uploaded MP3s are preserved without recompression. Latitude and
-longitude are entered manually and are never rendered on public pages.
+longitude are entered manually and are never rendered on public pages. Each
+sample requires a title and can use an optional unique URL slug in place of
+its numeric ID.
 
 Production requires these deployment secrets:
 

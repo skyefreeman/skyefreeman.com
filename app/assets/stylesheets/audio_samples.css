@@ -22,6 +22,12 @@
   overflow-wrap: anywhere;
 }
 
+.audio-sample-list__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
 .audio-sample-list__link {
   color: inherit;
 }

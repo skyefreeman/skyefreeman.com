@@ -1,6 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  title: Morning in the Park
+  url_slug: morning-in-the-park
   description: Morning birds
   latitude: 40.7128
   longitude: -74.0060
@@ -9,6 +11,8 @@ one:
   updated_at: 2026-11-01 08:00:00
 
 two:
+  title: Evening Rain
+  url_slug: evening-rain
   description: Evening rain
   latitude:
   longitude:
