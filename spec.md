@@ -91,17 +91,17 @@ RESTful resource: `resources :ideas`
 | PATCH  | /ideas/:id          | update  |
 | DELETE | /ideas/:id          | destroy |
 
-RESTful resource: `resources :audio_samples`
+RESTful resource: `resources :audio_samples, path: "audio"`
 
 | Verb   | Path                    | Action  |
 |--------|-------------------------|---------|
-| GET    | /audio_samples          | index   |
-| GET    | /audio_samples/:id      | show    |
-| GET    | /audio_samples/new      | new     |
-| POST   | /audio_samples          | create  |
-| GET    | /audio_samples/:id/edit | edit    |
-| PATCH  | /audio_samples/:id      | update  |
-| DELETE | /audio_samples/:id      | destroy |
+| GET    | /audio          | index   |
+| GET    | /audio/:id      | show    |
+| GET    | /audio/new      | new     |
+| POST   | /audio          | create  |
+| GET    | /audio/:id/edit | edit    |
+| PATCH  | /audio/:id      | update  |
+| DELETE | /audio/:id      | destroy |
 
 Index and show are public. All write actions and direct-upload authorization require authentication.
 
@@ -119,6 +119,10 @@ Index and show are public. All write actions and direct-upload authorization req
 - `post_og_image_url(post)` — returns absolute URL for `header_attachment`, or `nil`
 
 ## Changelog
+
+- Replaced the audio card grid with a compact, striped table inspired by classic media-library lists, with Title, Time, and Description columns and inline playback controls.
+
+- Changed the audio sample URL prefix from `/audio_samples` to `/audio`, including direct uploads, while retaining the existing Rails route helper names.
 
 - Added titles and optional custom URL slugs to audio samples, including description-based title backfill for existing records and numeric-ID URL fallback.
 

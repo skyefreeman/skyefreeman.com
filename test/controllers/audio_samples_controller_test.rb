@@ -10,13 +10,25 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "routes audio samples under the audio path" do
+    assert_equal "/audio", audio_samples_path
+    assert_equal "/audio/#{@audio_sample.url_slug}", audio_sample_path(@audio_sample)
+    assert_equal "/audio/direct_uploads", audio_sample_direct_uploads_path
+  end
+
   test "index is public, newest first, and does not expose coordinates" do
     get audio_samples_url
 
     assert_response :success
-    assert_select ".audio-sample-list__item", count: 2
-    assert_select "h2.audio-sample-list__title", text: audio_samples(:two).title, match: :first
-    assert_select ".audio-sample-list__description", text: audio_samples(:two).description, match: :first
+    assert_select "table.audio-sample-list" do
+      assert_select "thead th", text: /Title/, count: 1
+      assert_select "thead th", text: /Time/, count: 1
+      assert_select "thead th", text: /Description/, count: 1
+      assert_select "tbody tr.audio-sample-list__row", count: 2
+      assert_select "tbody tr:first-child .audio-sample-list__title", text: audio_samples(:two).title
+      assert_select "tbody tr:first-child .audio-sample-list__time", text: "2:05"
+      assert_select "tbody tr:first-child .audio-sample-list__description", text: audio_samples(:two).description
+    end
     assert_select "body", text: /#{Regexp.escape(@audio_sample.latitude.to_s)}/, count: 0
     assert_select "body", text: /#{Regexp.escape(@audio_sample.longitude.to_s)}/, count: 0
   end

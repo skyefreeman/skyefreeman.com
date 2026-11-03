@@ -1,4 +1,6 @@
-<div class="audio-player" data-controller="audio-player">
+<% compact = local_assigns.fetch(:compact, false) %>
+<% show_duration = local_assigns.fetch(:show_duration, true) %>
+<div class="<%= class_names("audio-player", "audio-player--compact": compact) %>" data-controller="audio-player">
   <button type="button"
     class="audio-player__button"
     aria-label="Play <%= audio_sample.title %>"
@@ -8,9 +10,11 @@
     data-pause-label="Pause <%= audio_sample.title %>"
     data-action="audio-player#toggle">
     <span aria-hidden="true" data-audio-player-target="icon">▶</span>
-    <span data-audio-player-target="label">Play</span>
+    <span class="audio-player__label" data-audio-player-target="label">Play</span>
   </button>
-  <span class="audio-player__duration"><%= format_audio_duration(audio_sample.duration_seconds) %></span>
+  <% if show_duration %>
+    <span class="audio-player__duration"><%= format_audio_duration(audio_sample.duration_seconds) %></span>
+  <% end %>
   <% if audio_sample.audio_file.attached? %>
     <%= audio_tag rails_blob_path(audio_sample.audio_file, disposition: "inline"),
       preload: "none",

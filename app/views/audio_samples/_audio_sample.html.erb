@@ -1,9 +1,15 @@
-<article class="audio-sample">
-  <h2 class="audio-sample-list__title">
-    <%= link_to audio_sample.title, audio_sample, class: "audio-sample-list__link" %>
-  </h2>
-  <p class="audio-sample-list__description">
-    <%= audio_sample.description %>
-  </p>
-  <%= render "player", audio_sample: audio_sample %>
-</article>
+<tr class="audio-sample-list__row">
+  <td class="audio-sample-list__title-cell">
+    <div class="audio-sample-list__title-content">
+      <%= render "player", audio_sample: audio_sample, compact: true, show_duration: false %>
+      <span class="audio-sample-list__title">
+        <%= link_to audio_sample.title, audio_sample, class: "audio-sample-list__link" %>
+        <% if authenticated? %>
+          <%= link_to "Edit", edit_audio_sample_path(audio_sample), class: "audio-sample-list__edit" %>
+        <% end %>
+      </span>
+    </div>
+  </td>
+  <td class="audio-sample-list__time"><%= format_audio_duration(audio_sample.duration_seconds) %></td>
+  <td class="audio-sample-list__description" title="<%= audio_sample.description %>"><%= audio_sample.description %></td>
+</tr>

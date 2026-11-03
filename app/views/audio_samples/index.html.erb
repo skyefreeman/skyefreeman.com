@@ -9,16 +9,20 @@
   </div>
 
   <% if @audio_samples.any? %>
-    <ul class="audio-sample-list">
-      <% @audio_samples.each do |audio_sample| %>
-        <li class="audio-sample-list__item">
-          <%= render audio_sample %>
-          <% if authenticated? %>
-            <%= link_to "Edit", edit_audio_sample_path(audio_sample), class: "audio-sample-list__edit" %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+    <div class="audio-sample-list__wrapper">
+      <table class="audio-sample-list">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Time</th>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render @audio_samples %>
+        </tbody>
+      </table>
+    </div>
   <% else %>
     <p class="audio-sample-list__empty">No audio samples yet.</p>
   <% end %>
