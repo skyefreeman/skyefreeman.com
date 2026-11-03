@@ -9,7 +9,10 @@
     data-play-label="Play <%= audio_sample.title %>"
     data-pause-label="Pause <%= audio_sample.title %>"
     data-action="audio-player#toggle">
-    <span aria-hidden="true" data-audio-player-target="icon">▶</span>
+    <svg class="audio-player__icon" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path class="audio-player__icon-play" d="M3 2L9 6L3 10Z" />
+      <path class="audio-player__icon-pause" d="M3 2H5V10H3ZM7 2H9V10H7Z" />
+    </svg>
     <span class="audio-player__label" data-audio-player-target="label">Play</span>
   </button>
   <% if show_duration %>

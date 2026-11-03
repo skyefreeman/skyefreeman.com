@@ -25,7 +25,6 @@ beforeEach(() => {
     dataset: { playLabel: "Play Morning birds", pauseLabel: "Pause Morning birds" },
     setAttribute(name, value) { this.attributes[name] = value }
   }
-  controller.iconTarget = { textContent: "▶" }
   controller.labelTarget = { textContent: "Play" }
   controller.errorTarget = { hidden: true, textContent: "" }
 })

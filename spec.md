@@ -120,6 +120,8 @@ Index and show are public. All write actions and direct-upload authorization req
 
 ## Changelog
 
+- Centered the audio list's play and pause artwork with fixed SVG geometry inside the compact circular control.
+
 - Matched the production AWS region to the audio sample S3 bucket in `us-east-2`, preventing direct uploads from being redirected across origins.
 
 - Added native browser audio controls to audio sample detail pages while retaining compact custom play buttons on the audio list.

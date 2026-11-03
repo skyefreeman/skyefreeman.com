@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["audio", "button", "error", "icon", "label"]
+  static targets = ["audio", "button", "error", "label"]
 
   toggle() {
     this.clearError()
@@ -21,7 +21,6 @@ export default class extends Controller {
   playing() {
     this.buttonTarget.setAttribute("aria-pressed", "true")
     this.buttonTarget.setAttribute("aria-label", this.buttonTarget.dataset.pauseLabel)
-    this.iconTarget.textContent = "❚❚"
     this.labelTarget.textContent = "Pause"
     window.dispatchEvent(new CustomEvent("audio-player:started", { detail: { player: this.element } }))
   }
@@ -51,7 +50,6 @@ export default class extends Controller {
   showPlayState() {
     this.buttonTarget.setAttribute("aria-pressed", "false")
     this.buttonTarget.setAttribute("aria-label", this.buttonTarget.dataset.playLabel)
-    this.iconTarget.textContent = "▶"
     this.labelTarget.textContent = "Play"
   }
 

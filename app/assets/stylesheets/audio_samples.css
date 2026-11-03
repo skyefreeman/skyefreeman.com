@@ -139,7 +139,26 @@
   width: 24px;
   height: 24px;
   padding: 0;
-  font-size: 0.65rem;
+}
+
+.audio-player__icon {
+  display: block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.audio-player__icon-pause {
+  opacity: 0;
+}
+
+.audio-player__button[aria-pressed="true"] .audio-player__icon-play {
+  opacity: 0;
+}
+
+.audio-player__button[aria-pressed="true"] .audio-player__icon-pause {
+  opacity: 1;
 }
 
 .audio-player--compact .audio-player__label {
