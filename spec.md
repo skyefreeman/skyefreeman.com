@@ -120,6 +120,8 @@ Index and show are public. All write actions and direct-upload authorization req
 
 ## Changelog
 
+- Deferred detail-page audio loading until playback and hid supported browsers' native download control.
+
 - Hid audio description scrollbars while preserving horizontal scrolling, preventing the scrollbar from covering row text.
 
 - Made long descriptions independently horizontally scrollable within compact audio list rows.

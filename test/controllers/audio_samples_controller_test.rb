@@ -48,7 +48,7 @@ class AudioSamplesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h1.page-content__title", text: @audio_sample.title
-    assert_select "audio.audio-sample__native-player[controls][preload=metadata]", count: 1
+    assert_select "audio.audio-sample__native-player[controls][controlslist=nodownload][preload=none]", count: 1
     assert_select ".audio-player__button", count: 0
     assert_select ".audio-sample__description", text: @audio_sample.description
     assert_select "body", text: /#{Regexp.escape(@audio_sample.latitude.to_s)}/, count: 0

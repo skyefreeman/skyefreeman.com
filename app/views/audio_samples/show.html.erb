@@ -12,7 +12,8 @@
   <% if @audio_sample.audio_file.attached? %>
     <%= audio_tag rails_blob_path(@audio_sample.audio_file, disposition: "inline"),
       controls: true,
-      preload: "metadata",
+      controlslist: "nodownload",
+      preload: "none",
       class: "audio-sample__native-player" %>
   <% end %>
 </div>
